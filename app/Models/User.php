@@ -20,9 +20,31 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
+        'avatar',
+        'whatsapp',
+        'referral_code',
         'password',
+        'role',
+        'is_active',
     ];
+
+    /**
+     * Cek apakah user memiliki role Admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Cek apakah user memiliki role Staf Pelayanan.
+     */
+    public function isStaff(): bool
+    {
+        return $this->role === 'staff' || $this->role === 'admin';
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,5 +67,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            if ($user->avatar && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->avatar)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar);
+            }
+        });
     }
 }

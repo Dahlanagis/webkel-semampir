@@ -15,11 +15,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            VillageDataSeeder::class,
         ]);
+
+        User::updateOrCreate(
+            ['email' => 'admin@kelurahan-patokan.go.id'],
+            [
+                'name' => 'Administrator Kelurahan',
+                'password' => bcrypt('password'),
+                'role' => 'admin',
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'staff@kelurahan-patokan.go.id'],
+            [
+                'name' => 'Staf Pelayanan Kelurahan',
+                'password' => bcrypt('password'),
+                'role' => 'staff',
+            ]
+        );
     }
 }
