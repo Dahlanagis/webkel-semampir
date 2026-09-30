@@ -9,7 +9,7 @@ putenv('VERCEL=1');
 $_ENV['VERCEL'] = '1';
 $_SERVER['VERCEL'] = '1';
 
-// Pastikan direktori writable di /tmp siap untuk Laravel
+// Siapkan direktori writable di /tmp untuk Laravel
 $storagePath = '/tmp/storage';
 $dirs = [
     $storagePath . '/framework/views',
@@ -23,6 +23,29 @@ foreach ($dirs as $dir) {
     if (!is_dir($dir)) {
         @mkdir($dir, 0755, true);
     }
+}
+
+// Siapkan database SQLite di /tmp agar writable
+$sqliteDestination = '/tmp/database.sqlite';
+if (!file_exists($sqliteDestination)) {
+    $sqliteSource = __DIR__ . '/../database/database.sqlite';
+    if (file_exists($sqliteSource)) {
+        @copy($sqliteSource, $sqliteDestination);
+    } elseif (file_exists(__DIR__ . '/../webkel_patokan')) {
+        @copy(__DIR__ . '/../webkel_patokan', $sqliteDestination);
+    }
+}
+
+// Fallback cerdas: Jika DB_HOST masih berisi placeholder atau DB_CONNECTION=sqlite, gunakan SQLite lokal
+$currentDbHost = getenv('DB_HOST');
+$currentDbConn = getenv('DB_CONNECTION');
+if ($currentDbHost === 'isi_dengan_host_database_cloud' || $currentDbConn === 'sqlite' || empty($currentDbHost)) {
+    putenv('DB_CONNECTION=sqlite');
+    $_ENV['DB_CONNECTION'] = 'sqlite';
+    $_SERVER['DB_CONNECTION'] = 'sqlite';
+    putenv('DB_DATABASE=' . $sqliteDestination);
+    $_ENV['DB_DATABASE'] = $sqliteDestination;
+    $_SERVER['DB_DATABASE'] = $sqliteDestination;
 }
 
 // Salin file konfigurasi JSON default dari project ke /tmp/storage/app
