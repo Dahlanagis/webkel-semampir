@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth"
+<html lang="id" class="scroll-smooth"
     x-data="{
         textSize: 'normal',
         highContrast: false,
@@ -26,9 +26,9 @@
     <link rel="shortcut icon" href="{{ !empty($systemSettings['app_logo']) ? asset('storage/' . $systemSettings['app_logo']) : asset('images/logo.png') }}">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="@yield('meta_description', 'Portal Resmi Pemerintah Kelurahan Patokan, Kecamatan Kraksaan, Kabupaten Probolinggo. Layanan publik mandiri, pengajuan surat online, berita, dan transparansi.')">
-    <meta name="keywords" content="Kelurahan Patokan, Kraksaan, Probolinggo, Portal Desa, Pelayanan Publik, SKTM, SKU, KTP, APBDes">
-    <meta name="author" content="Pemerintah Kelurahan Patokan">
+    <meta name="description" content="@yield('meta_description', 'Portal Resmi Pemerintah Kelurahan Semampir, Kecamatan Kraksaan, Kabupaten Probolinggo. Layanan publik mandiri, pengajuan surat online, berita, dan transparansi.')">
+    <meta name="keywords" content="Kelurahan Semampir, Kraksaan, Probolinggo, Portal Desa, Pelayanan Publik, SKTM, SKU, KTP, APBDes">
+    <meta name="author" content="Pemerintah Kelurahan Semampir">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,13 +37,12 @@
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap Icons (for DLH components) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Tailwind CSS CDN & Alpine.js -->
-    @if(file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        <script src="https://cdn.tailwindcss.com"></script>
-    @endif
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
@@ -67,17 +66,49 @@
         }
 
         @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-            display: inline-block;
+            display: inline-flex;
             white-space: nowrap;
-            animation: marquee 25s linear infinite;
+            animation: marquee 35s linear infinite;
         }
         .animate-marquee:hover {
             animation-play-state: paused;
         }
+
+        /* Custom slim sleek scrollbar for dropdown menus */
+        .dropdown-scrollbar {
+            overflow-y: auto !important;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f8fafc;
+        }
+        .dropdown-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .dropdown-scrollbar::-webkit-scrollbar-track {
+            background: #f8fafc;
+            border-radius: 9999px;
+            margin: 6px 0;
+        }
+        .dropdown-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .dropdown-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: #94a3b8;
+        }
+
+        /* Audio Equalizer animation for Google Voice */
+        @keyframes soundbar {
+            0%, 100% { height: 4px; }
+            50% { height: 14px; }
+        }
+        .animate-soundbar-1 { animation: soundbar 0.8s ease-in-out infinite; }
+        .animate-soundbar-2 { animation: soundbar 1.1s ease-in-out infinite 0.2s; }
+        .animate-soundbar-3 { animation: soundbar 0.7s ease-in-out infinite 0.4s; }
+        .animate-soundbar-4 { animation: soundbar 1.0s ease-in-out infinite 0.1s; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between" :class="{ 'bg-black text-yellow-300': highContrast }">

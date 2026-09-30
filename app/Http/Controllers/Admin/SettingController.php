@@ -31,7 +31,7 @@ class SettingController extends Controller
 
         return [
             'app_name' => 'SIMPEL KELURAHAN',
-            'app_subtitle' => 'Sistem Informasi Manajemen Pelayanan Kelurahan Patokan',
+            'app_subtitle' => 'Sistem Informasi Manajemen Pelayanan Kelurahan Semampir',
             'maintenance_mode' => false,
             'max_upload_mb' => 3,
             'items_per_page' => 10,
@@ -62,6 +62,9 @@ class SettingController extends Controller
         ], [
             'app_name.required' => 'Nama aplikasi wajib diisi.',
             'max_upload_mb.required' => 'Batas upload file wajib diisi.',
+            'app_logo.image' => 'File ditolak! Logo aplikasi harus berupa file gambar.',
+            'app_logo.mimes' => 'File ditolak! Format logo aplikasi harus JPG, PNG, WEBP, atau SVG.',
+            'app_logo.max' => 'File ditolak! Ukuran file logo aplikasi maksimal 2 MB.',
         ]);
 
         $settings = self::getSettings();

@@ -21,7 +21,8 @@ class CategoryController extends Controller
             'berita' => 'posts',
             'galeri' => 'galleries',
             'pengumuman' => 'announcements',
-            'dokumen' => 'documents'
+            'dokumen' => 'documents',
+            'agenda' => 'agendas'
         ];
         $relation = $relationMap[$type] ?? 'posts';
 
@@ -37,7 +38,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|in:berita,galeri,pengumuman,dokumen',
+            'type' => 'required|in:berita,galeri,pengumuman,dokumen,agenda',
             'description' => 'nullable|string|max:500',
             'color_code' => 'nullable|string|max:20',
         ], [

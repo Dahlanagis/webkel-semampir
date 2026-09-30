@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Standar Pelayanan Publik - ' . ($settings['village_name'] ?? 'Kelurahan Patokan'))
+@section('title', 'Standar Pelayanan Publik - ' . ($settings['village_name'] ?? 'Kelurahan Semampir'))
 
 @section('content')
 
@@ -81,10 +81,10 @@
                         <!-- Toolbar Atas (Gaya Gambar ke-2) -->
                         <div class="bg-white px-5 py-3.5 border-b border-slate-100 flex items-center justify-between gap-3">
                             <div class="flex items-center gap-3 min-w-0">
-                                <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[11px] font-black rounded uppercase tracking-wider shrink-0">PDF</span>
+                                <span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[11px] font-black rounded uppercase tracking-wider shrink-0">PDF</span>
                                 <div class="min-w-0">
                                     <h3 class="font-bold text-slate-800 text-sm truncate" x-text="viewMode === 'pdf' ? 'Pratinjau Dokumen Publik' : (activeService ? activeService.name : '')"></h3>
-                                    <p class="text-[11px] text-slate-500 truncate" x-text="(activeService && activeService.description) || 'Kelurahan Patokan, Kecamatan Kraksaan'"></p>
+                                    <p class="text-[11px] text-slate-500 truncate" x-text="(activeService && activeService.description) || 'Kelurahan Semampir, Kecamatan Kraksaan'"></p>
                                 </div>
                             </div>
                             
@@ -96,7 +96,7 @@
                                 <!-- <button type="button" @click="copyLink()" class="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
                                     <i class="fas fa-link"></i> Salin Tautan
                                 </button>
-                                <a :href="getPdfUrl(activeService) || '{{ asset('docs/sop-pelayanan.pdf') }}'" target="_blank" download class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                                <a :href="getPdfUrl(activeService) || '{{ asset('docs/sop-pelayanan.pdf') }}'" target="_blank" download class="px-3.5 py-1.5 bg-slate-600 hover:bg-slate-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1.5 shadow-sm">
                                     <i class="fas fa-download"></i> Unduh
                                 </a> -->
                             </div>
@@ -107,14 +107,14 @@
                             <!-- Persyaratan -->
                             <div>
                                 <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
-                                    <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 inline-flex items-center justify-center text-[10px] font-bold">1</span>
+                                    <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-700 inline-flex items-center justify-center text-[10px] font-bold">1</span>
                                     <span>Persyaratan Dokumen</span>
                                 </h4>
                                 <template x-if="getRequirements(activeService).length > 0">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                         <template x-for="(doc, idx) in getRequirements(activeService)" :key="idx">
                                             <div class="flex items-center gap-3 bg-slate-50 border border-slate-100 rounded-xl px-3.5 py-3">
-                                                <div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                                <div class="w-5 h-5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
                                                     <i class="fas fa-check text-[10px]"></i>
                                                 </div>
                                                 <span class="text-xs font-medium text-slate-700 leading-snug" x-text="doc"></span>
@@ -132,7 +132,7 @@
                             <!-- Ketentuan Pelayanan -->
                             <div>
                                 <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
-                                    <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 inline-flex items-center justify-center text-[10px] font-bold">2</span>
+                                    <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-700 inline-flex items-center justify-center text-[10px] font-bold">2</span>
                                     <span>Ketentuan Pelayanan</span>
                                 </h4>
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -146,17 +146,17 @@
                                         <p class="text-xs font-bold text-slate-700 mt-2" x-text="activeService.estimated_time || 'Tergantung Layanan'"></p>
                                         <span class="text-[10px] text-slate-400">Hari Kerja</span>
                                     </div>
-                                    <div class="bg-emerald-50/70 border border-emerald-100 rounded-xl p-3.5">
-                                        <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 block">Biaya Pelayanan</span>
-                                        <p class="text-xs font-black text-emerald-600 mt-2" x-text="activeService.cost || 'GRATIS'"></p>
-                                        <span class="text-[10px] text-emerald-600/70">Bebas Pungutan</span>
+                                    <div class="bg-slate-50/70 border border-slate-100 rounded-xl p-3.5">
+                                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-700 block">Biaya Pelayanan</span>
+                                        <p class="text-xs font-black text-slate-600 mt-2" x-text="activeService.cost || 'GRATIS'"></p>
+                                        <span class="text-[10px] text-slate-600/70">Bebas Pungutan</span>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Tombol Buka Pratinjau PDF -->
                             <div class="pt-2 border-t border-slate-100">
-                                <button type="button" @click="viewMode = 'pdf'" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl transition shadow-sm flex items-center gap-2">
+                                <button type="button" @click="viewMode = 'pdf'" class="px-6 py-2.5 bg-slate-600 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm rounded-xl transition shadow-sm flex items-center gap-2">
                                     <i class="fas fa-file-pdf"></i>
                                     <span>Baca Dokumen SOP (PDF)</span>
                                 </button>
@@ -176,16 +176,29 @@
 
                     </div>
 
-                    <!-- Banner Maklumat Bebas Biaya -->
-                    <div class="bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 text-sm">
-                            <i class="fas fa-bullhorn"></i>
+                    <!-- Banner Maklumat & Standar Bebas Biaya -->
+                    <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/25 rounded-2xl p-5 flex flex-col sm:flex-row items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 flex items-center justify-center shrink-0 text-base border border-amber-500/30 shadow-xs">
+                            <i class="fas fa-certificate"></i>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-emerald-950 text-xs sm:text-sm mb-1">Maklumat Pelayanan Bebas Biaya (GRATIS)</h4>
-                            <p class="text-xs text-emerald-800/90 leading-relaxed">
-                                Seluruh pengurusan surat keterangan dan administrasi kependudukan di Kelurahan Patokan tidak dipungut biaya apapun (GRATIS). Pastikan Anda membawa berkas persyaratan lengkap saat datang ke kantor kelurahan.
+                        <div class="flex-1 min-w-0 space-y-1.5">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <h4 class="font-bold text-slate-950 text-sm">Maklumat Pelayanan Bebas Biaya (100% GRATIS)</h4>
+                                <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-200">
+                                    SK: {{ $villageProfile['maklumat_nomor_sk'] ?? '188.45/04/426.411.01/2026' }}
+                                </span>
+                            </div>
+                            <p class="text-xs text-slate-700 leading-relaxed italic">
+                                "{!! strip_tags($villageProfile['maklumat_text'] ?? 'Dengan ini kami seluruh ASN dan Pegawai Pemerintah Kelurahan Semampir menyatakan sanggup menyelenggarakan pelayanan sesuai standar yang telah ditetapkan dan siap menerima sanksi sesuai ketentuan perundang-undangan yang berlaku apabila pelayanan tidak sesuai janji.') !!}"
                             </p>
+                            @if(!empty($villageProfile['maklumat_file']))
+                                <div class="pt-1.5 flex items-center gap-2">
+                                    <a href="{{ asset('storage/' . $villageProfile['maklumat_file']) }}" target="_blank" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold rounded-xl transition inline-flex items-center gap-1.5 shadow-sm">
+                                        <i class="fas fa-file-contract text-amber-400"></i>
+                                        <span>Buka Dokumen Piagam Resmi</span>
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -198,10 +211,10 @@
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
                         <div class="bg-white px-4 py-3.5 border-b border-slate-100 flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                <span class="w-2 h-2 rounded-full bg-slate-500"></span>
                                 <h3 class="font-bold text-slate-800 text-xs sm:text-sm">Daftar Standar Pelayanan & SOP</h3>
                             </div>
-                            <span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100" x-text="services.length + ' Dokumen'"></span>
+                            <span class="bg-slate-50 text-slate-700 px-2 py-0.5 rounded text-[10px] font-bold border border-slate-100" x-text="services.length + ' Dokumen'"></span>
                         </div>
                         
                         <!-- List Group Navigasi -->
@@ -209,14 +222,14 @@
                             <template x-for="(srv, index) in services" :key="srv.id">
                                 <button type="button" @click="activeId = srv.id"
                                         class="w-full text-left p-2.5 rounded-xl transition flex items-start gap-2.5 focus:outline-none"
-                                        :class="activeId === srv.id ? 'bg-emerald-600 text-white shadow' : 'text-slate-600 hover:bg-slate-50'">
+                                        :class="activeId === srv.id ? 'bg-slate-600 text-white shadow' : 'text-slate-600 hover:bg-slate-50'">
                                     <span class="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5"
                                           :class="activeId === srv.id ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'">
                                         <span x-text="index + 1"></span>
                                     </span>
                                     <div class="min-w-0">
                                         <h4 class="font-bold text-xs leading-snug line-clamp-2" x-text="srv.name"></h4>
-                                        <p x-show="activeId !== srv.id" class="text-[10px] mt-0.5 line-clamp-1 opacity-70" :class="activeId === srv.id ? 'text-emerald-100' : 'text-slate-400'" x-text="srv.description || 'SOP Layanan'"></p>
+                                        <p x-show="activeId !== srv.id" class="text-[10px] mt-0.5 line-clamp-1 opacity-70" :class="activeId === srv.id ? 'text-slate-100' : 'text-slate-400'" x-text="srv.description || 'SOP Layanan'"></p>
                                     </div>
                                 </button>
                             </template>
@@ -226,15 +239,15 @@
                     <!-- Card Bantuan WhatsApp -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
                         <div class="flex items-center gap-2 mb-2">
-                            <div class="bg-emerald-50 w-7 h-7 rounded-lg flex items-center justify-center shrink-0">
-                                <i class="fab fa-whatsapp text-emerald-600 text-[15px]"></i>
+                            <div class="bg-slate-50 w-7 h-7 rounded-lg flex items-center justify-center shrink-0">
+                                <i class="fab fa-whatsapp text-slate-600 text-[15px]"></i>
                             </div>
                             <h3 class="font-bold text-slate-800 text-xs">Bantuan & Informasi</h3>
                         </div>
                         <p class="text-[11px] text-slate-500 leading-relaxed mb-3">
                             Butuh informasi mengenai persyaratan kelurahan? Silakan tanyakan melalui kontak resmi WhatsApp.
                         </p>
-                        <a href="https://wa.me/6281234567890" target="_blank" class="w-full py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-2">
+                        <a href="https://wa.me/6281234567890" target="_blank" class="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 font-bold text-xs rounded-xl transition flex items-center justify-center gap-2">
                             <i class="fab fa-whatsapp text-sm"></i>
                             <span>Hubungi WhatsApp</span>
                         </a>

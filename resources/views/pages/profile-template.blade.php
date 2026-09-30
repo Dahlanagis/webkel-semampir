@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $page->title . ' - ' . ($villageProfile['village_name'] ?? 'Kelurahan Patokan'))
+@section('title', $page->title . ' - ' . ($villageProfile['village_name'] ?? 'Kelurahan Semampir'))
 
 @section('content')
 
@@ -36,8 +36,8 @@
                 {{-- Header Section inside Card --}}
                 <div class="text-center max-w-2xl mx-auto space-y-2">
                     @if($page->badge_text)
-                    <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-black uppercase tracking-wider">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-slate-50 text-slate-700 border border-slate-200 text-[11px] font-black uppercase tracking-wider">
+                        <span class="w-2 h-2 rounded-full bg-slate-500"></span>
                         {{ $page->badge_text }}
                     </span>
                     @endif
@@ -62,7 +62,7 @@
                                     {{-- Foto Lingkaran Lurah --}}
                                     <div class="w-24 h-24 rounded-full border-2 border-slate-800 p-0.5 mb-2.5 bg-slate-50 shrink-0 shadow-sm">
                                         <img src="{{ !empty($villageProfile['head_photo']) ? asset('storage/' . $villageProfile['head_photo']) : asset('images/sotk/lurah.png') }}" 
-                                            alt="Lurah Patokan" 
+                                            alt="Lurah Semampir" 
                                             class="w-full h-full object-cover rounded-full">
                                     </div>
                                     
@@ -72,7 +72,7 @@
                                     
                                     <div class="mt-1.5">
                                         <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-3 py-1 rounded-md tracking-wider inline-block">
-                                            LURAH PATOKAN
+                                            LURAH SEMAMPIR
                                         </span>
                                     </div>
                                 </div>
@@ -98,16 +98,16 @@
                                                     alt="Sekretaris Kelurahan" 
                                                     class="w-full h-full object-cover">
                                             </div>
-                                            <h5 class="font-bold text-xs text-slate-900 leading-tight">
+                                            <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
                                                 {{ $villageProfile['sekel_name'] ?? 'Budi Santoso, S.STP' }}
                                             </h5>
                                             <div class="mt-2">
-                                                <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-sm">
-                                                    SEKRETARIS KELURAHAN
+                                                <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
+                                                    {{ strtoupper($villageProfile['sekel_role'] ?? 'SEKRETARIS KELURAHAN') }}
                                                 </span>
                                             </div>
-                                            <span class="border border-slate-300 text-slate-500 text-[10px] font-semibold px-2.5 py-0.5 rounded-full mt-2.5 inline-block">
-                                                Kelompok Jabatan Fungsional
+                                            <span class="text-slate-500 text-[10px] font-medium mt-2 inline-block">
+                                                Sekretariat Kelurahan
                                             </span>
                                         </div>
                                     </div>
@@ -115,22 +115,22 @@
                                     {{-- Node 2: Section Head 1 (Pemerintahan) --}}
                                     <div class="flex flex-col items-center relative">
                                         <div class="w-px h-8 bg-slate-300 absolute -top-8 left-1/2 -translate-x-1/2"></div>
-                                        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col items-center text-center w-full hover:border-slate-300 transition group">
+                                        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col items-center text-center w-full hover:border-slate-400 transition group">
                                             <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-sm mb-2 bg-slate-100">
                                                 <img src="{{ !empty($villageProfile['kasi_pem_photo']) ? asset('storage/' . $villageProfile['kasi_pem_photo']) : asset('images/sotk/kasi_pem.png') }}" 
                                                     alt="Kasi Pemerintahan" 
                                                     class="w-full h-full object-cover">
                                             </div>
-                                            <h5 class="font-bold text-xs text-slate-900 leading-tight">
-                                                {{ $villageProfile['kasi_kesra_name'] ?? 'Arief Rachman, S.IP' }}
+                                            <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
+                                                {{ $villageProfile['kasi_pem_name'] ?? 'Arief Rachman, S.IP' }}
                                             </h5>
                                             <div class="mt-2">
-                                                <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-sm">
-                                                    KASI PEMERINTAHAN & TRANTIB
+                                                <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
+                                                    {{ strtoupper($villageProfile['kasi_pem_role'] ?? 'KASI PEMERINTAHAN & TRANTIB') }}
                                                 </span>
                                             </div>
-                                            <span class="border border-slate-300 text-slate-500 text-[10px] font-semibold px-2.5 py-0.5 rounded-full mt-2.5 inline-block">
-                                                Kelompok Jabatan Fungsional
+                                            <span class="text-slate-500 text-[10px] font-medium mt-2 inline-block">
+                                                Seksi Pemerintahan
                                             </span>
                                         </div>
                                     </div>
@@ -138,22 +138,22 @@
                                     {{-- Node 3: Section Head 2 (Kesra) --}}
                                     <div class="flex flex-col items-center relative">
                                         <div class="w-px h-8 bg-slate-300 absolute -top-8 left-1/2 -translate-x-1/2"></div>
-                                        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col items-center text-center w-full hover:border-slate-300 transition group">
+                                        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col items-center text-center w-full hover:border-slate-400 transition group">
                                             <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-sm mb-2 bg-slate-100">
                                                 <img src="{{ !empty($villageProfile['kasi_kesra_photo']) ? asset('storage/' . $villageProfile['kasi_kesra_photo']) : asset('images/sotk/kasi_kesra.png') }}" 
                                                     alt="Kasi Kesra" 
                                                     class="w-full h-full object-cover">
                                             </div>
-                                            <h5 class="font-bold text-xs text-slate-900 leading-tight">
-                                                {{ $villageProfile['kasi_pem_name'] ?? 'Siti Aminah, S.Sos' }}
+                                            <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
+                                                {{ $villageProfile['kasi_kesra_name'] ?? 'Siti Aminah, S.Sos' }}
                                             </h5>
                                             <div class="mt-2">
-                                                <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-sm">
-                                                    KASI PELAYANAN PUBLIK & KESRA
+                                                <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
+                                                    {{ strtoupper($villageProfile['kasi_kesra_role'] ?? 'KASI PELAYANAN & KESRA') }}
                                                 </span>
                                             </div>
-                                            <span class="border border-slate-300 text-slate-500 text-[10px] font-semibold px-2.5 py-0.5 rounded-full mt-2.5 inline-block">
-                                                Kelompok Jabatan Fungsional
+                                            <span class="text-slate-500 text-[10px] font-medium mt-2 inline-block">
+                                                Seksi Sosial & Kesra
                                             </span>
                                         </div>
                                     </div>
@@ -161,72 +161,72 @@
                                     {{-- Node 4: Section Head 3 (Ekbang) --}}
                                     <div class="flex flex-col items-center relative">
                                         <div class="w-px h-8 bg-slate-300 absolute -top-8 left-1/2 -translate-x-1/2"></div>
-                                        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col items-center text-center w-full hover:border-slate-300 transition group">
+                                        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col items-center text-center w-full hover:border-slate-400 transition group">
                                             <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-sm mb-2 bg-slate-100">
                                                 <img src="{{ !empty($villageProfile['kasi_ekbang_photo']) ? asset('storage/' . $villageProfile['kasi_ekbang_photo']) : asset('images/sotk/kasi_ekbang.png') }}" 
                                                     alt="Kasi Ekbang" 
                                                     class="w-full h-full object-cover">
                                             </div>
-                                            <h5 class="font-bold text-xs text-slate-900 leading-tight">
+                                            <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
                                                 {{ $villageProfile['kasi_ekbang_name'] ?? 'Bambang Wijaya, S.T' }}
                                             </h5>
                                             <div class="mt-2">
-                                                <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-sm">
-                                                    KASI PEMBERDAYAAN & EKBANG
+                                                <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
+                                                    {{ strtoupper($villageProfile['kasi_ekbang_role'] ?? 'KASI PEMBERDAYAAN & EKBANG') }}
                                                 </span>
                                             </div>
-                                            <span class="border border-slate-300 text-slate-500 text-[10px] font-semibold px-2.5 py-0.5 rounded-full mt-2.5 inline-block">
-                                                Kelompok Jabatan Fungsional
+                                            <span class="text-slate-500 text-[10px] font-medium mt-2 inline-block">
+                                                Seksi Perekonomian
                                             </span>
                                         </div>
                                     </div>
 
                                 </div>
+
+                                {{-- Additional Members Tier (if any) --}}
+                                @if(!empty($villageProfile['sotk_members']) && count($villageProfile['sotk_members']) > 0)
+                                    <div class="pt-8 relative">
+                                        <div class="w-px h-8 bg-slate-300 absolute top-0 left-1/2 -translate-x-1/2"></div>
+                                        <div class="text-center mb-5 pt-3">
+                                            <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full tracking-wider shadow-2xs">
+                                                <i class="fas fa-users text-slate-500"></i>
+                                                <span>STAF PELAYANAN & JABATAN FUNGSIONAL ({{ count($villageProfile['sotk_members']) }})</span>
+                                            </span>
+                                        </div>
+                                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                                            @foreach($villageProfile['sotk_members'] as $m)
+                                                <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col items-center text-center w-full hover:border-slate-400 transition group">
+                                                    <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-sm mb-2 bg-slate-100">
+                                                        @if(!empty($m['photo']))
+                                                            <img src="{{ asset('storage/' . $m['photo']) }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
+                                                        @else
+                                                            <div class="w-full h-full flex items-center justify-center bg-slate-200 text-slate-600 font-black text-lg">
+                                                                {{ strtoupper(substr($m['name'] ?? 'S', 0, 1)) }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <h5 class="font-bold text-xs text-slate-900 leading-tight">
+                                                        {{ $m['name'] }}
+                                                    </h5>
+                                                    <div class="mt-2">
+                                                        <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-sm">
+                                                            {{ $m['position'] ?? 'STAF' }}
+                                                        </span>
+                                                    </div>
+                                                    <span class="border border-slate-300 text-slate-500 text-[10px] font-semibold px-2.5 py-0.5 rounded-full mt-2.5 inline-block">
+                                                        Kelompok Jabatan Fungsional
+                                                    </span>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
 
                         </div>
                     </div>
 
-                    {{-- TUPOKSI Summary Cards below --}}
-                    <div class="pt-6 border-t border-slate-100 space-y-4">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-tasks text-emerald-600"></i>
-                            <h3 class="font-extrabold text-sm text-slate-900">Rincian Tugas Pokok & Fungsi (TUPOKSI)</h3>
-                        </div>
 
-                        <div class="flex flex-wrap justify-center -m-2 text-left">
-                            <div class="w-full sm:w-1/2 lg:w-1/3 p-2">
-                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5 h-full">
-                                    <h4 class="font-bold text-xs text-slate-900">Lurah Kelurahan</h4>
-                                    <div class="text-[11px] text-slate-500 leading-relaxed prose-p:m-0">{!! $villageProfile['lurah_tupoksi'] ?? 'Penyelenggara utama urusan pemerintahan, ketertiban umum, pelayanan publik, dan pembinaan wilayah Patokan.' !!}</div>
-                                </div>
-                            </div>
-                            <div class="w-full sm:w-1/2 lg:w-1/3 p-2">
-                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5 h-full">
-                                    <h4 class="font-bold text-xs text-slate-900">Sekretaris Kelurahan</h4>
-                                    <div class="text-[11px] text-slate-500 leading-relaxed prose-p:m-0">{!! $villageProfile['sekel_tupoksi'] ?? 'Pengelola administrasi umum, perencanaan operasional, keuangan, dan pelayanan surat-menyurat kelurahan.' !!}</div>
-                                </div>
-                            </div>
-                            <div class="w-full sm:w-1/2 lg:w-1/3 p-2">
-                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5 h-full">
-                                    <h4 class="font-bold text-xs text-slate-900">Kasi Pemerintahan & Trantib</h4>
-                                    <div class="text-[11px] text-slate-500 leading-relaxed prose-p:m-0">{!! $villageProfile['kasi_pem_tupoksi'] ?? 'Pelayanan KTP/KK, pengawasan ketertiban lingkungan, dan pengelolaan data pertanahan & PBB.' !!}</div>
-                                </div>
-                            </div>
-                            <div class="w-full sm:w-1/2 lg:w-1/3 p-2">
-                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5 h-full">
-                                    <h4 class="font-bold text-xs text-slate-900">Kasi Pelayanan & Kesra</h4>
-                                    <div class="text-[11px] text-slate-500 leading-relaxed prose-p:m-0">{!! $villageProfile['kasi_kesra_tupoksi'] ?? 'Penerbitan SKTM, koordinasi bantuan sosial kementerian, kesehatan posyandu, dan keagamaan.' !!}</div>
-                                </div>
-                            </div>
-                            <div class="w-full sm:w-1/2 lg:w-1/3 p-2">
-                                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1.5 h-full">
-                                    <h4 class="font-bold text-xs text-slate-900">Kasi Pemberdayaan & Ekbang</h4>
-                                    <div class="text-[11px] text-slate-500 leading-relaxed prose-p:m-0">{!! $villageProfile['kasi_ekbang_tupoksi'] ?? 'Pemberdayaan masyarakat, pembinaan UMKM, fasilitasi pembangunan infrastruktur kelurahan, dan kebersihan lingkungan.' !!}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 @else
                     {{-- Standard Page Content --}}
                     
@@ -236,7 +236,7 @@
                     </div>
                     @endif
 
-                    <div class="prose prose-slate prose-sm sm:prose-base lg:prose-lg max-w-none prose-headings:font-bold prose-a:text-emerald-600 hover:prose-a:text-emerald-700 prose-img:rounded-xl">
+                    <div class="prose prose-slate prose-sm sm:prose-base lg:prose-lg max-w-none prose-headings:font-bold prose-a:text-slate-600 hover:prose-a:text-slate-700 prose-img:rounded-xl">
                         @php
                             $blocks = [];
                             if (!empty($page->content)) {
@@ -286,8 +286,8 @@
                                         @if(!empty($block['items']))
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8 not-prose">
                                             @foreach($block['items'] as $item)
-                                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:border-emerald-300 transition-all group">
-                                                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-emerald-700 transition-colors">{{ $item['title'] ?? '' }}</h3>
+                                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:border-slate-300 transition-all group">
+                                                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-slate-700 transition-colors">{{ $item['title'] ?? '' }}</h3>
                                                 <p class="text-slate-600 leading-relaxed m-0">{{ $item['content'] ?? '' }}</p>
                                             </div>
                                             @endforeach
@@ -300,7 +300,7 @@
                                             $colors = [
                                                 'amber' => ['bg' => 'bg-amber-50', 'border' => 'border-amber-500', 'text' => 'text-amber-800', 'icon' => 'fa-exclamation-triangle'],
                                                 'blue' => ['bg' => 'bg-blue-50', 'border' => 'border-blue-500', 'text' => 'text-blue-800', 'icon' => 'fa-info-circle'],
-                                                'emerald' => ['bg' => 'bg-emerald-50', 'border' => 'border-emerald-500', 'text' => 'text-emerald-800', 'icon' => 'fa-check-circle'],
+                                                'slate' => ['bg' => 'bg-slate-50', 'border' => 'border-slate-500', 'text' => 'text-slate-800', 'icon' => 'fa-check-circle'],
                                                 'rose' => ['bg' => 'bg-rose-50', 'border' => 'border-rose-500', 'text' => 'text-rose-800', 'icon' => 'fa-exclamation-circle'],
                                             ];
                                             $c = $colors[$style] ?? $colors['amber'];

@@ -17,22 +17,22 @@ class GallerySeeder extends Seeder
         $items = [
             // 1. Pemerintahan
             [
-                'title' => 'Musrenbang Kelurahan Patokan Tahun 2026',
+                'title' => 'Musrenbang Kelurahan Semampir Tahun 2026',
                 'category' => 'Pemerintahan',
                 'image' => 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1000&q=80',
-                'caption' => 'Pelaksanaan Musyawarah Perencanaan Pembangunan (Musrenbang) Kelurahan Patokan dalam merumuskan program prioritas pembangunan tahun 2026.',
+                'caption' => 'Pelaksanaan Musyawarah Perencanaan Pembangunan (Musrenbang) Kelurahan Semampir dalam merumuskan program prioritas pembangunan tahun 2026.',
             ],
             [
                 'title' => 'Rapat Koordinasi Evaluasi Kinerja RT & RW',
                 'category' => 'Pemerintahan',
                 'image' => 'https://images.unsplash.com/photo-1577962917302-cd874c4e31d2?auto=format&fit=crop&w=1000&q=80',
-                'caption' => 'Rapat koordinasi rutin Lurah Patokan bersama para Ketua RT dan RW se-Kelurahan Patokan guna peningkatan mutu pelayanan publik.',
+                'caption' => 'Rapat koordinasi rutin Lurah Semampir bersama para Ketua RT dan RW se-Kelurahan Semampir guna peningkatan mutu pelayanan publik.',
             ],
             [
                 'title' => 'Kunjungan Kerja Tim Penggerak PKK Kabupaten Probolinggo',
                 'category' => 'Pemerintahan',
                 'image' => 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=80',
-                'caption' => 'Kunjungan pembinaan adminitrasi dan program kerja PKK di Kantor Kelurahan Patokan Kecamatan Kraksaan.',
+                'caption' => 'Kunjungan pembinaan adminitrasi dan program kerja PKK di Kantor Kelurahan Semampir Kecamatan Kraksaan.',
             ],
 
             // 2. Gotong Royong
@@ -46,13 +46,13 @@ class GallerySeeder extends Seeder
                 'title' => 'Penanaman 500 Bibit Pohon Penghijauan Lingkungan',
                 'category' => 'Gotong Royong',
                 'image' => 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1000&q=80',
-                'caption' => 'Gerakan Patokan Hijau melalui penanaman bibit pohon buah dan pelindung di sepanjang jalan protokol kelurahan.',
+                'caption' => 'Gerakan Semampir Hijau melalui penanaman bibit pohon buah dan pelindung di sepanjang jalan protokol kelurahan.',
             ],
             [
                 'title' => 'Pembersihan Fasilitas Umum & Lapangan Warga RT 05',
                 'category' => 'Gotong Royong',
                 'image' => 'https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?auto=format&fit=crop&w=1000&q=80',
-                'caption' => 'Kerja bakti pembenahan sarana olahraga dan taman bermain anak bersama elemen karang taruna Patokan.',
+                'caption' => 'Kerja bakti pembenahan sarana olahraga dan taman bermain anak bersama elemen karang taruna Semampir.',
             ],
 
             // 3. Posyandu & Kesehatan
@@ -92,7 +92,7 @@ class GallerySeeder extends Seeder
                 'title' => 'Pembangunan Pos Keamanan Lingkungan (Poskamling) RW 01',
                 'category' => 'Pembangunan',
                 'image' => 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1000&q=80',
-                'caption' => 'Peresmian poskamling baru sarana ketertiban dan ketentraman warga di lingkungan RW 01 Kelurahan Patokan.',
+                'caption' => 'Peresmian poskamling baru sarana ketertiban dan ketentraman warga di lingkungan RW 01 Kelurahan Semampir.',
             ],
 
             // 5. Kegiatan Sosial & Keagamaan
@@ -100,7 +100,7 @@ class GallerySeeder extends Seeder
                 'title' => 'Penyaluran Bantuan Cadangan Pangan Beras Bagi Warga',
                 'category' => 'Sosial & Keagamaan',
                 'image' => 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1000&q=80',
-                'caption' => 'Distribusi bantuan pangan cadangan beras pemerintah kepada keluarga penerima manfaat di Pendopo Kelurahan Patokan.',
+                'caption' => 'Distribusi bantuan pangan cadangan beras pemerintah kepada keluarga penerima manfaat di Pendopo Kelurahan Semampir.',
             ],
             [
                 'title' => 'Pengajian Rutin & Doa Bersama Pengurus Kelurahan',
@@ -109,7 +109,7 @@ class GallerySeeder extends Seeder
                 'caption' => 'Kegiatan keagamaan bimbingan rohani dan doa bersama jajaran staf kelurahan dan tokoh masyarakat.',
             ],
             [
-                'title' => 'Santunan Anak Yatim & Dhuafa Kelurahan Patokan',
+                'title' => 'Santunan Anak Yatim & Dhuafa Kelurahan Semampir',
                 'category' => 'Sosial & Keagamaan',
                 'image' => 'https://images.unsplash.com/photo-1532629345422-7515f3d16bb0?auto=format&fit=crop&w=1000&q=80',
                 'caption' => 'Pemberian santunan dan perlengkapan sekolah kepada anak-anak yatim dalam rangka kepedulian sosial kelurahan.',
@@ -120,10 +120,10 @@ class GallerySeeder extends Seeder
                 'title' => 'Pelatihan Kewirausahaan & Branding Kemasan UMKM',
                 'category' => 'Pemberdayaan UMKM',
                 'image' => 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1000&q=80',
-                'caption' => 'Pelatihan pemasaran digital dan desain kemasan produk bagi para pelaku usaha kecil mikro di Kelurahan Patokan.',
+                'caption' => 'Pelatihan pemasaran digital dan desain kemasan produk bagi para pelaku usaha kecil mikro di Kelurahan Semampir.',
             ],
             [
-                'title' => 'Bazar Kuliner & Kerajinan Produk Unggulan Patokan',
+                'title' => 'Bazar Kuliner & Kerajinan Produk Unggulan Semampir',
                 'category' => 'Pemberdayaan UMKM',
                 'image' => 'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1000&q=80',
                 'caption' => 'Pameran dan bazar usaha mikro warga memperkenalkan produk jajanan tradisional dan kriya olahan rumahan.',

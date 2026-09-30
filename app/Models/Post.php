@@ -21,12 +21,14 @@ class Post extends Model
         'views',
         'is_featured',
         'is_slider',
+        'is_active',
         'published_at',
     ];
 
     protected $casts = [
         'is_featured' => 'boolean',
         'is_slider' => 'boolean',
+        'is_active' => 'boolean',
         'published_at' => 'datetime',
     ];
 

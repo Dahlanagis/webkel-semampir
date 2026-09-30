@@ -22,7 +22,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
         <form method="GET" action="{{ route('admin.media.index') }}" class="flex flex-wrap items-center gap-2.5">
             <div class="relative">
-                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama berkas atau folder..." class="pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-600 shadow-sm w-60">
+                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama berkas atau folder..." class="pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-slate-600 shadow-sm w-60">
                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
             <select name="type" onchange="this.form.submit()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 bg-white font-medium shadow-sm">
@@ -30,10 +30,10 @@
                 <option value="image" {{ request('type') == 'image' ? 'selected' : '' }}>Gambar (JPG/PNG/WEBP)</option>
                 <option value="pdf" {{ request('type') == 'pdf' ? 'selected' : '' }}>Dokumen PDF</option>
             </select>
-            <button type="submit" class="px-3.5 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs rounded-xl shadow transition">Filter</button>
+            <button type="submit" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow transition">Filter</button>
         </form>
 
-        <button @click="uploadModalOpen = true" class="px-4 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs rounded-xl shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0">
+        <button @click="uploadModalOpen = true" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs rounded-xl shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
             <span>Unggah Berkas Media Baru</span>
         </button>
@@ -125,9 +125,9 @@
             <div x-show="uploadModalOpen" class="relative inline-block bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all max-w-lg w-full border border-slate-200 my-8">
                 <form action="{{ route('admin.media.store') }}" method="POST" enctype="multipart/form-data" x-data="{ mediaPreview: null }">
                     @csrf
-                    <div class="bg-gradient-to-r from-emerald-950 to-slate-900 px-6 py-4 text-white flex items-center justify-between">
+                    <div class="bg-gradient-to-r from-slate-950 to-slate-900 px-6 py-4 text-white flex items-center justify-between">
                         <h3 class="text-base font-bold">Unggah Berkas Media Baru</h3>
-                        <button type="button" @click="uploadModalOpen = false" class="text-emerald-300 hover:text-white">
+                        <button type="button" @click="uploadModalOpen = false" class="text-slate-300 hover:text-white">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
@@ -135,7 +135,7 @@
                     <div class="p-6 space-y-4 text-xs">
                         <div>
                             <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1">Folder Penyimpanan</label>
-                            <select name="folder" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-600">
+                            <select name="folder" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-slate-600">
                                 <option value="uploads">uploads (Berkas Umum)</option>
                                 <option value="documents">documents (Dokumen & Form)</option>
                                 <option value="gallery">gallery (Foto Kegiatan)</option>
@@ -145,15 +145,15 @@
 
                         <div>
                             <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1">Pilih Berkas *</label>
-                            <input type="file" name="file" required 
+                            <input type="file" name="file" required accept="image/*,application/pdf,.pdf"
                                    @change="const f = $event.target.files[0]; if(f && f.type.startsWith('image/')) { mediaPreview = URL.createObjectURL(f); } else { mediaPreview = null; }" 
-                                   class="w-full p-2 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-600">
+                                   class="w-full p-2 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-slate-600">
                             <p class="text-[10px] text-slate-400 mt-1">Format: Gambar (JPG/PNG/WEBP) atau PDF. Maksimal 10MB.</p>
                         </div>
 
                         <template x-if="mediaPreview">
                             <div class="mt-2.5 p-2.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-3">
-                                <img :src="mediaPreview" class="w-14 h-14 rounded-xl object-cover border-2 border-emerald-500 shadow-sm shrink-0">
+                                <img :src="mediaPreview" class="w-14 h-14 rounded-xl object-cover border-2 border-slate-500 shadow-sm shrink-0">
                                 <div class="min-w-0 text-[11px]">
                                     <div class="font-bold text-slate-800">Pratinjau Gambar Media</div>
                                     <div class="text-[10px] text-sky-600 font-medium">Siap diunggah ke server</div>
@@ -164,7 +164,7 @@
 
                     <div class="bg-slate-50 px-6 py-4 flex items-center justify-end gap-3 border-t border-slate-200">
                         <button type="button" @click="uploadModalOpen = false" class="px-4 py-2 text-slate-600 font-semibold rounded-xl hover:bg-slate-200">Batal</button>
-                        <button type="submit" class="px-5 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-xl shadow">Unggah Sekarang</button>
+                        <button type="submit" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-xl shadow">Unggah Sekarang</button>
                     </div>
                 </form>
             </div>
@@ -173,7 +173,7 @@
 
     <!-- COPY TOAST NOTIFICATION -->
     <div x-show="copyToast" x-cloak class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-2xl shadow-xl border border-slate-700 text-xs font-bold flex items-center gap-2">
-        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
         <span>URL Berkas Berhasil Disalin!</span>
     </div>
 

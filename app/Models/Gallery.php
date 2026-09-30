@@ -18,6 +18,12 @@ class Gallery extends Model
         'category_id',
         'caption',
         'show_on_homepage',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'show_on_homepage' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     protected $appends = ['image_url'];
@@ -51,15 +57,15 @@ class Gallery extends Model
     protected static function booted()
     {
         static::deleting(function ($gallery) {
-            // Delete cover
-            if ($gallery->image && !str_starts_with($gallery->image, 'http') && \Illuminate\Support\Facades\Storage::disk('public')->exists($gallery->image)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($gallery->image);
+            // Hapus berkas fisik sampul
+            if ($gallery->image) {
+                \App\Http\Controllers\Admin\GalleryController::deletePhysicalFile($gallery->image);
             }
             
-            // Delete associated images
+            // Hapus berkas fisik seluruh foto di album
             foreach ($gallery->images as $img) {
-                if ($img->image_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($img->image_path)) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($img->image_path);
+                if ($img->image_path) {
+                    \App\Http\Controllers\Admin\GalleryController::deletePhysicalFile($img->image_path);
                 }
                 $img->delete();
             }

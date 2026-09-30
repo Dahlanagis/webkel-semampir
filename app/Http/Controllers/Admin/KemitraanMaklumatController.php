@@ -81,12 +81,12 @@ class KemitraanMaklumatController extends Controller
             }
 
             $existingData['kemitraan'] = $partners;
-            $statusMsg = 'Daftar Kemitraan berhasil diperbarui.';
+            $statusMsg = 'Daftar Link Terkait berhasil diperbarui.';
         }
 
         File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-        return back()->with('status', $statusMsg);
+        return back()->with('status', $statusMsg)->with('success', $statusMsg);
     }
 
     public function storeMitra(Request $request)
@@ -109,7 +109,7 @@ class KemitraanMaklumatController extends Controller
         $existingData['kemitraan'] = $kemitraan;
         File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-        return back()->with('success', 'Mitra baru berhasil ditambahkan.');
+        return back()->with('status', 'Link terkait baru berhasil ditambahkan.')->with('success', 'Link terkait baru berhasil ditambahkan.');
     }
 
     public function updateMitra(Request $request, $index)
@@ -137,10 +137,10 @@ class KemitraanMaklumatController extends Controller
             $existingData['kemitraan'] = $kemitraan;
             File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-            return back()->with('success', 'Data mitra berhasil diperbarui.');
+            return back()->with('status', 'Data link terkait berhasil diperbarui.')->with('success', 'Data link terkait berhasil diperbarui.');
         }
 
-        return back()->withErrors(['Mitra tidak ditemukan.']);
+        return back()->withErrors(['Link terkait tidak ditemukan.']);
     }
 
     public function destroyMitra($index)
@@ -158,9 +158,9 @@ class KemitraanMaklumatController extends Controller
             $existingData['kemitraan'] = $kemitraan;
             File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-            return back()->with('success', 'Mitra berhasil dihapus.');
+            return back()->with('status', 'Link terkait berhasil dihapus.')->with('success', 'Link terkait berhasil dihapus.');
         }
 
-        return back()->withErrors(['Mitra tidak ditemukan.']);
+        return back()->withErrors(['Link terkait tidak ditemukan.']);
     }
 }

@@ -59,6 +59,8 @@ class ServiceTypeController extends Controller
             'name.required' => 'Nama Layanan / Jenis Surat wajib diisi.',
             'name.unique' => 'Nama Layanan sudah terdaftar dalam sistem.',
             'code.unique' => 'Kode singkatan surat sudah terdaftar.',
+            'pdf_document.mimes' => 'File ditolak! Format file tidak sesuai, hanya file PDF (.pdf) yang diperbolehkan.',
+            'pdf_document.max' => 'File ditolak! Ukuran file PDF melebihi kapasitas maksimal 5 MB.',
         ]);
 
             $documents = array_values(array_filter($request->input('required_documents', [])));
@@ -117,6 +119,8 @@ class ServiceTypeController extends Controller
             'name.required' => 'Nama Layanan / Jenis Surat wajib diisi.',
             'name.unique' => 'Nama Layanan sudah terdaftar.',
             'code.unique' => 'Kode singkatan surat sudah terdaftar.',
+            'pdf_document.mimes' => 'File ditolak! Format file tidak sesuai, hanya file PDF (.pdf) yang diperbolehkan.',
+            'pdf_document.max' => 'File ditolak! Ukuran file PDF melebihi kapasitas maksimal 5 MB.',
         ]);
 
         $documents = array_values(array_filter($request->input('required_documents', [])));

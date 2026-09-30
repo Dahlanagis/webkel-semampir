@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Galeri Kegiatan - ' . ($villageProfile['village_name'] ?? 'Kelurahan Patokan'))
+@section('title', 'Galeri Kegiatan - ' . ($villageProfile['village_name'] ?? 'Kelurahan Semampir'))
 
 @section('content')
 
@@ -12,7 +12,7 @@
         $images = [['url' => $g->image_url]]; // cover image is first
         if ($g->images) {
             foreach ($g->images as $img) {
-                $images[] = ['url' => asset('storage/' . $img->image_path)];
+                $images[] = ['url' => $img->image_url];
             }
         }
         return [
@@ -55,6 +55,20 @@
                 if(this.activeAlbum && this.activeAlbum.images) {
                     this.currentIndex = (this.currentIndex - 1 + this.activeAlbum.images.length) % this.activeAlbum.images.length;
                 }
+            },
+            getVideoEmbed(video) {
+                if(!video) return '';
+                let url = video.youtube_id || video.video_url || video.id || '';
+                let match = ('' + url).match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&?\/\s]{11})/i);
+                let id = match ? match[1] : url;
+                return 'https://www.youtube.com/embed/' + id + '?autoplay=1';
+            },
+            getVideoWatchUrl(video) {
+                if(!video) return '#';
+                let url = video.youtube_id || video.video_url || video.id || '';
+                let match = ('' + url).match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&?\/\s]{11})/i);
+                let id = match ? match[1] : url;
+                return 'https://www.youtube.com/watch?v=' + id;
             }
          }"
          @keydown.escape.window="closeModal()"
@@ -67,7 +81,7 @@
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
                 <h1 class="text-xl sm:text-2xl font-black text-slate-900 mb-1">Galeri & Dokumentasi Kegiatan</h1>
-                <p class="text-sm text-slate-500">Dokumentasi foto kegiatan pembangunan, pelayanan publik, gotong royong, dan posyandu Kelurahan Patokan.</p>
+                <p class="text-sm text-slate-500">Dokumentasi foto kegiatan pembangunan, pelayanan publik, gotong royong, dan posyandu Kelurahan Semampir.</p>
             </div>
             <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-bold text-sm transition-all shadow-sm shrink-0">
                 <i class="fas fa-arrow-left text-slate-400"></i>
@@ -77,10 +91,10 @@
 
         {{-- Tabs Foto / Video --}}
         <div class="flex items-center gap-4 mb-6 border-b border-slate-200 px-2">
-            <a href="{{ route('galeri', ['type' => 'foto']) }}" class="px-4 py-3 text-sm font-bold transition-all {{ $type === 'foto' ? 'text-emerald-600 border-b-2 border-emerald-600' : 'text-slate-500 hover:text-slate-700 hover:border-b-2 hover:border-slate-300' }}">
+            <a href="{{ route('galeri', ['type' => 'foto']) }}" class="px-4 py-3 text-sm font-bold transition-all {{ $type === 'foto' ? 'text-slate-600 border-b-2 border-slate-600' : 'text-slate-500 hover:text-slate-700 hover:border-b-2 hover:border-slate-300' }}">
                 <i class="fas fa-camera mr-2"></i>Album Foto
             </a>
-            <a href="{{ route('galeri', ['type' => 'video']) }}" class="px-4 py-3 text-sm font-bold transition-all {{ $type === 'video' ? 'text-emerald-600 border-b-2 border-emerald-600' : 'text-slate-500 hover:text-slate-700 hover:border-b-2 hover:border-slate-300' }}">
+            <a href="{{ route('galeri', ['type' => 'video']) }}" class="px-4 py-3 text-sm font-bold transition-all {{ $type === 'video' ? 'text-slate-600 border-b-2 border-slate-600' : 'text-slate-500 hover:text-slate-700 hover:border-b-2 hover:border-slate-300' }}">
                 <i class="fas fa-video mr-2"></i>Video Kegiatan
             </a>
         </div>
@@ -92,13 +106,13 @@
                 {{-- Filter Pill Header Bar --}}
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex items-center gap-2 overflow-x-auto no-scrollbar">
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1.5">
-                        <i class="fas fa-filter text-emerald-600"></i> Filter Album:
+                        <i class="fas fa-filter text-slate-600"></i> Filter Album:
                     </span>
 
                     {{-- Semua Foto --}}
                     <a href="{{ route('galeri', ['type' => 'foto']) }}"
                        class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0
-                              {{ !request('kategori') ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-600 bg-slate-100 hover:bg-slate-200' }}">
+                              {{ !request('kategori') ? 'bg-slate-600 text-white shadow-md' : 'text-slate-600 bg-slate-100 hover:bg-slate-200' }}">
                         <span>Semua Foto</span>
                         <span class="px-1.5 py-0.5 rounded text-[10px] {{ !request('kategori') ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600' }}">
                             {{ $totalPhotos ?? count($galleries) }}
@@ -114,7 +128,7 @@
                         @endphp
                         <a href="{{ route('galeri', ['type' => 'foto', 'kategori' => $catName]) }}"
                            class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0
-                                  {{ $isActive ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-600 bg-slate-200 hover:bg-slate-300' }}">
+                                  {{ $isActive ? 'bg-slate-600 text-white shadow-md' : 'text-slate-600 bg-slate-200 hover:bg-slate-300' }}">
                             <span>{{ $catName }}</span>
                             @if($catTotal)
                                 <span class="px-1.5 py-0.5 rounded text-[10px] {{ $isActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600' }}">
@@ -135,7 +149,7 @@
                                     
                                     {{-- Photo Image Box --}}
                                     <div class="h-48 sm:h-52 relative overflow-hidden bg-slate-900 shrink-0 w-full">
-                                        <span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-black uppercase tracking-wider absolute top-2.5 left-2.5 z-10 shadow-sm">
+                                        <span class="bg-slate-100 text-slate-700 px-2 py-1 rounded text-[10px] font-black uppercase tracking-wider absolute top-2.5 left-2.5 z-10 shadow-sm">
                                             {{ $gal->category ?? 'KEGIATAN' }}
                                         </span>
 
@@ -145,7 +159,7 @@
                                              class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
 
                                         <div class="absolute inset-0 bg-slate-950/50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center gap-2 text-white">
-                                            <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg">
+                                            <div class="w-10 h-10 rounded-full bg-slate-600 text-white flex items-center justify-center shadow-lg">
                                                 <i class="fas fa-images text-base"></i>
                                             </div>
                                             <span class="text-xs font-bold bg-slate-900/80 px-3 py-1 rounded-full border border-white/20">
@@ -157,7 +171,7 @@
                                     {{-- Caption Box --}}
                                     <div class="p-3.5 bg-white border-t border-slate-100 flex-1 flex flex-col justify-between">
                                         <div>
-                                            <h3 class="font-bold text-slate-800 text-xs line-clamp-2 leading-snug group-hover:text-emerald-600 transition">
+                                            <h3 class="font-bold text-slate-800 text-xs line-clamp-2 leading-snug group-hover:text-slate-600 transition">
                                                 {{ $gal->title }}
                                             </h3>
                                             @if($gal->caption)
@@ -168,7 +182,7 @@
                                         </div>
 
                                         <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-semibold">
-                                            <span class="text-emerald-600 font-bold"><i class="fas fa-camera mr-1"></i>Dokumentasi</span>
+                                            <span class="text-slate-600 font-bold"><i class="fas fa-camera mr-1"></i>Dokumentasi</span>
                                             <span>{{ $gal->created_at ? $gal->created_at->format('d/m/Y') : '' }}</span>
                                         </div>
                                     </div>
@@ -190,7 +204,7 @@
                         </div>
                         <h3 class="text-lg font-bold text-slate-800 mb-1">Foto Belum Tersedia</h3>
                         <p class="text-sm text-slate-500 mb-4">Belum ada foto kegiatan dalam kategori album ini.</p>
-                        <a href="{{ route('galeri') }}" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition inline-block shadow-sm">
+                        <a href="{{ route('galeri') }}" class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white font-bold text-xs rounded-xl transition inline-block shadow-sm">
                             Lihat Semua Foto
                         </a>
                     </div>
@@ -210,13 +224,13 @@
                                         <!-- Play Button Overlay -->
                                         <button type="button" @click="activeVideo = {{ json_encode($vid) }}; videoModalOpen = true"
                                                 class="absolute inset-0 bg-slate-950/50 flex items-center justify-center text-white transition hover:bg-slate-950/70">
-                                            <div class="w-12 h-12 rounded-full bg-emerald-600 text-slate-900 flex items-center justify-center shadow-2xl transition transform group-hover:scale-110">
+                                            <div class="w-12 h-12 rounded-full bg-slate-600 text-slate-900 flex items-center justify-center shadow-2xl transition transform group-hover:scale-110">
                                                 <i class="fas fa-play text-base pl-1"></i>
                                             </div>
                                         </button>
                                     </div>
                                     <div class="p-3.5 bg-white border-t border-slate-100 flex-1 flex flex-col justify-between">
-                                        <h3 class="font-bold text-slate-800 text-xs line-clamp-2 leading-snug group-hover:text-emerald-600 transition">
+                                        <h3 class="font-bold text-slate-800 text-xs line-clamp-2 leading-snug group-hover:text-slate-600 transition">
                                             {{ $vid->title }}
                                         </h3>
                                         <div class="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-semibold">
@@ -263,7 +277,7 @@
             {{-- Modal Header --}}
             <div class="flex items-center justify-between p-4 bg-slate-950 border-b border-slate-800 shrink-0">
                 <div class="flex items-center gap-2">
-                    <span class="bg-emerald-600 text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md"
+                    <span class="bg-slate-600 text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md"
                           x-text="activeAlbum?.category || 'KEGIATAN'"></span>
                     <span class="text-slate-400 text-xs font-bold">
                         Foto <span x-text="currentIndex + 1"></span> dari <span x-text="activeAlbum?.images?.length || 1"></span>
@@ -278,7 +292,7 @@
             {{-- Modal Image Viewport (Kunci Tinggi Tetap: h-72 sm:h-96) --}}
             <div class="relative bg-black h-72 sm:h-96 flex items-center justify-center overflow-hidden w-full shrink-0">
                 <!-- Navigasi Kiri -->
-                <button type="button" @click="prevPhoto()" x-show="activeAlbum?.images?.length > 1" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-slate-950/70 hover:bg-emerald-600 text-white transition flex items-center justify-center z-20 focus:outline-none shadow-md">
+                <button type="button" @click="prevPhoto()" x-show="activeAlbum?.images?.length > 1" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-slate-950/70 hover:bg-slate-600 text-white transition flex items-center justify-center z-20 focus:outline-none shadow-md">
                     <i class="fas fa-chevron-left text-sm"></i>
                 </button>
 
@@ -286,7 +300,7 @@
                 <img :src="activeAlbum?.images[currentIndex]?.url" :alt="activeAlbum?.title" class="w-full h-full object-contain transition duration-300">
 
                 <!-- Navigasi Kanan -->
-                <button type="button" @click="nextPhoto()" x-show="activeAlbum?.images?.length > 1" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-slate-950/70 hover:bg-emerald-600 text-white transition flex items-center justify-center z-20 focus:outline-none shadow-md">
+                <button type="button" @click="nextPhoto()" x-show="activeAlbum?.images?.length > 1" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-slate-950/70 hover:bg-slate-600 text-white transition flex items-center justify-center z-20 focus:outline-none shadow-md">
                     <i class="fas fa-chevron-right text-sm"></i>
                 </button>
             </div>
@@ -303,14 +317,14 @@
                         <template x-for="(img, idx) in activeAlbum?.images" :key="idx">
                             <button @click="currentIndex = idx" 
                                     class="w-10 h-10 shrink-0 rounded-lg overflow-hidden border-2 transition"
-                                    :class="currentIndex === idx ? 'border-emerald-500 opacity-100' : 'border-transparent opacity-50 hover:opacity-100'">
+                                    :class="currentIndex === idx ? 'border-slate-500 opacity-100' : 'border-transparent opacity-50 hover:opacity-100'">
                                 <img :src="img.url" class="w-full h-full object-cover">
                             </button>
                         </template>
                     </div>
                     
                     <a :href="activeAlbum?.images[currentIndex]?.url || '#'" download target="_blank"
-                       class="px-4 py-2 shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition">
+                       class="px-4 py-2 shrink-0 bg-slate-600 hover:bg-slate-700 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition">
                         <i class="fas fa-download"></i>
                         <span>Unduh Foto</span>
                     </a>
@@ -349,7 +363,7 @@
             <div class="relative bg-black h-72 sm:h-96 flex items-center justify-center overflow-hidden w-full shrink-0">
                 <template x-if="videoModalOpen && activeVideo">
                     <iframe class="w-full h-full border-0"
-                            :src="'https://www.youtube.com/embed/' + (activeVideo.youtube_id || activeVideo.id) + '?autoplay=1'"
+                            :src="getVideoEmbed(activeVideo)"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen></iframe>
                 </template>
@@ -362,7 +376,7 @@
                     <p class="text-xs text-slate-400 line-clamp-2 mt-1" x-text="activeVideo ? (activeVideo.date || (activeVideo.created_at ? activeVideo.created_at : '')) : ''"></p>
                 </div>
                 <div class="flex justify-end mt-2">
-                    <a :href="activeVideo ? ('https://www.youtube.com/watch?v=' + (activeVideo.youtube_id || activeVideo.id)) : '#'" 
+                    <a :href="getVideoWatchUrl(activeVideo)" 
                        target="_blank"
                        class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl flex items-center gap-2 transition">
                         <i class="fab fa-youtube"></i>

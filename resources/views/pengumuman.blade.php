@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pengumuman Publik - ' . ($villageProfile['village_name'] ?? 'Kelurahan Patokan'))
+@section('title', 'Pengumuman Publik - ' . ($villageProfile['village_name'] ?? 'Kelurahan Semampir'))
 
 @section('content')
 
@@ -14,7 +14,7 @@
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
                 <h1 class="text-xl sm:text-2xl font-black text-slate-900 mb-1">Pengumuman & Informasi Publik</h1>
-                <p class="text-sm text-slate-500">Pusat informasi, peringatan, dan pengumuman resmi terbaru dari Kelurahan Patokan.</p>
+                <p class="text-sm text-slate-500">Pusat informasi, peringatan, dan pengumuman resmi terbaru dari Kelurahan Semampir.</p>
             </div>
             <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-bold text-sm transition-all shadow-sm shrink-0">
                 <i class="fas fa-arrow-left text-slate-400"></i>
@@ -28,13 +28,13 @@
             {{-- Filter Pill Header Bar --}}
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex items-center gap-2 overflow-x-auto no-scrollbar">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1.5">
-                    <i class="fas fa-filter text-emerald-600"></i> Kategori:
+                    <i class="fas fa-filter text-slate-600"></i> Kategori:
                 </span>
 
                 {{-- Semua Pengumuman --}}
                 <a href="{{ route('pengumuman') }}"
                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0
-                          {{ !request('kategori') ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-600 bg-slate-100 hover:bg-slate-200' }}">
+                          {{ !request('kategori') ? 'bg-slate-600 text-white shadow-md' : 'text-slate-600 bg-slate-100 hover:bg-slate-200' }}">
                     <span>Semua Pengumuman</span>
                     <span class="px-1.5 py-0.5 rounded text-[10px] {{ !request('kategori') ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600' }}">
                         {{ $announcements->total() }}
@@ -48,7 +48,7 @@
                     @endphp
                     <a href="{{ route('pengumuman', ['kategori' => $cat->name]) }}"
                        class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0
-                              {{ $isActive ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-600 bg-slate-200 hover:bg-slate-300' }}">
+                              {{ $isActive ? 'bg-slate-600 text-white shadow-md' : 'text-slate-600 bg-slate-200 hover:bg-slate-300' }}">
                         <span>{{ $cat->name }}</span>
                     </a>
                 @endforeach

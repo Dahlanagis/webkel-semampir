@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Kemitraan Instansi')
-@section('header-title', 'Sinergi Instansi & Kemitraan')
-@section('header-subtitle', 'Kelola daftar tautan instansi terkait beserta logonya di beranda.')
+@section('title', 'Link Terkait')
+@section('header-title', 'Kelola Link Terkait')
+@section('header-subtitle', 'Kelola daftar tautan instansi / OPD terkait beserta logonya di beranda.')
 
 @section('content')
 <div class="space-y-6" x-data="{
@@ -46,16 +46,16 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 border-b border-slate-200">
             <div>
                 <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fas fa-handshake text-emerald-700 shrink-0"></i>
-                    <span>Daftar Mitra Instansi</span>
+                    <i class="fas fa-link text-emerald-700 shrink-0"></i>
+                    <span>Daftar Link Terkait</span>
                 </h2>
-                <p class="text-xs text-slate-500 mt-0.5">Daftar logo dan tautan yang tampil di bagian bawah beranda publik.</p>
+                <p class="text-xs text-slate-500 mt-0.5">Daftar logo dan tautan instansi / OPD yang tampil di bagian bawah beranda publik.</p>
             </div>
 
             <button @click="createModalOpen = true" 
                class="px-4 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs rounded-xl shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0">
                 <i class="fas fa-plus"></i>
-                <span>Tambah Mitra</span>
+                <span>Tambah Link Terkait</span>
             </button>
         </div>
 
@@ -64,7 +64,7 @@
                 <thead>
                     <tr class="bg-slate-100/80 border-b border-slate-200 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                         <th class="py-3.5 px-4 sm:px-5">Logo</th>
-                        <th class="py-3.5 px-4 sm:px-5">Nama Mitra</th>
+                        <th class="py-3.5 px-4 sm:px-5">Nama Link / Instansi</th>
                         <th class="py-3.5 px-4 sm:px-5">Tautan (URL)</th>
                         <th class="py-3.5 px-4 sm:px-5 text-right">Aksi</th>
                     </tr>
@@ -79,7 +79,7 @@
                                     </div>
                                 @else
                                     <div class="w-16 h-12 bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-center text-slate-400">
-                                        <i class="fas fa-image"></i>
+                                        <i class="fas fa-link"></i>
                                     </div>
                                 @endif
                             </td>
@@ -103,7 +103,7 @@
                                     Edit
                                 </button>
 
-                                <form action="{{ route('admin.beranda.kemitraan.destroy', $index) }}" method="POST" class="inline" onsubmit="return confirm('Hapus mitra ini?')">
+                                <form action="{{ route('admin.beranda.kemitraan.destroy', $index) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus link terkait ini?')" data-title="{{ $partner['name'] }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-[11px] rounded-lg transition border border-rose-200">
@@ -116,9 +116,9 @@
                         <tr>
                             <td colspan="4" class="py-12 text-center text-slate-400">
                                 <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm border border-slate-200">
-                                    <i class="fas fa-handshake text-xl text-slate-400"></i>
+                                    <i class="fas fa-link text-xl text-slate-400"></i>
                                 </div>
-                                <p class="font-semibold text-slate-600">Belum ada mitra instansi yang ditambahkan.</p>
+                                <p class="font-semibold text-slate-600">Belum ada link terkait yang ditambahkan.</p>
                             </td>
                         </tr>
                     @endforelse
@@ -128,7 +128,7 @@
     </div>
 
 
-    <!-- MODAL 1: TAMBAH MITRA -->
+    <!-- MODAL 1: TAMBAH LINK TERKAIT -->
     <div x-show="createModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen p-4 sm:p-6">
             <div  class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
@@ -140,7 +140,7 @@
                     <div class="bg-white px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-full bg-emerald-600 inline-block"></span>
-                            <h3 class="text-base font-bold text-slate-800">Tambah Mitra Baru</h3>
+                            <h3 class="text-base font-bold text-slate-800">Tambah Link Terkait Baru</h3>
                         </div>
                         <button type="button" @click="createModalOpen = false" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -150,22 +150,22 @@
                     <div class="p-6 space-y-4 text-xs text-slate-700 max-h-[80vh] overflow-y-auto">
                         
                         <div>
-                            <label class="block font-bold text-slate-800 mb-1">Nama Instansi / Mitra <span class="text-rose-500">*</span></label>
-                            <input type="text" name="partner_name" required placeholder="Misal: Kementerian Dalam Negeri" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                            <label class="block font-bold text-slate-800 mb-1">Nama Link / Instansi Terkait <span class="text-rose-500">*</span></label>
+                            <input type="text" name="partner_name" required placeholder="Misal: Diskominfo Kabupaten Probolinggo" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
                         </div>
 
                         <div>
-                            <label class="block font-bold text-slate-800 mb-1">Tautan / URL</label>
-                            <input type="url" name="partner_url" placeholder="https://..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                            <label class="block font-bold text-slate-800 mb-1">Tautan / URL <span class="text-rose-500">*</span></label>
+                            <input type="url" name="partner_url" required placeholder="https://..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
                         </div>
 
                         <div>
                             <label class="block font-bold text-slate-800 mb-1">Deskripsi Singkat</label>
-                            <input type="text" name="partner_desc" placeholder="Penjelasan singkat kemitraan..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                            <input type="text" name="partner_desc" placeholder="Penjelasan singkat instansi / portal terkait..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
                         </div>
 
                         <div x-data="{ selectedFileName: null }">
-                            <label class="block font-bold text-slate-800 mb-1">Logo Mitra <span class="text-rose-500">*</span></label>
+                            <label class="block font-bold text-slate-800 mb-1">Logo / Lambang <span class="text-rose-500">*</span></label>
                             <input type="file" name="partner_logo" accept="image/png, image/jpeg, image/webp" required
                                 @change="selectedFileName = $event.target.files[0] ? $event.target.files[0].name : null"
                                 class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
@@ -182,7 +182,7 @@
                     <!-- Footer Buttons -->
                     <div class="bg-slate-50 px-6 py-4 flex items-center justify-end gap-3 border-t border-slate-100">
                         <button type="button" @click="createModalOpen = false" class="px-4 py-2 text-slate-600 font-bold rounded-xl hover:bg-slate-200">Batal</button>
-                        <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl shadow-md transition">Simpan Mitra</button>
+                        <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl shadow-md transition">Simpan Link Terkait</button>
                     </div>
                 </form>
             </div>
@@ -190,7 +190,7 @@
     </div>
 
 
-    <!-- MODAL 2: EDIT MITRA -->
+    <!-- MODAL 2: EDIT LINK TERKAIT -->
     <div x-show="editModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen p-4 sm:p-6">
             <div  class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
@@ -204,7 +204,7 @@
                         <div class="bg-white px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-full bg-emerald-600 inline-block"></span>
-                                <h3 class="text-base font-bold text-slate-800">Edit Mitra Instansi</h3>
+                                <h3 class="text-base font-bold text-slate-800">Edit Link Terkait</h3>
                             </div>
                             <button type="button" @click="editModalOpen = false" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -214,13 +214,13 @@
                         <div class="p-6 space-y-4 text-xs text-slate-700 max-h-[80vh] overflow-y-auto">
                             
                             <div>
-                                <label class="block font-bold text-slate-800 mb-1">Nama Instansi / Mitra <span class="text-rose-500">*</span></label>
+                                <label class="block font-bold text-slate-800 mb-1">Nama Link / Instansi Terkait <span class="text-rose-500">*</span></label>
                                 <input type="text" name="partner_name" x-model="selectedPartner.name" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
                             </div>
 
                             <div>
-                                <label class="block font-bold text-slate-800 mb-1">Tautan / URL</label>
-                                <input type="url" name="partner_url" x-model="selectedPartner.url" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                <label class="block font-bold text-slate-800 mb-1">Tautan / URL <span class="text-rose-500">*</span></label>
+                                <input type="url" name="partner_url" x-model="selectedPartner.url" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
                             </div>
 
                             <div>

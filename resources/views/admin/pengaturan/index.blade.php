@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Pengaturan Sistem')
-@section('header-title', 'Pengaturan Sistem SIMPEL KELURAHAN')
-@section('header-subtitle', 'Konfigurasi umum aplikasi, media sosial, dan parameter sistem')
+@section('title', 'Pengaturan Web')
+@section('header-title', 'Pengaturan Website Semampir')
+@section('header-subtitle', 'Konfigurasi umum portal, media sosial, dan identitas kelurahan')
 
 @section('content')
 <div class="space-y-6">
@@ -26,7 +26,7 @@
                 <div x-data="{ previewLogo: null }">
                     <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1.5">Logo Aplikasi (Kelurahan)</label>
                     <input type="file" name="app_logo" accept="image/*" 
-                           @change="const file = $event.target.files[0]; if(file) { $dispatch('open-cropper', { file: file, aspectRatio: 1, onCrop: (blob, url) => { let dt = new DataTransfer(); dt.items.add(new File([blob], file.name, {type: file.type})); $event.target.files = dt.files; previewLogo = url; validateFileInput($event.target, 2); } }) }"
+                           @change="const file = $event.target.files[0]; if(file) { $dispatch('open-cropper', { file: file, aspectRatio: NaN, onCrop: (blob, url) => { let dt = new DataTransfer(); dt.items.add(new File([blob], file.name, {type: file.type})); $event.target.files = dt.files; previewLogo = url; validateFileInput($event.target, 2); } }) }"
                            class="w-full p-2 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-sky-600 text-xs">
                     
                     <div class="mt-2.5 p-2.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-3">

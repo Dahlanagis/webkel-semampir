@@ -11,14 +11,14 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
         <div>
             <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                <svg class="w-5 h-5 text-emerald-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                <svg class="w-5 h-5 text-slate-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
                 <span>Daftar Artikel & Kabar Kelurahan</span>
             </h2>
             <p class="text-xs text-slate-500 mt-0.5">Kelola konten informasi publik yang ditayangkan di portal masyarakat</p>
         </div>
 
         <button @click="createModalOpen = true" 
-           class="px-4 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs rounded-xl shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0">
+           class="px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs rounded-xl shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             <span>Tulis Berita Baru</span>
         </button>
@@ -32,12 +32,12 @@
                        name="q" 
                        value="{{ request('q') }}"
                        placeholder="Cari judul berita..."
-                       class="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 shadow-sm">
+                       class="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-600 shadow-sm">
                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
 
             <div class="flex items-center gap-2.5 w-full sm:w-auto">
-                <select name="category_id" onchange="this.form.submit()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600 shadow-sm font-medium text-slate-700">
+                <select name="category_id" onchange="this.form.submit()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-slate-600 shadow-sm font-medium text-slate-700">
                     <option value="all" {{ request('category_id') == 'all' ? 'selected' : '' }}>Semua Kategori</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
@@ -46,7 +46,7 @@
                     @endforeach
                 </select>
 
-                <button type="submit" class="px-3.5 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs rounded-xl shadow transition whitespace-nowrap">
+                <button type="submit" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow transition whitespace-nowrap">
                     Filter
                 </button>
             </div>
@@ -65,6 +65,7 @@
                         <th class="py-3.5 px-4 sm:px-5">Kategori</th>
                         <th class="py-3.5 px-4 sm:px-5 text-center">Tayangan</th>
                         <th class="py-3.5 px-4 sm:px-5 text-center">Tgl Publikasi</th>
+                        <th class="py-3.5 px-4 sm:px-5 text-center">Status</th>
                         <th class="py-3.5 px-4 sm:px-5 text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -107,7 +108,7 @@
 
                             <!-- Kategori -->
                             <td class="py-3.5 px-4 sm:px-5 whitespace-nowrap">
-                                <span class="px-2.5 py-1 text-[10px] font-bold bg-emerald-50 text-emerald-900 rounded-lg border border-emerald-200">
+                                <span class="px-2.5 py-1 text-[10px] font-bold bg-slate-50 text-slate-900 rounded-lg border border-slate-200">
                                     {{ $post->category->name ?? 'Berita Umum' }}
                                 </span>
                             </td>
@@ -120,6 +121,21 @@
                             <!-- Tanggal Publikasi -->
                             <td class="py-3.5 px-4 sm:px-5 text-center text-slate-600 whitespace-nowrap">
                                 {{ $post->published_at ? $post->published_at->translatedFormat('d M Y') : '-' }}
+                            </td>
+
+                            <!-- Status Publikasi -->
+                            <td class="py-3.5 px-4 sm:px-5 text-center whitespace-nowrap">
+                                @if($post->is_active)
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        <span>Terpublikasi</span>
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                                        <span>Draf</span>
+                                    </span>
+                                @endif
                             </td>
 
                             <!-- Actions -->
@@ -174,12 +190,26 @@
             <div x-show="createModalOpen"  class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"></div>
 
             <div x-show="createModalOpen" class="relative inline-block bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all max-w-4xl w-full border border-slate-200 my-8">
-                <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data"
+                      @submit="
+                          if(window.jQuery && $.fn.summernote){
+                              const $txt = $($el).find('textarea[name=content]');
+                              if($txt.length){ $txt.val($txt.summernote('code')); }
+                          }
+                          if(window.tinymce){ tinymce.triggerSave(); }
+                          const content = $el.querySelector('textarea[name=content]')?.value || '';
+                          const textOnly = content.replace(/<[^>]*>/g, '').trim();
+                          if(!textOnly) {
+                              $event.preventDefault();
+                              alert('Isi berita & artikel wajib diisi terlebih dahulu.');
+                              return false;
+                          }
+                      ">
                     @csrf
                     
-                    <div class="bg-gradient-to-r from-emerald-950 to-slate-900 px-6 py-4 text-white flex items-center justify-between">
+                    <div class="bg-gradient-to-r from-slate-950 to-slate-900 px-6 py-4 text-white flex items-center justify-between">
                         <h3 class="text-base font-bold">Tulis Berita & Artikel Baru</h3>
-                        <button type="button" @click="createModalOpen = false" class="text-emerald-300 hover:text-white">
+                        <button type="button" @click="createModalOpen = false" class="text-slate-300 hover:text-white">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
@@ -188,19 +218,39 @@
                         <!-- Judul Berita -->
                         <div>
                             <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1.5">Judul Berita / Artikel *</label>
-                            <input type="text" name="title" required placeholder="Contoh: Pelaksanaan Kerja Bakti Massal" class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 shadow-sm font-semibold">
+                            <input type="text" name="title" required placeholder="Contoh: Pelaksanaan Kerja Bakti Massal" class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-600 focus:border-slate-600 shadow-sm font-semibold">
                         </div>
 
                         <!-- Grid Kategori & Foto -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1.5">Kategori Berita *</label>
-                                <select name="category_id" required class="w-full text-xs p-3 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-600 shadow-sm font-medium">
-                                    <option value="">-- Pilih Kategori --</option>
-                                    @foreach($categories as $cat)
-                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                    @endforeach
-                                </select>
+                            <div x-data="{ isManualCat: false, manualCatVal: '' }">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="block font-bold text-slate-700 uppercase tracking-wider">Kategori Berita *</label>
+                                    <button type="button" @click="isManualCat = !isManualCat; if(!isManualCat) manualCatVal = ''" class="text-[11px] font-bold text-emerald-600 hover:text-emerald-700 transition flex items-center gap-1">
+                                        <span x-text="isManualCat ? '← Pilih Kategori' : '+ Ketik Manual'"></span>
+                                    </button>
+                                </div>
+                                <div x-show="!isManualCat">
+                                    <select name="category_id" 
+                                            :required="!isManualCat"
+                                            @change="if($event.target.value === 'manual'){ isManualCat = true; $event.target.value = ''; }" 
+                                            class="w-full text-xs p-3 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-slate-600 shadow-sm font-medium">
+                                        <option value="">-- Pilih Kategori --</option>
+                                        @foreach($categories as $cat)
+                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                        @endforeach
+                                        <option value="manual" class="font-bold text-emerald-600">+ Ketik Kategori Baru (Manual)...</option>
+                                    </select>
+                                </div>
+                                <div x-show="isManualCat" x-cloak>
+                                    <div class="relative">
+                                        <input type="text" name="custom_category" x-model="manualCatVal" :required="isManualCat" placeholder="Ketik nama kategori baru..." class="w-full text-xs p-3 pr-8 border border-emerald-400 bg-emerald-50/40 rounded-xl focus:ring-2 focus:ring-emerald-500 shadow-sm font-semibold text-slate-800">
+                                        <button type="button" @click="isManualCat = false; manualCatVal = ''" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs" title="Batal input manual">
+                                            ✕
+                                        </button>
+                                    </div>
+                                    <p class="text-[10px] text-emerald-600 mt-1 font-medium">✨ Kategori baru akan otomatis dibuat dan tersimpan.</p>
+                                </div>
                             </div>
 
                             <div x-data="{ imageMode: 'file', livePreview: null }">
@@ -209,25 +259,25 @@
                                 <div class="flex items-center p-1 bg-slate-100 rounded-lg w-max mb-3 border border-slate-200">
                                     <label class="cursor-pointer">
                                         <input type="radio" name="image_mode" value="file" x-model="imageMode" class="sr-only peer">
-                                        <div class="px-3 py-1.5 text-[11px] font-bold text-slate-500 rounded-md peer-checked:bg-white peer-checked:text-emerald-700 peer-checked:shadow-sm transition">Upload File</div>
+                                        <div class="px-3 py-1.5 text-[11px] font-bold text-slate-500 rounded-md peer-checked:bg-white peer-checked:text-slate-700 peer-checked:shadow-sm transition">Upload File</div>
                                     </label>
                                     <label class="cursor-pointer">
                                         <input type="radio" name="image_mode" value="url" x-model="imageMode" class="sr-only peer">
-                                        <div class="px-3 py-1.5 text-[11px] font-bold text-slate-500 rounded-md peer-checked:bg-white peer-checked:text-emerald-700 peer-checked:shadow-sm transition">Gunakan Link URL</div>
+                                        <div class="px-3 py-1.5 text-[11px] font-bold text-slate-500 rounded-md peer-checked:bg-white peer-checked:text-slate-700 peer-checked:shadow-sm transition">Gunakan Link URL</div>
                                     </label>
                                 </div>
 
                                 <div x-show="imageMode === 'file'">
-                                    <input type="file" name="image_file" accept="image/jpeg, image/png, image/webp" @change="const file = $event.target.files[0]; if(file) { $dispatch('open-cropper', { file: file, aspectRatio: 16/9, onCrop: (blob, url) => { let dt = new DataTransfer(); dt.items.add(new File([blob], file.name, {type: file.type})); $event.target.files = dt.files; livePreview = url; } }) }" class="w-full text-xs p-2 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-600">
+                                    <input type="file" name="image_file" accept="image/jpeg, image/png, image/webp" @change="const file = $event.target.files[0]; if(file) { $dispatch('open-cropper', { file: file, aspectRatio: 16/9, onCrop: (blob, url) => { let dt = new DataTransfer(); dt.items.add(new File([blob], file.name, {type: file.type})); $event.target.files = dt.files; livePreview = url; } }) }" class="w-full text-xs p-2 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-slate-600">
                                 </div>
 
                                 <div x-show="imageMode === 'url'" x-cloak>
-                                    <input type="url" name="image_url" placeholder="https://contoh.com/gambar.jpg" @input="livePreview = $event.target.value" class="w-full text-xs p-3 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-600 font-mono">
+                                    <input type="url" name="image_url" placeholder="https://contoh.com/gambar.jpg" @input="livePreview = $event.target.value" class="w-full text-xs p-3 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-slate-600 font-mono">
                                 </div>
 
                                 <template x-if="livePreview">
                                     <div class="mt-2.5 p-2.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-3">
-                                        <img :src="livePreview" class="w-14 h-14 rounded-xl object-cover border-2 border-emerald-500 shadow-sm shrink-0" onerror="this.src='https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=500&q=80'">
+                                        <img :src="livePreview" class="w-14 h-14 rounded-xl object-cover border-2 border-slate-500 shadow-sm shrink-0" onerror="this.src='https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=500&q=80'">
                                     </div>
                                 </template>
                             </div>
@@ -236,46 +286,59 @@
                         <!-- Excerpt -->
                         <div>
                             <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1.5">Kutipan Ringkas (Excerpt)</label>
-                            <textarea name="excerpt" rows="2" placeholder="Ringkasan singkat berita..." class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 shadow-sm"></textarea>
+                            <textarea name="excerpt" rows="2" placeholder="Ringkasan singkat berita..." class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-600 focus:border-slate-600 shadow-sm"></textarea>
                         </div>
 
                         <!-- Content -->
                         <div>
                             <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1.5">Isi Lengkap Berita & Artikel *</label>
-                            <textarea name="content" rows="10" required placeholder="Tuliskan berita lengkap di sini..." 
+                            <textarea name="content" rows="10" placeholder="Ketik konten di sini (bisa sisipkan gambar/tabel)..." 
                             x-init="
-                                tinymce.init({
-                                    target: $el,
-                                    plugins: 'lists link image media table code help fullscreen wordcount',
-                                    toolbar: 'styles | bold underline removeformat | forecolor backcolor | bullist numlist align | table | link image media | fullscreen code help',
-                                    menubar: false,
+                                window.initSimpelSummernote($el, {
                                     height: 350,
-                                    setup: function (editor) {
-                                        editor.on('init', function () {
-                                            var container = editor.getContainer();
-                                            container.style.border = '2px solid #6ee7b7';
-                                            container.style.borderRadius = '0.5rem';
-                                            container.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
-                                            container.style.overflow = 'hidden';
-                                        });
-                                        editor.on('change', function () {
-                                            editor.save();
-                                        });
-                                    }
+                                    placeholder: 'Ketik konten di sini (bisa sisipkan gambar/tabel)...'
                                 });
                             "
-                            class="w-full text-xs p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 shadow-sm leading-relaxed font-sans"></textarea>
+                            class="w-full text-xs p-4 border border-slate-300 rounded-xl leading-relaxed font-sans"></textarea>
+                        </div>
+
+                        <!-- Status Publikasi (Draf vs Publikasi) -->
+                        <div class="space-y-1.5" x-data="{ pubStatus: '1' }">
+                            <label class="block font-bold text-slate-700 text-xs uppercase tracking-wider">Status Publikasi</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label :class="pubStatus === '1' ? 'border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition select-none">
+                                    <input type="radio" name="is_active" value="1" x-model="pubStatus" class="text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                                    <div>
+                                        <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                                            Publikasikan
+                                        </div>
+                                        <div class="text-[10px] text-slate-500">Tayang langsung ke publik</div>
+                                    </div>
+                                </label>
+
+                                <label :class="pubStatus === '0' ? 'border-amber-500 bg-amber-50/60 ring-1 ring-amber-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition select-none">
+                                    <input type="radio" name="is_active" value="0" x-model="pubStatus" class="text-amber-600 focus:ring-amber-500 w-4 h-4">
+                                    <div>
+                                        <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+                                            <span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
+                                            Simpan Draf
+                                        </div>
+                                        <div class="text-[10px] text-slate-500">Disimpan sebagai draf</div>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
 
                         <!-- Flags -->
-                        <div class="flex items-center gap-6 pt-2">
+                        <div class="flex items-center gap-6 pt-1">
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="is_featured" value="1" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                                <input type="checkbox" name="is_featured" value="1" class="rounded border-slate-300 text-slate-600 focus:ring-slate-500">
                                 <span class="font-bold text-slate-800">Berita Utama (Featured)</span>
                             </label>
 
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" name="is_slider" value="1" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                                <input type="checkbox" name="is_slider" value="1" class="rounded border-slate-300 text-slate-600 focus:ring-slate-500">
                                 <span class="font-bold text-slate-800">Banner Slider Beranda</span>
                             </label>
                         </div>
@@ -283,7 +346,7 @@
 
                     <div class="bg-slate-50 px-6 py-4 flex items-center justify-end gap-3 border-t border-slate-200">
                         <button type="button" @click="createModalOpen = false" class="px-4 py-2 text-slate-600 font-semibold rounded-xl hover:bg-slate-200">Batal</button>
-                        <button type="submit" class="px-6 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-xl shadow transition">Publikasikan Berita</button>
+                        <button type="submit" class="px-6 py-2 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-xl shadow transition">Publikasikan Berita</button>
                     </div>
                 </form>
             </div>
@@ -297,7 +360,21 @@
 
             <div x-show="editModalOpen" class="relative inline-block bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all max-w-4xl w-full border border-slate-200 my-8">
                 <template x-if="selectedPost">
-                    <form :action="'{{ url('admin/berita') }}/' + selectedPost.id" method="POST" enctype="multipart/form-data">
+                    <form :action="'{{ url('admin/berita') }}/' + selectedPost.id" method="POST" enctype="multipart/form-data"
+                          @submit="
+                              if(window.jQuery && $.fn.summernote){
+                                  const $txt = $($el).find('textarea[name=content]');
+                                  if($txt.length){ $txt.val($txt.summernote('code')); }
+                              }
+                              if(window.tinymce){ tinymce.triggerSave(); }
+                              const content = $el.querySelector('textarea[name=content]')?.value || '';
+                              const textOnly = content.replace(/<[^>]*>/g, '').trim();
+                              if(!textOnly) {
+                                  $event.preventDefault();
+                                  alert('Isi berita & artikel wajib diisi.');
+                                  return false;
+                              }
+                          ">
                         @csrf
                         @method('PUT')
                         
@@ -317,13 +394,35 @@
 
                             <!-- Grid Kategori & Foto -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1.5">Kategori Berita *</label>
-                                    <select name="category_id" x-model="selectedPost.category_id" required class="w-full text-xs p-3 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-sky-600 font-medium">
-                                        @foreach($categories as $cat)
-                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                        @endforeach
-                                    </select>
+                                <div x-data="{ isManualCatEdit: false, manualCatEditVal: '' }" x-init="$watch('selectedPost', () => { isManualCatEdit = false; manualCatEditVal = ''; })">
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <label class="block font-bold text-slate-700 uppercase tracking-wider">Kategori Berita *</label>
+                                        <button type="button" @click="isManualCatEdit = !isManualCatEdit; if(!isManualCatEdit) manualCatEditVal = ''" class="text-[11px] font-bold text-sky-600 hover:text-sky-700 transition flex items-center gap-1">
+                                            <span x-text="isManualCatEdit ? '← Pilih Kategori' : '+ Ketik Manual'"></span>
+                                        </button>
+                                    </div>
+                                    <div x-show="!isManualCatEdit">
+                                        <select name="category_id" 
+                                                x-model="selectedPost.category_id" 
+                                                :required="!isManualCatEdit"
+                                                @change="if($event.target.value === 'manual'){ isManualCatEdit = true; }" 
+                                                class="w-full text-xs p-3 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-sky-600 font-medium">
+                                            <option value="">-- Pilih Kategori --</option>
+                                            @foreach($categories as $cat)
+                                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                            @endforeach
+                                            <option value="manual" class="font-bold text-sky-600">+ Ketik Kategori Baru (Manual)...</option>
+                                        </select>
+                                    </div>
+                                    <div x-show="isManualCatEdit" x-cloak>
+                                        <div class="relative">
+                                            <input type="text" name="custom_category" x-model="manualCatEditVal" :required="isManualCatEdit" placeholder="Ketik nama kategori baru..." class="w-full text-xs p-3 pr-8 border border-sky-400 bg-sky-50/40 rounded-xl focus:ring-2 focus:ring-sky-500 shadow-sm font-semibold text-slate-800">
+                                            <button type="button" @click="isManualCatEdit = false; manualCatEditVal = ''" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs" title="Batal input manual">
+                                                ✕
+                                            </button>
+                                        </div>
+                                        <p class="text-[10px] text-sky-600 mt-1 font-medium">✨ Kategori baru akan otomatis dibuat dan tersimpan.</p>
+                                    </div>
                                 </div>
 
                                 <div x-data="{ imageMode: 'file', localLivePreview: selectedPost.preview_url }" x-init="$watch('selectedPost', value => { if(value) localLivePreview = value.preview_url })">
@@ -332,11 +431,11 @@
                                     <div class="flex items-center p-1 bg-slate-100 rounded-lg w-max mb-3 border border-slate-200">
                                         <label class="cursor-pointer">
                                             <input type="radio" name="image_mode" value="file" x-model="imageMode" class="sr-only peer">
-                                            <div class="px-3 py-1.5 text-[11px] font-bold text-slate-500 rounded-md peer-checked:bg-white peer-checked:text-emerald-700 peer-checked:shadow-sm transition">Upload File</div>
+                                            <div class="px-3 py-1.5 text-[11px] font-bold text-slate-500 rounded-md peer-checked:bg-white peer-checked:text-slate-700 peer-checked:shadow-sm transition">Upload File</div>
                                         </label>
                                         <label class="cursor-pointer">
                                             <input type="radio" name="image_mode" value="url" x-model="imageMode" class="sr-only peer">
-                                            <div class="px-3 py-1.5 text-[11px] font-bold text-slate-500 rounded-md peer-checked:bg-white peer-checked:text-emerald-700 peer-checked:shadow-sm transition">Gunakan Link URL</div>
+                                            <div class="px-3 py-1.5 text-[11px] font-bold text-slate-500 rounded-md peer-checked:bg-white peer-checked:text-slate-700 peer-checked:shadow-sm transition">Gunakan Link URL</div>
                                         </label>
                                     </div>
 
@@ -351,7 +450,7 @@
 
                                     <div class="mt-2.5 p-2.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-3">
                                         <template x-if="localLivePreview">
-                                            <img :src="localLivePreview" class="w-14 h-14 rounded-xl object-cover border-2 border-emerald-500 shadow-sm shrink-0" onerror="this.src='https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=500&q=80'">
+                                            <img :src="localLivePreview" class="w-14 h-14 rounded-xl object-cover border-2 border-slate-500 shadow-sm shrink-0" onerror="this.src='https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=500&q=80'">
                                         </template>
                                         <template x-if="!localLivePreview">
                                             <div class="w-14 h-14 rounded-xl bg-slate-200 border-2 border-slate-300 flex items-center justify-center shrink-0">
@@ -371,43 +470,60 @@
                             <!-- Content -->
                             <div>
                                 <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1.5">Isi Lengkap Berita & Artikel *</label>
-                                <textarea name="content" x-model="selectedPost.content" rows="10" required 
+                                <textarea name="content" x-model="selectedPost.content" rows="10" 
                                 x-init="
                                     setTimeout(() => {
-                                        tinymce.init({
-                                            target: $el,
-                                            plugins: 'lists link image media table code help fullscreen wordcount',
-                                            toolbar: 'styles | bold underline removeformat | forecolor backcolor | bullist numlist align | table | link image media | fullscreen code help',
-                                            menubar: false,
+                                        window.initSimpelSummernote($el, {
                                             height: 350,
-                                            setup: function (editor) {
-                                                editor.on('init', function () {
-                                                    var container = editor.getContainer();
-                                                    container.style.border = '2px solid #0284c7'; // sky-600 for edit
-                                                    container.style.borderRadius = '0.5rem';
-                                                    container.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
-                                                    container.style.overflow = 'hidden';
-                                                });
-                                                editor.on('change', function () {
-                                                    editor.save();
-                                                    $el.dispatchEvent(new Event('input'));
-                                                });
+                                            placeholder: 'Ketik konten di sini (bisa sisipkan gambar/tabel)...',
+                                            onInit: function($ed) {
+                                                if(selectedPost && selectedPost.content) {
+                                                    $ed.summernote('code', selectedPost.content);
+                                                }
                                             }
                                         });
                                     }, 50);
                                 "
-                                class="w-full text-xs p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-600 shadow-sm leading-relaxed font-sans"></textarea>
+                                class="w-full text-xs p-4 border border-slate-300 rounded-xl leading-relaxed font-sans"></textarea>
+                            </div>
+
+                            <!-- Status Publikasi (Draf vs Publikasi) -->
+                            <div class="space-y-1.5">
+                                <label class="block font-bold text-slate-700 text-xs uppercase tracking-wider">Status Publikasi</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <label :class="(selectedPost && (selectedPost.is_active == 1 || selectedPost.is_active === true)) ? 'border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition select-none">
+                                        <input type="radio" name="is_active" value="1" :checked="selectedPost && (selectedPost.is_active == 1 || selectedPost.is_active === true)" @change="selectedPost.is_active = 1" class="text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                                        <div>
+                                            <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+                                                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                                                Publikasikan
+                                            </div>
+                                            <div class="text-[10px] text-slate-500">Tayang langsung ke publik</div>
+                                        </div>
+                                    </label>
+
+                                    <label :class="(selectedPost && (selectedPost.is_active == 0 || selectedPost.is_active === false)) ? 'border-amber-500 bg-amber-50/60 ring-1 ring-amber-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition select-none">
+                                        <input type="radio" name="is_active" value="0" :checked="selectedPost && (selectedPost.is_active == 0 || selectedPost.is_active === false)" @change="selectedPost.is_active = 0" class="text-amber-600 focus:ring-amber-500 w-4 h-4">
+                                        <div>
+                                            <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+                                                <span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
+                                                Simpan Draf
+                                            </div>
+                                            <div class="text-[10px] text-slate-500">Disimpan sebagai draf</div>
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
 
                             <!-- Flags -->
-                            <div class="flex items-center gap-6 pt-2">
+                            <div class="flex items-center gap-6 pt-1">
                                 <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" name="is_featured" value="1" :checked="selectedPost.is_featured" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                                    <input type="checkbox" name="is_featured" value="1" :checked="selectedPost.is_featured" class="rounded border-slate-300 text-slate-600 focus:ring-slate-500">
                                     <span class="font-bold text-slate-800">Berita Utama (Featured)</span>
                                 </label>
 
                                 <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" name="is_slider" value="1" :checked="selectedPost.is_slider" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                                    <input type="checkbox" name="is_slider" value="1" :checked="selectedPost.is_slider" class="rounded border-slate-300 text-slate-600 focus:ring-slate-500">
                                     <span class="font-bold text-slate-800">Banner Slider Beranda</span>
                                 </label>
                             </div>
@@ -415,7 +531,7 @@
 
                         <div class="bg-slate-50 px-6 py-4 flex items-center justify-end gap-3 border-t border-slate-200">
                             <button type="button" @click="editModalOpen = false" class="px-4 py-2 text-slate-600 font-semibold rounded-xl hover:bg-slate-200">Batal</button>
-                            <button type="submit" class="px-6 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-xl shadow transition">Simpan Perubahan</button>
+                            <button type="submit" class="px-6 py-2 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-xl shadow transition">Simpan Perubahan</button>
                         </div>
                     </form>
                 </template>
@@ -424,8 +540,5 @@
     </div>
 
 </div>
-
-<!-- TinyMCE Script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
 
 @endsection

@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Lokasi Kantor - ' . ($villageProfile['village_name'] ?? 'Kelurahan Patokan'))
+@section('title', 'Lokasi Kantor - ' . ($villageProfile['village_name'] ?? 'Kelurahan Semampir'))
 
 @section('content')
 <!-- Page Header -->
-<div class="bg-emerald-900 py-16 relative overflow-hidden">
+<div class="bg-slate-900 py-16 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
         <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">Lokasi & Alamat Kantor</h1>
-        <p class="text-emerald-100 max-w-2xl mx-auto text-sm sm:text-base">Informasi alamat lengkap dan peta lokasi kantor {{ $villageProfile['village_name'] ?? 'Kelurahan Patokan' }}.</p>
+        <p class="text-slate-100 max-w-2xl mx-auto text-sm sm:text-base">Informasi alamat lengkap dan peta lokasi kantor {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}.</p>
     </div>
 </div>
 
@@ -31,8 +31,8 @@
         <!-- Right: Info Alamat (Takes 5 cols) -->
         <div class="lg:col-span-5 space-y-8">
             <div>
-                <h3 class="text-emerald-600 font-bold text-sm tracking-wider uppercase mb-2">Pusat Pelayanan Warga</h3>
-                <h2 class="text-3xl font-extrabold text-slate-900 mb-6">Kantor {{ $villageProfile['village_name'] ?? 'Kelurahan Patokan' }}</h2>
+                <h3 class="text-slate-600 font-bold text-sm tracking-wider uppercase mb-2">Pusat Pelayanan Warga</h3>
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-6">Kantor {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}</h2>
                 <p class="text-slate-500 leading-relaxed text-sm">
                     Kunjungi kantor kami pada jam operasional kerja untuk mengurus berbagai keperluan administrasi kependudukan dan layanan publik lainnya secara langsung.
                 </p>
@@ -41,18 +41,18 @@
             <div class="space-y-6">
                 <!-- Address -->
                 <div class="flex gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
+                    <div class="w-12 h-12 rounded-xl bg-slate-50 text-slate-600 flex items-center justify-center shrink-0 border border-slate-100">
                         <i class="fas fa-map-marker-alt text-xl"></i>
                     </div>
                     <div>
                         <h4 class="font-bold text-slate-900 mb-1">Alamat Lengkap</h4>
-                        <p class="text-slate-500 text-sm leading-relaxed">{{ $villageProfile['address'] ?? 'Jl. Pahlawan No. 01, Kelurahan Patokan, Kecamatan Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282' }}</p>
+                        <p class="text-slate-500 text-sm leading-relaxed">{{ $villageProfile['address'] ?? 'Jl. Pahlawan No. 01, Kelurahan Semampir, Kecamatan Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282' }}</p>
                     </div>
                 </div>
 
                 <!-- Office Hours -->
                 <div class="flex gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
+                    <div class="w-12 h-12 rounded-xl bg-slate-50 text-slate-600 flex items-center justify-center shrink-0 border border-slate-100">
                         <i class="fas fa-clock text-xl"></i>
                     </div>
                     <div>
@@ -67,20 +67,20 @@
 
                 <!-- Email -->
                 <div class="flex gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100">
+                    <div class="w-12 h-12 rounded-xl bg-slate-50 text-slate-600 flex items-center justify-center shrink-0 border border-slate-100">
                         <i class="fas fa-envelope text-xl"></i>
                     </div>
                     <div>
                         <h4 class="font-bold text-slate-900 mb-1">Email Resmi</h4>
-                        <a href="mailto:{{ $villageProfile['email'] ?? 'kelurahanpatokan@probolinggokab.go.id' }}" class="text-emerald-600 hover:text-emerald-700 font-medium text-sm transition">
-                            {{ $villageProfile['email'] ?? 'kelurahanpatokan@probolinggokab.go.id' }}
+                        <a href="mailto:{{ $villageProfile['email'] ?? 'kelurahansemampir@probolinggokab.go.id' }}" class="text-slate-600 hover:text-slate-700 font-medium text-sm transition">
+                            {{ $villageProfile['email'] ?? 'kelurahansemampir@probolinggokab.go.id' }}
                         </a>
                     </div>
                 </div>
             </div>
 
             <div class="pt-6 border-t border-slate-200 flex items-center gap-4">
-                <a href="https://maps.google.com/?q={{ urlencode($villageProfile['address'] ?? 'Kantor Kelurahan Patokan') }}" target="_blank" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-sm transition flex items-center gap-2 text-sm">
+                <a href="https://maps.google.com/?q={{ urlencode($villageProfile['address'] ?? 'Kantor Kelurahan Semampir') }}" target="_blank" class="px-6 py-3 bg-slate-600 hover:bg-slate-700 text-white font-bold rounded-xl shadow-sm transition flex items-center gap-2 text-sm">
                     <i class="fas fa-directions"></i>
                     <span>Dapatkan Petunjuk Arah</span>
                 </a>

@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Layanan WhatsApp - ' . ($villageProfile['village_name'] ?? 'Kelurahan Patokan'))
+@section('title', 'Layanan WhatsApp - ' . ($villageProfile['village_name'] ?? 'Kelurahan Semampir'))
 
 @section('content')
 <!-- Page Header -->
-<div class="bg-emerald-900 py-16 relative overflow-hidden">
+<div class="bg-slate-900 py-16 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
         <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">Layanan Pengaduan & Informasi WhatsApp</h1>
-        <p class="text-emerald-100 max-w-2xl mx-auto text-sm sm:text-base">Kanal komunikasi cepat dan interaktif antara warga dan pihak Kelurahan.</p>
+        <p class="text-slate-100 max-w-2xl mx-auto text-sm sm:text-base">Kanal komunikasi cepat dan interaktif antara warga dan pihak Kelurahan.</p>
     </div>
 </div>
 
@@ -31,7 +31,7 @@
             </div>
             <div class="flex items-center justify-between pt-1">
                 <span class="text-slate-500 text-sm font-semibold">Waktu Operasional Chat</span>
-                <span class="text-emerald-600 font-extrabold text-sm">Jam Kerja (Senin - Jumat)</span>
+                <span class="text-slate-600 font-extrabold text-sm">Jam Kerja (Senin - Jumat)</span>
             </div>
         </div>
 

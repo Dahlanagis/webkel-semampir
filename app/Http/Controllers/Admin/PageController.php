@@ -34,7 +34,7 @@ class PageController extends Controller
             'badge_text' => $request->badge_text,
             'type' => $request->type,
             'content' => $request->content,
-            'is_active' => $request->has('is_active'),
+            'is_active' => $request->boolean('is_active'),
         ];
 
         if ($request->hasFile('banner_image')) {

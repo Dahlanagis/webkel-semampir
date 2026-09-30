@@ -13,13 +13,13 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
         <div>
             <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                <svg class="w-5 h-5 text-emerald-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                <svg class="w-5 h-5 text-slate-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
                 <span>Daftar Kategori {{ ucfirst($type) }}</span>
             </h2>
             <p class="text-xs text-slate-500 mt-0.5">Kelola label kategori agar informasi mudah difilter oleh warga</p>
         </div>
 
-        <button @click="createModalOpen = true" class="px-4 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs rounded-xl shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0">
+        <button @click="createModalOpen = true" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs rounded-xl shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             <span>Tambah Kategori {{ ucfirst($type) }}</span>
         </button>
@@ -28,19 +28,23 @@
     <!-- Type Filter Bar -->
     <div class="flex items-center gap-2 overflow-x-auto pb-1">
         <a href="{{ route('admin.kategori.index', ['type' => 'berita']) }}" 
-           class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition {{ $type === 'berita' ? 'bg-emerald-800 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
+           class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition {{ $type === 'berita' ? 'bg-slate-800 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
             Kategori Berita
         </a>
+        <a href="{{ route('admin.kategori.index', ['type' => 'agenda']) }}" 
+           class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition {{ $type === 'agenda' ? 'bg-slate-800 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
+            Kategori Agenda Kegiatan
+        </a>
         <a href="{{ route('admin.kategori.index', ['type' => 'pengumuman']) }}" 
-           class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition {{ $type === 'pengumuman' ? 'bg-emerald-800 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
+           class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition {{ $type === 'pengumuman' ? 'bg-slate-800 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
             Kategori Pengumuman
         </a>
         <a href="{{ route('admin.kategori.index', ['type' => 'galeri']) }}" 
-           class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition {{ $type === 'galeri' ? 'bg-emerald-800 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
+           class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition {{ $type === 'galeri' ? 'bg-slate-800 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
             Kategori Galeri
         </a>
         <a href="{{ route('admin.kategori.index', ['type' => 'dokumen']) }}" 
-           class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition {{ $type === 'dokumen' ? 'bg-emerald-800 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
+           class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition {{ $type === 'dokumen' ? 'bg-slate-800 text-white shadow-sm' : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200' }}">
             Kategori Dokumen Publik
         </a>
     </div>
@@ -79,11 +83,12 @@
                                     'berita' => 'posts',
                                     'galeri' => 'galleries',
                                     'pengumuman' => 'announcements',
-                                    'dokumen' => 'documents'
+                                    'dokumen' => 'documents',
+                                    'agenda' => 'agendas'
                                 ];
                                 $countAttr = ($relationMap[$type] ?? 'posts') . '_count';
                             @endphp
-                            <td class="py-3.5 px-4 sm:px-5 text-center font-bold text-emerald-700 bg-emerald-50/50">
+                            <td class="py-3.5 px-4 sm:px-5 text-center font-bold text-slate-700 bg-slate-50/50">
                                 {{ $category->{$countAttr} ?? 0 }} Data
                             </td>
                             <td class="py-3.5 px-4 sm:px-5 text-right whitespace-nowrap space-x-1">
@@ -131,9 +136,9 @@
                     @csrf
                     <input type="hidden" name="type" value="{{ $type }}">
                     
-                    <div class="bg-gradient-to-r from-emerald-950 to-slate-900 px-6 py-4 text-white flex items-center justify-between">
+                    <div class="bg-gradient-to-r from-slate-950 to-slate-900 px-6 py-4 text-white flex items-center justify-between">
                         <h3 class="text-base font-bold">Tambah Kategori {{ ucfirst($type) }} Baru</h3>
-                        <button type="button" @click="createModalOpen = false" class="text-emerald-300 hover:text-white">
+                        <button type="button" @click="createModalOpen = false" class="text-slate-300 hover:text-white">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
@@ -141,19 +146,19 @@
                     <div class="p-6 space-y-4 text-xs">
                         <div>
                             <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1">Nama Kategori *</label>
-                            <input type="text" name="name" required placeholder="Contoh: Infrastruktur" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-600 font-semibold text-sm">
+                            <input type="text" name="name" required placeholder="Contoh: Infrastruktur" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-slate-600 font-semibold text-sm">
                         </div>
 
                         <div>
                             <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1">Deskripsi Singkat</label>
-                            <textarea name="description" rows="2" placeholder="Penjelasan mengenai kategori ini..." class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-emerald-600"></textarea>
+                            <textarea name="description" rows="2" placeholder="Penjelasan mengenai kategori ini..." class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-slate-600"></textarea>
                         </div>
 
                         <div>
                             <label class="block font-bold text-slate-700 uppercase tracking-wider mb-1 mb-2">Pilih Warna Label Kategori</label>
                             <div class="flex flex-wrap gap-2">
                                 @php
-                                    $colors = ['slate', 'gray', 'zinc', 'neutral', 'stone', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose'];
+                                    $colors = ['slate', 'gray', 'zinc', 'neutral', 'stone', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'slate', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose'];
                                 @endphp
                                 @foreach($colors as $color)
                                     <label class="cursor-pointer">
@@ -167,7 +172,7 @@
 
                     <div class="bg-slate-50 px-6 py-4 flex items-center justify-end gap-3 border-t border-slate-200">
                         <button type="button" @click="createModalOpen = false" class="px-4 py-2 text-slate-600 font-semibold rounded-xl hover:bg-slate-200">Batal</button>
-                        <button type="submit" class="px-5 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-xl shadow">Simpan Kategori</button>
+                        <button type="submit" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-xl shadow">Simpan Kategori</button>
                     </div>
                 </form>
             </div>

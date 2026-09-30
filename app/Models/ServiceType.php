@@ -40,10 +40,48 @@ class ServiceType extends Model
 
     protected static function booted()
     {
+        static::created(function ($serviceType) {
+            $url = '/standar-pelayanan?id=' . $serviceType->id;
+            $exists = \App\Models\NavigationMenu::where('section', 'layanan')->where('url', $url)->exists();
+            if (!$exists) {
+                $maxOrder = \App\Models\NavigationMenu::where('section', 'layanan')->max('order') ?? 0;
+                \App\Models\NavigationMenu::create([
+                    'section' => 'layanan',
+                    'title' => $serviceType->name,
+                    'url' => $url,
+                    'order' => $maxOrder + 1,
+                    'is_active' => (bool)$serviceType->is_active,
+                ]);
+            }
+        });
+
+        static::updated(function ($serviceType) {
+            $url = '/standar-pelayanan?id=' . $serviceType->id;
+            $navMenu = \App\Models\NavigationMenu::where('section', 'layanan')->where('url', $url)->first();
+            if ($navMenu) {
+                $navMenu->update([
+                    'title' => $serviceType->name,
+                    'is_active' => (bool)$serviceType->is_active,
+                ]);
+            } else {
+                $maxOrder = \App\Models\NavigationMenu::where('section', 'layanan')->max('order') ?? 0;
+                \App\Models\NavigationMenu::create([
+                    'section' => 'layanan',
+                    'title' => $serviceType->name,
+                    'url' => $url,
+                    'order' => $maxOrder + 1,
+                    'is_active' => (bool)$serviceType->is_active,
+                ]);
+            }
+        });
+
         static::deleting(function ($serviceType) {
             if ($serviceType->pdf_document && \Illuminate\Support\Facades\Storage::disk('public')->exists($serviceType->pdf_document)) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($serviceType->pdf_document);
             }
+            \App\Models\NavigationMenu::where('section', 'layanan')
+                ->where('url', '/standar-pelayanan?id=' . $serviceType->id)
+                ->delete();
         });
     }
 }

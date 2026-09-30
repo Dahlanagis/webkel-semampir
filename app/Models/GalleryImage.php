@@ -33,4 +33,13 @@ class GalleryImage extends Model
 
         return asset('storage/' . $this->image_path);
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($image) {
+            if ($image->image_path) {
+                \App\Http\Controllers\Admin\GalleryController::deletePhysicalFile($image->image_path);
+            }
+        });
+    }
 }

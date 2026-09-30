@@ -21,42 +21,48 @@ class NavigationMenuController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'section' => 'required|in:profil,layanan,dokumen',
+            'section' => 'required|in:profil,layanan,dokumen,informasi',
             'title' => 'required|string|max:255',
-            'url' => in_array($request->section, ['dokumen', 'profil', 'layanan']) ? 'nullable|string' : 'required|string|max:255',
+            'url' => 'nullable|string|max:255',
             'order' => 'required|integer',
         ]);
 
         $url = $request->url;
 
-        if ($request->section === 'dokumen') {
-            $document = \App\Models\Document::create([
-                'name' => $request->title,
-                'is_active' => $request->has('is_active'),
-            ]);
-            $url = '/dokumen?id=' . $document->id;
-        } elseif ($request->section === 'profil') {
-            $page = \App\Models\Page::create([
-                'title' => $request->title,
-                'is_active' => $request->has('is_active'),
-            ]);
-            $url = '/halaman/' . $page->slug;
-        } elseif ($request->section === 'layanan') {
-            $service = \App\Models\ServiceType::create([
-                'name' => $request->title,
-                'slug' => \Illuminate\Support\Str::slug($request->title),
-                'is_active' => $request->has('is_active'),
-            ]);
-            $url = '/standar-pelayanan?id=' . $service->id;
+        if (empty($url)) {
+            if ($request->section === 'dokumen') {
+                $document = \App\Models\Document::create([
+                    'name' => $request->title,
+                    'is_active' => $request->boolean('is_active'),
+                ]);
+                $url = '/dokumen?id=' . $document->id;
+            } elseif ($request->section === 'profil') {
+                $page = \App\Models\Page::create([
+                    'title' => $request->title,
+                    'is_active' => $request->boolean('is_active'),
+                ]);
+                $url = '/halaman/' . $page->slug;
+            } elseif ($request->section === 'layanan') {
+                $service = \App\Models\ServiceType::create([
+                    'name' => $request->title,
+                    'slug' => \Illuminate\Support\Str::slug($request->title),
+                    'is_active' => $request->boolean('is_active'),
+                ]);
+                $url = '/standar-pelayanan?id=' . $service->id;
+            }
         }
 
-        NavigationMenu::create([
-            'section' => $request->section,
-            'title' => $request->title,
-            'url' => $url,
-            'order' => $request->order,
-            'is_active' => $request->has('is_active'),
-        ]);
+        NavigationMenu::updateOrCreate(
+            [
+                'section' => $request->section,
+                'url' => $url ?? '#',
+            ],
+            [
+                'title' => $request->title,
+                'order' => $request->order,
+                'is_active' => $request->boolean('is_active'),
+            ]
+        );
 
         return back()->with('success', 'Menu navigasi berhasil ditambahkan.');
     }
@@ -64,20 +70,21 @@ class NavigationMenuController extends Controller
     public function update(Request $request, NavigationMenu $navigation)
     {
         $request->validate([
-            'section' => 'required|in:profil,layanan,dokumen',
+            'section' => 'required|in:profil,layanan,dokumen,informasi',
             'title' => 'required|string|max:255',
-            'url' => in_array($request->section, ['dokumen', 'profil', 'layanan']) ? 'nullable|string' : 'required|string|max:255',
+            'url' => 'nullable|string|max:255',
             'order' => 'required|integer',
         ]);
 
         $oldTitle = $navigation->title;
+        $url = $request->filled('url') ? $request->url : $navigation->url;
 
         $navigation->update([
             'section' => $request->section,
             'title' => $request->title,
-            'url' => in_array($request->section, ['dokumen', 'profil', 'layanan']) ? $navigation->url : $request->url,
+            'url' => $url,
             'order' => $request->order,
-            'is_active' => $request->has('is_active'),
+            'is_active' => $request->boolean('is_active'),
         ]);
 
         if ($request->section === 'dokumen' && $oldTitle !== $request->title) {
@@ -86,7 +93,7 @@ class NavigationMenuController extends Controller
                 if ($doc) {
                     $doc->update([
                         'name' => $request->title,
-                        'is_active' => $request->has('is_active'),
+                        'is_active' => $request->boolean('is_active'),
                     ]);
                 }
             }
@@ -96,7 +103,7 @@ class NavigationMenuController extends Controller
                 if ($page) {
                     $page->update([
                         'title' => $request->title,
-                        'is_active' => $request->has('is_active'),
+                        'is_active' => $request->boolean('is_active'),
                     ]);
                     $navigation->update(['url' => '/halaman/' . $page->slug]);
                 }
@@ -107,7 +114,7 @@ class NavigationMenuController extends Controller
                 if ($service) {
                     $service->update([
                         'name' => $request->title,
-                        'is_active' => $request->has('is_active'),
+                        'is_active' => $request->boolean('is_active'),
                     ]);
                 }
             }

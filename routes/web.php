@@ -38,8 +38,38 @@ Route::get('/transparansi', [HomeController::class, 'transparansi'])->name('tran
 Route::get('/dokumen', [HomeController::class, 'dokumen'])->name('dokumen');
 Route::get('/standar-pelayanan', [HomeController::class, 'standarPelayanan'])->name('standar-pelayanan');
 Route::get('/pengumuman', [HomeController::class, 'pengumuman'])->name('pengumuman');
+Route::get('/agenda', [\App\Http\Controllers\AgendaController::class, 'index'])->name('agenda');
+Route::get('/agenda/{slug}', [\App\Http\Controllers\AgendaController::class, 'show'])->name('agenda.show');
 Route::get('/halaman/{slug}', [HomeController::class, 'page'])->name('page');
 Route::get('/profil/{slug}', [\App\Http\Controllers\ProfilePageController::class, 'show'])->name('profile.page');
+Route::get('/tts-google', function (\Illuminate\Http\Request $request) {
+    $text = trim($request->query('text', 'Kelurahan Semampir'));
+    if (empty($text)) {
+        return response('', 400);
+    }
+    $cleanText = mb_substr($text, 0, 150);
+    $cacheDir = storage_path('app/tts');
+    if (!file_exists($cacheDir)) {
+        @mkdir($cacheDir, 0755, true);
+    }
+    $fileName = 'tts_' . md5($cleanText) . '.mp3';
+    $filePath = $cacheDir . DIRECTORY_SEPARATOR . $fileName;
+
+    if (!file_exists($filePath)) {
+        $googleUrl = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=id&client=tw-ob&q=' . urlencode($cleanText);
+        $audioData = @file_get_contents($googleUrl);
+        if ($audioData && strlen($audioData) > 100) {
+            @file_put_contents($filePath, $audioData);
+        } else {
+            return redirect($googleUrl);
+        }
+    }
+
+    return response()->file($filePath, [
+        'Content-Type' => 'audio/mpeg',
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->name('tts.google');
 
 // ==========================================
 // GUEST ONLY AUTHENTICATION ROUTES
@@ -51,11 +81,13 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [AuthController::class, 'resetPassword'])->name('password.reset.submit');
 });
 
+// Logout dapat diakses via GET maupun POST tanpa terblokir sesi expired
+Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
+
 // ==========================================
 // AUTHENTICATED ROUTES
 // ==========================================
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // ==========================================
     // 1. ADMIN PANEL ROUTES (Role: Admin)
@@ -100,6 +132,27 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{id}', [AdminAnnouncementController::class, 'destroy'])->name('destroy');
         });
 
+        // CMS: Agenda Kegiatan
+        Route::prefix('agenda')->name('agenda.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\AgendaController::class, 'index'])->name('index');
+            Route::post('/', [\App\Http\Controllers\Admin\AgendaController::class, 'store'])->name('store');
+            Route::put('/{id}', [\App\Http\Controllers\Admin\AgendaController::class, 'update'])->name('update');
+            Route::patch('/{id}/toggle', [\App\Http\Controllers\Admin\AgendaController::class, 'toggle'])->name('toggle');
+            Route::delete('/{id}', [\App\Http\Controllers\Admin\AgendaController::class, 'destroy'])->name('destroy');
+        });
+
+        // CMS: Kelembagaan Desa (LKD & BUMDes)
+        Route::prefix('kelembagaan')->name('kelembagaan.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\KelembagaanDesaController::class, 'index'])->name('index');
+            Route::post('/', [\App\Http\Controllers\Admin\KelembagaanDesaController::class, 'store'])->name('store');
+            Route::put('/{id}', [\App\Http\Controllers\Admin\KelembagaanDesaController::class, 'update'])->name('update');
+            Route::patch('/{id}/toggle', [\App\Http\Controllers\Admin\KelembagaanDesaController::class, 'toggle'])->name('toggle');
+            Route::delete('/{id}', [\App\Http\Controllers\Admin\KelembagaanDesaController::class, 'destroy'])->name('destroy');
+        });
+
+        // Redirect BUMDes ke tab BUMDes di modul Kelembagaan Desa
+        Route::get('bumdes', fn() => redirect()->route('admin.kelembagaan.index', ['jenis' => 'BUMDes']))->name('bumdes.index');
+
         // CMS: Galeri Kegiatan Foto
         Route::prefix('galeri')->name('galeri.')->group(function () {
             Route::get('/', [AdminGalleryController::class, 'index'])->name('index');
@@ -122,8 +175,13 @@ Route::middleware('auth')->group(function () {
             Route::get('identitas-sambutan', [\App\Http\Controllers\Admin\VillageProfileController::class, 'identitasSambutan'])->name('identitas_sambutan');
             Route::get('sotk', [\App\Http\Controllers\Admin\VillageProfileController::class, 'sotk'])->name('sotk');
             Route::get('visi-misi-sejarah', [\App\Http\Controllers\Admin\VillageProfileController::class, 'visiMisiSejarah'])->name('visi_misi_sejarah');
+            Route::get('sejarah', [\App\Http\Controllers\Admin\VillageProfileController::class, 'sejarah'])->name('sejarah');
+            Route::get('tupoksi', function () {
+                return redirect()->route('admin.beranda.sotk');
+            })->name('tupoksi');
             Route::get('banner', [\App\Http\Controllers\Admin\VillageProfileController::class, 'banner'])->name('banner');
             Route::get('statistik', [\App\Http\Controllers\Admin\VillageProfileController::class, 'statistik'])->name('statistik');
+            Route::get('statistik-wilayah', [\App\Http\Controllers\Admin\VillageProfileController::class, 'statistikWilayah'])->name('statistik_wilayah');
             Route::get('transparansi', [\App\Http\Controllers\Admin\VillageProfileController::class, 'transparansi'])->name('transparansi');
             Route::get('kontak', [\App\Http\Controllers\Admin\VillageProfileController::class, 'kontak'])->name('kontak');
             Route::get('lokasi', [\App\Http\Controllers\Admin\VillageProfileController::class, 'lokasi'])->name('lokasi');
@@ -140,11 +198,12 @@ Route::middleware('auth')->group(function () {
             Route::put('statistik/{type}/{index}', [\App\Http\Controllers\Admin\VillageProfileController::class, 'updateStatistik'])->name('statistik.update');
             Route::delete('statistik/{type}/{index}', [\App\Http\Controllers\Admin\VillageProfileController::class, 'destroyStatistik'])->name('statistik.destroy');
             
-            Route::get('maklumat', [\App\Http\Controllers\Admin\KemitraanMaklumatController::class, 'maklumat'])->name('maklumat');
+            Route::get('maklumat', [\App\Http\Controllers\Admin\MaklumatPelayananController::class, 'index'])->name('maklumat');
+            Route::post('update-maklumat', [\App\Http\Controllers\Admin\MaklumatPelayananController::class, 'update'])->name('update-maklumat');
+
+            // Kemitraan / OPD Mitra Kerja Sama
             Route::get('kemitraan', [\App\Http\Controllers\Admin\KemitraanMaklumatController::class, 'kemitraan'])->name('kemitraan');
             Route::post('update-kemitraan', [\App\Http\Controllers\Admin\KemitraanMaklumatController::class, 'update'])->name('update-kemitraan');
-            
-            // Single-item Kemitraan endpoints for Modal UI
             Route::post('kemitraan/store', [\App\Http\Controllers\Admin\KemitraanMaklumatController::class, 'storeMitra'])->name('kemitraan.store');
             Route::put('kemitraan/{index}', [\App\Http\Controllers\Admin\KemitraanMaklumatController::class, 'updateMitra'])->name('kemitraan.update');
             Route::delete('kemitraan/{index}', [\App\Http\Controllers\Admin\KemitraanMaklumatController::class, 'destroyMitra'])->name('kemitraan.destroy');

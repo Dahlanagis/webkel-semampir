@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', $page->title . ' - ' . ($villageProfile['village_name'] ?? 'Kelurahan Patokan'))
+@section('title', $page->title . ' - ' . ($villageProfile['village_name'] ?? 'Kelurahan Semampir'))
 
 @section('content')
 <section class="w-full py-8 sm:py-16 bg-white relative">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-10 text-center">
             <h1 class="text-3xl sm:text-4xl font-black text-slate-900 mb-4">{{ $page->title }}</h1>
-            <div class="w-20 h-1.5 bg-emerald-500 mx-auto rounded-full"></div>
+            <div class="w-20 h-1.5 bg-slate-500 mx-auto rounded-full"></div>
             <div class="mt-4 text-sm text-slate-500">
                 Terakhir diperbarui pada {{ $page->updated_at->format('d F Y') }}
             </div>
@@ -63,8 +63,8 @@
                         @if(!empty($block['items']))
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
                             @foreach($block['items'] as $item)
-                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:border-emerald-300 transition-all group">
-                                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-emerald-700 transition-colors">{{ $item['title'] ?? '' }}</h3>
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:border-slate-300 transition-all group">
+                                <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-slate-700 transition-colors">{{ $item['title'] ?? '' }}</h3>
                                 <p class="text-slate-600 leading-relaxed">{{ $item['content'] ?? '' }}</p>
                             </div>
                             @endforeach
@@ -77,7 +77,7 @@
                             $colors = [
                                 'amber' => ['bg' => 'bg-amber-50', 'border' => 'border-amber-500', 'text' => 'text-amber-800', 'icon' => 'fa-exclamation-triangle'],
                                 'blue' => ['bg' => 'bg-blue-50', 'border' => 'border-blue-500', 'text' => 'text-blue-800', 'icon' => 'fa-info-circle'],
-                                'emerald' => ['bg' => 'bg-emerald-50', 'border' => 'border-emerald-500', 'text' => 'text-emerald-800', 'icon' => 'fa-check-circle'],
+                                'slate' => ['bg' => 'bg-slate-50', 'border' => 'border-slate-500', 'text' => 'text-slate-800', 'icon' => 'fa-check-circle'],
                                 'rose' => ['bg' => 'bg-rose-50', 'border' => 'border-rose-500', 'text' => 'text-rose-800', 'icon' => 'fa-exclamation-circle'],
                             ];
                             $c = $colors[$style] ?? $colors['amber'];

@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="pt-3 border-t border-slate-100 flex justify-end">
-            <button type="submit" class="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition">Simpan Perubahan</button>
+            <button type="submit" class="px-5 py-2 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition">Simpan Perubahan</button>
         </div>
     </form>
 </div>

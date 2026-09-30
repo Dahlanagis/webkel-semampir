@@ -48,11 +48,13 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('navProfil', $menus->get('profil', collect()));
                 $view->with('navLayanan', $menus->get('layanan', collect()));
                 $view->with('navDokumen', $menus->get('dokumen', collect()));
+                $view->with('navInformasi', $menus->get('informasi', collect()));
             } else {
                 // Fallback before migration is run
                 $view->with('navProfil', collect());
                 $view->with('navLayanan', collect());
                 $view->with('navDokumen', collect());
+                $view->with('navInformasi', collect());
             }
 
             if (\Illuminate\Support\Facades\Schema::hasTable('announcements')) {

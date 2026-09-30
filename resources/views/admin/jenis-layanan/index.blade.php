@@ -43,14 +43,14 @@
                 <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Layanan</span>
                 <h3 class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{{ $totalServices }}</h3>
             </div>
-            <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-700 font-bold">📜</div>
+            <div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-700 font-bold">📜</div>
         </div>
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-emerald-200 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
-                <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Status Aktif</span>
-                <h3 class="text-2xl sm:text-3xl font-black text-emerald-900 mt-1">{{ $activeServices }}</h3>
+                <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">Status Aktif</span>
+                <h3 class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{{ $activeServices }}</h3>
             </div>
-            <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-700 font-bold">✅</div>
+            <div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-700 font-bold">✅</div>
         </div>
         <div class="bg-white p-4 sm:p-5 rounded-2xl border border-amber-200 shadow-sm flex items-center justify-between">
             <div>
@@ -65,14 +65,14 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
         <form method="GET" action="{{ route('admin.jenis-layanan.index') }}" class="flex items-center gap-2.5">
             <div class="relative">
-                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama, kode, atau deskripsi..." class="pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-600 shadow-sm w-64">
+                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama, kode, atau deskripsi..." class="pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-slate-600 shadow-sm w-64">
                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
-            <button type="submit" class="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow transition">Cari</button>
+            <button type="submit" class="px-3.5 py-2 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow transition">Cari</button>
         </form>
 
         <button @click="createModalOpen = true" 
-                class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center gap-2 shrink-0">
+                class="px-4 py-2.5 bg-slate-600 hover:bg-slate-700 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center gap-2 shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             <span>Tambah Layanan Baru</span>
         </button>
@@ -99,7 +99,7 @@
                             <!-- Ikon & Nama Layanan -->
                             <td class="py-3.5 px-5">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-lg shrink-0 shadow-sm">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-lg shrink-0 shadow-sm">
                                         {{ $st->icon ?: '📜' }}
                                     </div>
                                     <div>
@@ -111,7 +111,7 @@
                                                 </span>
                                             @endif
                                             @if($st->pdf_document)
-                                                <a href="{{ asset('storage/' . $st->pdf_document) }}" target="_blank" class="px-2 py-0.5 text-[9px] font-extrabold bg-emerald-100 text-emerald-800 rounded border border-emerald-200 hover:bg-emerald-200 transition inline-flex items-center gap-1">
+                                                <a href="{{ asset('storage/' . $st->pdf_document) }}" target="_blank" class="px-2 py-0.5 text-[9px] font-extrabold bg-slate-100 text-slate-800 rounded border border-slate-200 hover:bg-slate-200 transition inline-flex items-center gap-1">
                                                     <span>📄 PDF SOP</span>
                                                 </a>
                                             @else
@@ -129,7 +129,7 @@
 
                             <!-- Kode Surat -->
                             <td class="py-3.5 px-5 whitespace-nowrap">
-                                <span class="font-mono font-bold text-emerald-950 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 inline-block">
+                                <span class="font-mono font-bold text-slate-950 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200 inline-block">
                                     {{ $st->code ?? 'UMUM' }}
                                 </span>
                             </td>
@@ -145,8 +145,8 @@
                                         <i class="fas fa-hourglass-half text-slate-400 w-3"></i> 
                                         <span>{{ $st->estimated_time ?: '-' }}</span>
                                     </div>
-                                    <div class="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600">
-                                        <i class="fas fa-coins text-emerald-500 w-3"></i> 
+                                    <div class="flex items-center gap-1.5 text-[10px] font-bold text-slate-600">
+                                        <i class="fas fa-coins text-slate-500 w-3"></i> 
                                         <span>{{ $st->cost ?: 'Gratis' }}</span>
                                     </div>
                                 </div>
@@ -181,8 +181,8 @@
                             <td class="py-3.5 px-5 text-center whitespace-nowrap">
                                 <form action="{{ route('admin.jenis-layanan.toggle', $st->id) }}" method="POST">@csrf @method('PATCH')
                                     <button type="submit" 
-                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold transition shadow-sm border {{ $st->is_active ? 'bg-emerald-100 text-emerald-900 border-emerald-300 hover:bg-emerald-200' : 'bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-200' }}">
-                                        <span class="w-1.5 h-1.5 rounded-full {{ $st->is_active ? 'bg-emerald-600' : 'bg-slate-400' }}"></span>
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold transition shadow-sm border {{ $st->is_active ? 'bg-slate-100 text-slate-900 border-slate-300 hover:bg-slate-200' : 'bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-200' }}">
+                                        <span class="w-1.5 h-1.5 rounded-full {{ $st->is_active ? 'bg-slate-600' : 'bg-slate-400' }}"></span>
                                         <span>{{ $st->is_active ? 'Aktif' : 'Non-Aktif' }}</span>
                                     </button>
                                 </form>
@@ -195,7 +195,7 @@
                                     Edit
                                 </button>
 
-                                <form action="{{ route('admin.jenis-layanan.destroy', $st->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus layanan ini?')">
+                                <form action="{{ route('admin.jenis-layanan.destroy', $st->id) }}" method="POST" class="inline" onsubmit="event.preventDefault(); return window.confirmDelete(this, '{{ addslashes($st->name) }}', 'Layanan ini akan dihapus secara permanen beserta data SOP dan dokumen persyaratannya.');">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 font-bold text-[11px] rounded-lg transition border border-rose-200">
                                         Hapus
@@ -227,7 +227,7 @@
                     <!-- Header -->
                     <div class="bg-white px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-emerald-600 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-slate-600 inline-block"></span>
                             <h3 class="text-base font-bold text-slate-800">Tambah Layanan & Jenis Surat Baru</h3>
                         </div>
                         <button type="button" @click="createModalOpen = false" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
@@ -242,12 +242,12 @@
                             <div class="sm:col-span-2">
                                 <label class="block font-bold text-slate-800 mb-1">Nama Layanan / Jenis Surat <span class="text-rose-500">*</span></label>
                                 <input type="text" name="name" required placeholder="Surat Keterangan Usaha (SKU)" 
-                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium">
                             </div>
                             <div>
                                 <label class="block font-bold text-slate-800 mb-1">Kode Surat</label>
                                 <input type="text" name="code" placeholder="SKU" 
-                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-mono uppercase font-bold">
+                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-mono uppercase font-bold">
                             </div>
                         </div>
 
@@ -257,7 +257,7 @@
                         <div>
                             <label class="block font-bold text-slate-800 mb-1">Deskripsi Singkat Layanan</label>
                             <textarea name="description" rows="2" placeholder="Penjelasan singkat fungsi dan peruntukan surat ini bagi warga..." 
-                                class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium"></textarea>
+                                class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium"></textarea>
                         </div>
 
                         <!-- Dokumen Persyaratan Wajib -->
@@ -266,13 +266,13 @@
                             <template x-for="(doc, index) in createDocsArray" :key="index">
                                 <div class="flex items-center gap-2 mb-2">
                                     <input type="text" x-model="createDocsArray[index]" name="required_documents[]" placeholder="Contoh: Foto KTP / Kartu Keluarga" 
-                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium">
                                     <button type="button" @click="createDocsArray.splice(index, 1)" x-show="createDocsArray.length > 1" class="p-2.5 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-100 transition shrink-0">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </button>
                                 </div>
                             </template>
-                            <button type="button" @click="createDocsArray.push('')" class="mt-1 text-xs font-bold text-emerald-600 hover:text-emerald-800 flex items-center gap-1">
+                            <button type="button" @click="createDocsArray.push('')" class="mt-1 text-xs font-bold text-slate-600 hover:text-slate-800 flex items-center gap-1">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Tambah Persyaratan
                             </button>
                             <p class="text-[11px] text-slate-400 mt-1">Daftar berkas lampiran yang disiapkan warga. (Kosongkan baris jika tidak jadi menambah)</p>
@@ -283,50 +283,148 @@
                             <div class="sm:col-span-2">
                                 <label class="block font-bold text-slate-800 mb-1">Jam Operasional</label>
                                 <input type="text" name="operational_hours" placeholder="Senin - Jumat, 08:00 - 14:00 WIB" 
-                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium">
                             </div>
                             <div>
                                 <label class="block font-bold text-slate-800 mb-1">Estimasi Waktu Penyelesaian</label>
                                 <input type="text" name="estimated_time" placeholder="Misal: 1 Hari Kerja" 
-                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium">
                             </div>
                             <div>
                                 <label class="block font-bold text-slate-800 mb-1">Biaya Pelayanan</label>
                                 <input type="text" name="cost" placeholder="Misal: Gratis" 
-                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium">
                             </div>
-                            <div x-data="{ selectedFileName: null }" class="sm:col-span-2">
+                            <div x-data="{ 
+                                selectedFileName: null, 
+                                fileError: null,
+                                rejectedFileName: null,
+                                fileSize: null,
+                                validatePdf(event) {
+                                    const file = event.target.files[0];
+                                    if (!file) {
+                                        this.selectedFileName = null;
+                                        this.fileError = null;
+                                        this.rejectedFileName = null;
+                                        return;
+                                    }
+
+                                    const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+                                    const maxSizeBytes = 5 * 1024 * 1024; // 5 MB
+
+                                    if (!isPdf) {
+                                        this.rejectedFileName = file.name;
+                                        this.fileError = 'Format file tidak sesuai! Hanya dokumen berformat PDF (.pdf) yang diperbolehkan.';
+                                        this.selectedFileName = null;
+                                        this.fileSize = null;
+                                        event.target.value = ''; // Reset input agar file ditolak & tidak tersimpan
+                                        return;
+                                    }
+
+                                    if (file.size > maxSizeBytes) {
+                                        this.rejectedFileName = file.name;
+                                        this.fileError = 'Ukuran file melebihi kapasitas maksimal 5 MB (' + (file.size / 1024 / 1024).toFixed(2) + ' MB).';
+                                        this.selectedFileName = null;
+                                        this.fileSize = null;
+                                        event.target.value = ''; // Reset input
+                                        return;
+                                    }
+
+                                    // File valid
+                                    this.fileError = null;
+                                    this.rejectedFileName = null;
+                                    this.selectedFileName = file.name;
+                                    this.fileSize = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+                                }
+                            }" class="sm:col-span-2">
                                 <label class="block font-bold text-slate-800 mb-1">Upload File PDF Surat/Formulir (Opsional)</label>
-                                <input type="file" name="pdf_document" accept="application/pdf"
-                                    @change="selectedFileName = $event.target.files[0] ? $event.target.files[0].name : null"
-                                    class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
-                                <p class="text-[11px] text-slate-400 mt-1">Unggah file formulir resmi atau dokumen SOP berbentuk PDF.</p>
-                                <template x-if="selectedFileName">
-                                    <div class="mt-2 p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center gap-2 text-xs font-semibold text-emerald-900">
-                                        <span>📄 File Terpilih:</span>
-                                        <span class="font-mono text-[11px] truncate" x-text="selectedFileName"></span>
+                                <input type="file" name="pdf_document" accept="application/pdf,.pdf"
+                                    @change="validatePdf($event)"
+                                    class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer">
+                                <p class="text-[11px] text-slate-400 mt-1">Unggah file formulir resmi atau dokumen SOP berbentuk PDF (Maksimal 5 MB).</p>
+
+                                <!-- Peringatan File Ditolak -->
+                                <template x-if="fileError">
+                                    <div class="mt-2.5 p-3 bg-rose-50 rounded-xl border border-rose-200 flex items-start gap-2.5 text-xs text-rose-800 shadow-xs">
+                                        <div class="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <div class="font-extrabold text-rose-800 text-xs sm:text-sm flex items-center gap-1.5">
+                                                <span>File Ditolak!</span>
+                                            </div>
+                                            <p class="text-rose-600 text-xs mt-0.5 font-medium" x-text="fileError"></p>
+                                            <div class="text-[11px] text-rose-500 font-mono mt-1 bg-white/80 px-2 py-0.5 rounded border border-rose-200 inline-block">
+                                                File: <span x-text="rejectedFileName"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </template>
+
+                                <!-- Status File Valid Terpilih -->
+                                <template x-if="selectedFileName && !fileError">
+                                    <div class="mt-2.5 p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center justify-between gap-2 text-xs font-semibold text-emerald-900 shadow-xs">
+                                        <div class="flex items-center gap-2 truncate">
+                                            <span class="px-2 py-0.5 bg-emerald-600 text-white rounded-md text-[10px] font-black uppercase tracking-wider shrink-0">PDF</span>
+                                            <span class="font-mono text-xs truncate" x-text="selectedFileName"></span>
+                                            <span class="text-emerald-700 text-[10px] font-mono shrink-0" x-text="'(' + fileSize + ')'"></span>
+                                        </div>
+                                        <span class="text-[10px] px-2 py-0.5 bg-emerald-100 text-emerald-800 font-extrabold rounded-md shrink-0 flex items-center gap-1">
+                                            <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                            Valid
+                                        </span>
+                                    </div>
+                                </template>
+
                                 @error('pdf_document')
-                                    <p class="mt-1.5 p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-semibold flex items-center gap-1.5">
-                                        <svg class="w-4 h-4 shrink-0 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <div class="mt-2 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-2">
+                                        <span class="font-bold text-rose-800">File Ditolak:</span>
                                         <span>{{ $message }}</span>
-                                    </p>
+                                    </div>
                                 @enderror
                             </div>
                         </div>
 
-                        <!-- Options Checkboxes -->
-                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
-                            <label class="flex items-center gap-2 cursor-pointer select-none">
-                                <input type="checkbox" name="show_on_homepage" value="1" checked class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-600">
-                                <span class="font-bold text-slate-800">🌐 Tampilkan di Beranda Utama (Homepage Kartu Layanan)</span>
-                            </label>
+                        <!-- Status Publikasi & Opsi Tampil -->
+                        <div class="space-y-2.5">
+                            <!-- Status Publikasi (Draf vs Publikasi) -->
+                            <div class="space-y-1.5" x-data="{ pubStatus: '1' }">
+                                <label class="block font-bold text-slate-700 text-xs uppercase tracking-wider">Status Publikasi</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <label :class="pubStatus === '1' ? 'border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition select-none">
+                                        <input type="radio" name="is_active" value="1" x-model="pubStatus" class="text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                                        <div>
+                                            <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+                                                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                                                Publikasikan
+                                            </div>
+                                            <div class="text-[10px] text-slate-500">Layanan aktif bagi warga</div>
+                                        </div>
+                                    </label>
 
-                            <label class="flex items-center gap-2 cursor-pointer select-none">
-                                <input type="checkbox" name="is_active" value="1" checked class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-600">
-                                <span class="font-bold text-slate-800">✅ Status Layanan Aktif</span>
-                            </label>
+                                    <label :class="pubStatus === '0' ? 'border-amber-500 bg-amber-50/60 ring-1 ring-amber-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition select-none">
+                                        <input type="radio" name="is_active" value="0" x-model="pubStatus" class="text-amber-600 focus:ring-amber-500 w-4 h-4">
+                                        <div>
+                                            <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+                                                <span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
+                                                Simpan Draf
+                                            </div>
+                                            <div class="text-[10px] text-slate-500">Disimpan sebagai draf</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                                <div>
+                                    <label class="block font-bold text-slate-800 text-xs uppercase tracking-wider">Tampilkan di Beranda</label>
+                                    <span class="text-[10px] text-slate-500">Munculkan shortcut layanan ini di halaman utama</span>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="show_on_homepage" value="1" checked class="sr-only peer">
+                                    <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                                </label>
+                            </div>
                         </div>
 
                     </div>
@@ -334,7 +432,7 @@
                     <!-- Footer Buttons -->
                     <div class="bg-slate-50 px-6 py-4 flex items-center justify-end gap-3 border-t border-slate-100">
                         <button type="button" @click="createModalOpen = false" class="px-4 py-2 text-slate-600 font-bold rounded-xl hover:bg-slate-200">Batal</button>
-                        <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl shadow-md transition">Simpan Layanan Baru</button>
+                        <button type="submit" class="px-5 py-2 bg-slate-600 hover:bg-slate-700 text-white font-extrabold rounded-xl shadow-md transition">Simpan Layanan Baru</button>
                     </div>
                 </form>
             </div>
@@ -355,7 +453,7 @@
                         <!-- Header -->
                         <div class="bg-white px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-emerald-600 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-slate-600 inline-block"></span>
                                 <h3 class="text-base font-bold text-slate-800">Edit Layanan & Jenis Surat</h3>
                             </div>
                             <button type="button" @click="editModalOpen = false" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
@@ -370,12 +468,12 @@
                                 <div class="sm:col-span-2">
                                     <label class="block font-bold text-slate-800 mb-1">Nama Layanan / Jenis Surat <span class="text-rose-500">*</span></label>
                                     <input type="text" name="name" x-model="selectedType.name" required 
-                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium">
                                 </div>
                                 <div>
                                     <label class="block font-bold text-slate-800 mb-1">Kode Surat</label>
                                     <input type="text" name="code" x-model="selectedType.code" 
-                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-mono uppercase font-bold">
+                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-mono uppercase font-bold">
                                 </div>
                             </div>
 
@@ -385,7 +483,7 @@
                             <div>
                                 <label class="block font-bold text-slate-800 mb-1">Deskripsi Singkat Layanan</label>
                                 <textarea name="description" x-model="selectedType.description" rows="2" 
-                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium"></textarea>
+                                    class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium"></textarea>
                             </div>
 
                             <!-- Dokumen Persyaratan Wajib -->
@@ -394,13 +492,13 @@
                                 <template x-for="(doc, index) in editDocsArray" :key="index">
                                     <div class="flex items-center gap-2 mb-2">
                                         <input type="text" x-model="editDocsArray[index]" name="required_documents[]" placeholder="Contoh: Foto KTP / Kartu Keluarga" 
-                                            class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                            class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium">
                                         <button type="button" @click="editDocsArray.splice(index, 1)" x-show="editDocsArray.length > 1" class="p-2.5 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-100 transition shrink-0">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                         </button>
                                     </div>
                                 </template>
-                                <button type="button" @click="editDocsArray.push('')" class="mt-1 text-xs font-bold text-emerald-600 hover:text-emerald-800 flex items-center gap-1">
+                                <button type="button" @click="editDocsArray.push('')" class="mt-1 text-xs font-bold text-slate-600 hover:text-slate-800 flex items-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> Tambah Persyaratan
                                 </button>
                                 <p class="text-[11px] text-slate-400 mt-1">Daftar berkas lampiran yang disiapkan warga. (Kosongkan baris jika tidak jadi menambah)</p>
@@ -411,66 +509,164 @@
                                 <div class="sm:col-span-2">
                                     <label class="block font-bold text-slate-800 mb-1">Jam Operasional</label>
                                     <input type="text" name="operational_hours" x-model="selectedType.operational_hours" placeholder="Senin - Jumat, 08:00 - 14:00 WIB" 
-                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium">
                                 </div>
                                 <div>
                                     <label class="block font-bold text-slate-800 mb-1">Estimasi Waktu Penyelesaian</label>
                                     <input type="text" name="estimated_time" x-model="selectedType.estimated_time" placeholder="Misal: 1 Hari Kerja" 
-                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium">
                                 </div>
                                 <div>
                                     <label class="block font-bold text-slate-800 mb-1">Biaya Pelayanan</label>
                                     <input type="text" name="cost" x-model="selectedType.cost" placeholder="Misal: Gratis" 
-                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-600 font-medium">
+                                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-slate-600 font-medium">
                                 </div>
-                                <div x-data="{ selectedFileName: null }" class="sm:col-span-2">
+                                <div x-data="{ 
+                                    selectedFileName: null, 
+                                    fileError: null,
+                                    rejectedFileName: null,
+                                    fileSize: null,
+                                    validatePdf(event) {
+                                        const file = event.target.files[0];
+                                        if (!file) {
+                                            this.selectedFileName = null;
+                                            this.fileError = null;
+                                            this.rejectedFileName = null;
+                                            return;
+                                        }
+
+                                        const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+                                        const maxSizeBytes = 5 * 1024 * 1024; // 5 MB
+
+                                        if (!isPdf) {
+                                            this.rejectedFileName = file.name;
+                                            this.fileError = 'Format file tidak sesuai! Hanya dokumen berformat PDF (.pdf) yang diperbolehkan.';
+                                            this.selectedFileName = null;
+                                            this.fileSize = null;
+                                            event.target.value = ''; // Reset input agar file ditolak & tidak tersimpan
+                                            return;
+                                        }
+
+                                        if (file.size > maxSizeBytes) {
+                                            this.rejectedFileName = file.name;
+                                            this.fileError = 'Ukuran file melebihi kapasitas maksimal 5 MB (' + (file.size / 1024 / 1024).toFixed(2) + ' MB).';
+                                            this.selectedFileName = null;
+                                            this.fileSize = null;
+                                            event.target.value = ''; // Reset input
+                                            return;
+                                        }
+
+                                        // File valid
+                                        this.fileError = null;
+                                        this.rejectedFileName = null;
+                                        this.selectedFileName = file.name;
+                                        this.fileSize = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+                                    }
+                                }" class="sm:col-span-2">
                                     <label class="block font-bold text-slate-800 mb-1">Upload File PDF Surat/Formulir (Biarkan kosong jika tidak ingin mengubah)</label>
-                                    <input type="file" name="pdf_document" accept="application/pdf"
-                                        @change="selectedFileName = $event.target.files[0] ? $event.target.files[0].name : null"
-                                        class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                                    <input type="file" name="pdf_document" accept="application/pdf,.pdf"
+                                        @change="validatePdf($event)"
+                                        class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer">
+                                    <p class="text-[11px] text-slate-400 mt-1">Unggah file formulir resmi atau dokumen SOP berbentuk PDF (Maksimal 5 MB).</p>
+
+                                    <!-- Peringatan File Ditolak -->
+                                    <template x-if="fileError">
+                                        <div class="mt-2.5 p-3 bg-rose-50 rounded-xl border border-rose-200 flex items-start gap-2.5 text-xs text-rose-800 shadow-xs">
+                                            <div class="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                                            </div>
+                                            <div class="min-w-0 flex-1">
+                                                <div class="font-extrabold text-rose-800 text-xs sm:text-sm flex items-center gap-1.5">
+                                                    <span>File Ditolak!</span>
+                                                </div>
+                                                <p class="text-rose-600 text-xs mt-0.5 font-medium" x-text="fileError"></p>
+                                                <div class="text-[11px] text-rose-500 font-mono mt-1 bg-white/80 px-2 py-0.5 rounded border border-rose-200 inline-block">
+                                                    File: <span x-text="rejectedFileName"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
                                     
-                                    <template x-if="selectedFileName">
-                                        <div class="mt-2 p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center gap-2 text-xs font-semibold text-emerald-900">
-                                            <span>📄 File Baru Terpilih:</span>
-                                            <span class="font-mono text-[11px] truncate" x-text="selectedFileName"></span>
+                                    <!-- Status File Baru Terpilih -->
+                                    <template x-if="selectedFileName && !fileError">
+                                        <div class="mt-2.5 p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center justify-between gap-2 text-xs font-semibold text-emerald-900 shadow-xs">
+                                            <div class="flex items-center gap-2 truncate">
+                                                <span class="px-2 py-0.5 bg-emerald-600 text-white rounded-md text-[10px] font-black uppercase tracking-wider shrink-0">PDF</span>
+                                                <span class="font-mono text-xs truncate" x-text="selectedFileName"></span>
+                                                <span class="text-emerald-700 text-[10px] font-mono shrink-0" x-text="'(' + fileSize + ')'"></span>
+                                            </div>
+                                            <span class="text-[10px] px-2 py-0.5 bg-emerald-100 text-emerald-800 font-extrabold rounded-md shrink-0 flex items-center gap-1">
+                                                <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                                Valid
+                                            </span>
                                         </div>
                                     </template>
 
+                                    <!-- PDF Aktif Saat Ini -->
                                     <template x-if="!selectedFileName && selectedType.pdf_document">
-                                        <div class="mt-2.5 p-2.5 bg-emerald-50 rounded-2xl border border-emerald-200 flex items-center justify-between gap-3">
+                                        <div class="mt-2.5 p-2.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between gap-3">
                                             <div class="flex items-center gap-2.5 min-w-0">
                                                 <div class="w-8 h-8 rounded-lg bg-rose-500 text-white font-extrabold flex items-center justify-center text-[10px] shrink-0 shadow-sm">PDF</div>
                                                 <div class="min-w-0 text-[11px]">
                                                     <div class="font-bold text-slate-900 truncate" x-text="selectedType.pdf_document.split('/').pop()"></div>
-                                                    <div class="text-[10px] text-emerald-700 font-medium">Dokumen PDF Aktif Saat Ini</div>
+                                                    <div class="text-[10px] text-slate-700 font-medium">Dokumen PDF Aktif Saat Ini</div>
                                                 </div>
                                             </div>
-                                            <a :href="'{{ asset('storage') }}/' + selectedType.pdf_document" target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] rounded-lg transition shrink-0 flex items-center gap-1 shadow-sm">
+                                            <a :href="'{{ asset('storage') }}/' + selectedType.pdf_document" target="_blank" class="px-3 py-1.5 bg-slate-600 hover:bg-slate-700 text-white font-bold text-[10px] rounded-lg transition shrink-0 flex items-center gap-1 shadow-sm">
                                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                                                 <span>Buka PDF</span>
                                             </a>
                                         </div>
                                     </template>
                                     @error('pdf_document')
-                                        <p class="mt-1.5 p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-semibold flex items-center gap-1.5">
-                                            <svg class="w-4 h-4 shrink-0 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        <div class="mt-2 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-2">
+                                            <span class="font-bold text-rose-800">File Ditolak:</span>
                                             <span>{{ $message }}</span>
-                                        </p>
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
 
-                            <!-- Options Checkboxes -->
-                            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2">
-                                <label class="flex items-center gap-2 cursor-pointer select-none">
-                                    <input type="checkbox" name="show_on_homepage" value="1" :checked="selectedType.show_on_homepage" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-600">
-                                    <span class="font-bold text-slate-800">🌐 Tampilkan di Beranda Utama (Homepage Kartu Layanan)</span>
-                                </label>
+                            <!-- Status Publikasi & Opsi Tampil -->
+                            <div class="space-y-2.5">
+                                <!-- Status Publikasi (Draf vs Publikasi) -->
+                                <div class="space-y-1.5">
+                                    <label class="block font-bold text-slate-700 text-xs uppercase tracking-wider">Status Publikasi</label>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <label :class="(selectedType && (selectedType.is_active == 1 || selectedType.is_active === true)) ? 'border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition select-none">
+                                            <input type="radio" name="is_active" value="1" :checked="selectedType && (selectedType.is_active == 1 || selectedType.is_active === true)" @change="selectedType.is_active = 1" class="text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                                            <div>
+                                                <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+                                                    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                                                    Publikasikan
+                                                </div>
+                                                <div class="text-[10px] text-slate-500">Layanan aktif bagi warga</div>
+                                            </div>
+                                        </label>
 
-                                <label class="flex items-center gap-2 cursor-pointer select-none">
-                                    <input type="checkbox" name="is_active" value="1" :checked="selectedType.is_active" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-600">
-                                    <span class="font-bold text-slate-800">✅ Status Layanan Aktif</span>
-                                </label>
+                                        <label :class="(selectedType && (selectedType.is_active == 0 || selectedType.is_active === false)) ? 'border-amber-500 bg-amber-50/60 ring-1 ring-amber-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition select-none">
+                                            <input type="radio" name="is_active" value="0" :checked="selectedType && (selectedType.is_active == 0 || selectedType.is_active === false)" @change="selectedType.is_active = 0" class="text-amber-600 focus:ring-amber-500 w-4 h-4">
+                                            <div>
+                                                <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+                                                    <span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
+                                                    Simpan Draf
+                                                </div>
+                                                <div class="text-[10px] text-slate-500">Disimpan sebagai draf</div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                                    <div>
+                                        <label class="block font-bold text-slate-800 text-xs uppercase tracking-wider">Tampilkan di Beranda</label>
+                                        <span class="text-[10px] text-slate-500">Munculkan shortcut layanan ini di halaman utama</span>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="show_on_homepage" value="1" :checked="selectedType.show_on_homepage" class="sr-only peer">
+                                        <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                                    </label>
+                                </div>
                             </div>
 
                         </div>
@@ -478,7 +674,7 @@
                         <!-- Footer Buttons -->
                         <div class="bg-slate-50 px-6 py-4 flex items-center justify-end gap-3 border-t border-slate-100">
                             <button type="button" @click="editModalOpen = false" class="px-4 py-2 text-slate-600 font-bold rounded-xl hover:bg-slate-200">Batal</button>
-                            <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl shadow-md transition">Simpan Perubahan</button>
+                            <button type="submit" class="px-5 py-2 bg-slate-600 hover:bg-slate-700 text-white font-extrabold rounded-xl shadow-md transition">Simpan Perubahan</button>
                         </div>
                     </form>
                 </template>

@@ -32,10 +32,14 @@ class DocumentController extends Controller
             'file_names.*' => 'required_with:pdf_documents.*|string|max:255',
             'pdf_documents' => 'nullable|array',
             'pdf_documents.*' => 'required_with:file_names.*|mimes:pdf|max:10240',
+        ], [
+            'name.required' => 'Nama kategori dokumen wajib diisi.',
+            'pdf_documents.*.mimes' => 'File ditolak! Format file tidak sesuai, hanya file PDF (.pdf) yang diperbolehkan.',
+            'pdf_documents.*.max' => 'File ditolak! Ukuran file PDF melebihi kapasitas maksimal 10 MB.',
         ]);
 
         $data = $request->except(['pdf_documents', 'file_names']);
-        $data['is_active'] = $request->has('is_active');
+        $data['is_active'] = $request->boolean('is_active', true);
 
         $document = Document::create($data);
 
@@ -89,10 +93,14 @@ class DocumentController extends Controller
             'file_names.*' => 'required_with:pdf_documents.*|string|max:255',
             'pdf_documents' => 'nullable|array',
             'pdf_documents.*' => 'required_with:file_names.*|mimes:pdf|max:10240',
+        ], [
+            'name.required' => 'Nama kategori dokumen wajib diisi.',
+            'pdf_documents.*.mimes' => 'File ditolak! Format file tidak sesuai, hanya file PDF (.pdf) yang diperbolehkan.',
+            'pdf_documents.*.max' => 'File ditolak! Ukuran file PDF melebihi kapasitas maksimal 10 MB.',
         ]);
 
         $data = $request->except(['pdf_documents', 'file_names']);
-        $data['is_active'] = $request->has('is_active');
+        $data['is_active'] = $request->boolean('is_active');
         
         $oldName = $document->name;
         $document->update($data);

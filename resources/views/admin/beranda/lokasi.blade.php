@@ -16,16 +16,16 @@
         <div class="space-y-4 text-xs">
             <div>
                 <label class="block font-bold text-slate-700 mb-1.5">Alamat Lengkap *</label>
-                <textarea name="address" rows="3" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-600">{{ old('address', $profile['address'] ?? '') }}</textarea>
+                <textarea name="address" rows="3" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-600">{{ old('address', $profile['address'] ?? '') }}</textarea>
             </div>
             <div>
                 <label class="block font-bold text-slate-700 mb-1.5">Link Embed Google Maps *</label>
-                <input type="url" name="map_embed" value="{{ old('map_embed', $profile['map_embed'] ?? '') }}" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-600" placeholder="https://www.google.com/maps/embed?pb=...">
+                <input type="url" name="map_embed" value="{{ old('map_embed', $profile['map_embed'] ?? '') }}" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-600" placeholder="https://www.google.com/maps/embed?pb=...">
                 <p class="text-[10px] text-slate-500 mt-1">Masukkan URL yang ada di dalam atribut "src" dari kode iframe Google Maps Anda (https://www.google.com/maps/embed?pb=...).</p>
             </div>
         </div>
         <div class="pt-3 border-t border-slate-100 flex justify-end">
-            <button type="submit" class="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition">Simpan Lokasi</button>
+            <button type="submit" class="px-5 py-2 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition">Simpan Lokasi</button>
         </div>
     </form>
 </div>

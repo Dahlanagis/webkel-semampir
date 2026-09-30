@@ -8,11 +8,11 @@
 <div class="space-y-6">
     <!-- Pesan Sukses -->
     @if(session('success'))
-    <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl flex items-start gap-3">
-        <i class="fas fa-check-circle mt-0.5 text-emerald-600"></i>
+    <div class="p-4 bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl flex items-start gap-3">
+        <i class="fas fa-check-circle mt-0.5 text-slate-600"></i>
         <div>
             <h4 class="font-bold text-sm">Berhasil!</h4>
-            <p class="text-xs text-emerald-700 mt-1">{{ session('success') }}</p>
+            <p class="text-xs text-slate-700 mt-1">{{ session('success') }}</p>
         </div>
     </div>
     @endif
@@ -51,7 +51,7 @@
                             <td class="py-3 px-4 text-slate-500 font-mono text-xs">/halaman/{{ $page->slug }}</td>
                             <td class="py-3 px-4 text-center">
                                 @if($page->is_active)
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase">Aktif</span>
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-100 text-slate-800 uppercase">Aktif</span>
                                 @else
                                     <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-100 text-slate-600 uppercase">Sembunyi</span>
                                 @endif

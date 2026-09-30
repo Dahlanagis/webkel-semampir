@@ -45,23 +45,29 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'nullable',
+            'custom_category' => 'nullable|string|max:100',
             'excerpt' => 'nullable|string|max:500',
             'content' => 'required|string',
             'image_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
             'image_url' => 'nullable|url',
             'is_featured' => 'boolean',
             'is_slider' => 'boolean',
+            'is_active' => 'nullable|boolean',
             'published_at' => 'nullable|date',
         ], [
             'title.required' => 'Judul berita wajib diisi.',
-            'category_id.required' => 'Kategori berita wajib dipilih.',
             'content.required' => 'Isi berita wajib diisi.',
-            'image_file.image' => 'Foto sampul harus berupa file foto.',
-            'image_file.mimes' => 'Foto sampul harus berformat JPG, JPEG, PNG, atau WEBP.',
-            'image_file.max' => 'Ukuran foto unggulan maksimal 3MB.',
+            'image_file.image' => 'File ditolak! Foto sampul harus berupa file gambar.',
+            'image_file.mimes' => 'File ditolak! Format foto sampul harus berformat JPG, JPEG, PNG, atau WEBP.',
+            'image_file.max' => 'File ditolak! Ukuran foto unggulan maksimal 3 MB.',
             'image_url.url' => 'Format link URL gambar tidak valid.',
         ]);
+
+        $categoryId = Category::resolveId($request->input('category_id'), $request->input('custom_category'), 'berita');
+        if (!$categoryId) {
+            return back()->withErrors(['category_id' => 'Kategori berita wajib dipilih atau diisi.'])->withInput();
+        }
 
         if ($request->boolean('is_featured')) {
             $currentCount = Post::where('is_featured', true)->count();
@@ -80,13 +86,14 @@ class PostController extends Controller
         Post::create([
             'title' => $request->input('title'),
             'slug' => Str::slug($request->input('title')) . '-' . Str::random(5),
-            'category_id' => $request->input('category_id'),
+            'category_id' => $categoryId,
             'author' => auth()->user()->name ?? 'Admin Kelurahan',
             'excerpt' => $request->input('excerpt') ?? Str::limit(strip_tags($request->input('content')), 150),
             'content' => $request->input('content'),
             'image' => $imagePath,
             'is_featured' => $request->boolean('is_featured'),
             'is_slider' => $request->boolean('is_slider'),
+            'is_active' => $request->has('is_active') ? $request->boolean('is_active') : true,
             'published_at' => $request->input('published_at') ?? now(),
         ]);
 
@@ -104,23 +111,29 @@ class PostController extends Controller
 
         $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'nullable',
+            'custom_category' => 'nullable|string|max:100',
             'excerpt' => 'nullable|string|max:500',
             'content' => 'required|string',
             'image_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
             'image_url' => 'nullable|url',
             'is_featured' => 'boolean',
             'is_slider' => 'boolean',
+            'is_active' => 'nullable|boolean',
             'published_at' => 'nullable|date',
         ], [
             'title.required' => 'Judul berita wajib diisi.',
-            'category_id.required' => 'Kategori berita wajib dipilih.',
             'content.required' => 'Isi berita wajib diisi.',
-            'image_file.image' => 'Foto sampul harus berupa file foto.',
-            'image_file.mimes' => 'Foto sampul harus berformat JPG, JPEG, PNG, atau WEBP.',
-            'image_file.max' => 'Ukuran foto unggulan maksimal 3MB.',
+            'image_file.image' => 'File ditolak! Foto sampul harus berupa file gambar.',
+            'image_file.mimes' => 'File ditolak! Format foto sampul harus berformat JPG, JPEG, PNG, atau WEBP.',
+            'image_file.max' => 'File ditolak! Ukuran foto unggulan maksimal 3 MB.',
             'image_url.url' => 'Format link URL gambar tidak valid.',
         ]);
+
+        $categoryId = Category::resolveId($request->input('category_id'), $request->input('custom_category'), 'berita');
+        if (!$categoryId) {
+            return back()->withErrors(['category_id' => 'Kategori berita wajib dipilih atau diisi.'])->withInput();
+        }
 
         if ($request->boolean('is_featured') && !$post->is_featured) {
             $currentCount = Post::where('is_featured', true)->count();
@@ -145,12 +158,13 @@ class PostController extends Controller
         $post->update([
             'title' => $request->input('title'),
             'slug' => Str::slug($request->input('title')) . '-' . $post->id,
-            'category_id' => $request->input('category_id'),
+            'category_id' => $categoryId,
             'excerpt' => $request->input('excerpt') ?? Str::limit(strip_tags($request->input('content')), 150),
             'content' => $request->input('content'),
             'image' => $imagePath,
             'is_featured' => $request->boolean('is_featured'),
             'is_slider' => $request->boolean('is_slider'),
+            'is_active' => $request->boolean('is_active'),
             'published_at' => $request->input('published_at') ?? $post->published_at,
         ]);
 

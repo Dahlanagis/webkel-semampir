@@ -2,7 +2,7 @@
 
 @section('title', 'Kelola Header Navigasi')
 @section('header-title', 'Kelola Header Navigasi')
-@section('header-subtitle', 'Manajemen tautan menu Profil, Layanan, dan Dokumen pada Navbar Beranda')
+@section('header-subtitle', 'Manajemen tautan menu Profil, Layanan, Dokumen, dan Informasi pada Navbar Beranda')
 
 @section('content')
 <div class="space-y-6">
@@ -12,7 +12,7 @@
                 <h2 class="text-lg font-bold text-slate-800">Daftar Menu Header</h2>
                 <p class="text-sm text-slate-500 mt-1">Atur urutan dan tautan untuk menu dropdown di navbar publik.</p>
             </div>
-            <button type="button" @click="$dispatch('open-modal', 'modal-add-menu')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-sm transition inline-flex items-center gap-2 text-sm">
+            <button type="button" @click="$dispatch('open-modal', 'modal-add-menu')" class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white font-bold rounded-xl shadow-sm transition inline-flex items-center gap-2 text-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Tambah Tautan
             </button>
@@ -22,7 +22,8 @@
             $sections = [
                 'profil' => 'Dropdown Profil',
                 'layanan' => 'Dropdown Layanan',
-                'dokumen' => 'Dropdown Dokumen'
+                'dokumen' => 'Dropdown Dokumen',
+                'informasi' => 'Dropdown Informasi'
             ];
         @endphp
 
@@ -49,7 +50,7 @@
                                         <td class="py-3 px-4 text-slate-500 font-mono text-xs">{{ $menu->url }}</td>
                                         <td class="py-3 px-4 text-center">
                                             @if($menu->is_active)
-                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase">Aktif</span>
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-100 text-slate-800 uppercase">Aktif</span>
                                             @else
                                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-100 text-slate-600 uppercase">Sembunyi</span>
                                             @endif
@@ -97,38 +98,57 @@
                 <div class="px-6 py-4 space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Bagian (Dropdown)</label>
-                        <select name="section" x-model="section" required class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <select name="section" x-model="section" required class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 text-sm focus:ring-slate-500 focus:border-slate-500">
                             <option value="profil">Dropdown Profil</option>
                             <option value="layanan">Dropdown Layanan</option>
                             <option value="dokumen">Dropdown Dokumen</option>
+                            <option value="informasi">Dropdown Informasi</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Label Tautan</label>
-                        <input type="text" name="title" required placeholder="Contoh: Sejarah Kelurahan" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <input type="text" name="title" required placeholder="Contoh: Sejarah Kelurahan" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-slate-500 focus:border-slate-500">
                     </div>
-                    <div x-show="section !== 'dokumen' && section !== 'profil' && section !== 'layanan'">
-                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Target URL</label>
-                        <input type="text" name="url" :required="section !== 'dokumen' && section !== 'profil' && section !== 'layanan'" placeholder="Contoh: /sejarah atau https://example.com" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500">
-                        <p class="mt-1 text-[11px] text-slate-500">Gunakan format relatif (contoh: <code>/sejarah</code>) untuk halaman internal, atau URL penuh (contoh: <code>https://...</code>) untuk website luar.</p>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Target URL (Opsional)</label>
+                        <input type="text" name="url" placeholder="Contoh: /visi-misi, /sejarah, atau https://example.com" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-slate-500 focus:border-slate-500">
+                        <p class="mt-1 text-[11px] text-slate-500">Kosongkan jika ingin otomatis membuat entri baru, atau isi tautan internal (contoh: <code>/visi-misi</code>) atau URL luar.</p>
                     </div>
-                    <div class="flex gap-4">
-                        <div class="flex-1">
-                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Urutan Tampil</label>
-                            <input type="number" name="order" value="0" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500">
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Status Tampil</label>
-                            <label class="inline-flex items-center mt-2">
-                                <input type="checkbox" name="is_active" value="1" checked class="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
-                                <span class="ml-2 text-sm text-slate-700 font-semibold">Tampilkan</span>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Urutan Tampil</label>
+                        <input type="number" name="order" value="0" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-slate-500 focus:border-slate-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Status Publikasi</label>
+                        <div class="grid grid-cols-2 gap-3" x-data="{ pubStatus: '1' }">
+                            <label :class="pubStatus === '1' ? 'border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-2.5 p-2.5 rounded-xl border cursor-pointer transition select-none">
+                                <input type="radio" name="is_active" value="1" x-model="pubStatus" class="text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                                <div>
+                                    <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                                        Publikasikan
+                                    </div>
+                                    <div class="text-[10px] text-slate-500">Tampil di menu</div>
+                                </div>
+                            </label>
+
+                            <label :class="pubStatus === '0' ? 'border-amber-500 bg-amber-50/60 ring-1 ring-amber-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-2.5 p-2.5 rounded-xl border cursor-pointer transition select-none">
+                                <input type="radio" name="is_active" value="0" x-model="pubStatus" class="text-amber-600 focus:ring-amber-500 w-4 h-4">
+                                <div>
+                                    <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1">
+                                        <span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
+                                        Simpan Draf
+                                    </div>
+                                    <div class="text-[10px] text-slate-500">Sembunyikan</div>
+                                </div>
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="bg-slate-50 px-6 py-4 flex justify-end gap-3 rounded-b-2xl">
                     <button type="button" @click="open = false" class="px-4 py-2 text-slate-600 font-semibold text-sm hover:bg-slate-200 rounded-xl transition">Batal</button>
-                    <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl shadow-sm transition">Simpan Tautan</button>
+                    <button type="submit" class="px-5 py-2 bg-slate-600 hover:bg-slate-700 text-white font-bold text-sm rounded-xl shadow-sm transition">Simpan Tautan</button>
                 </div>
             </form>
         </div>
@@ -148,37 +168,56 @@
                 <div class="px-6 py-4 space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Bagian (Dropdown)</label>
-                        <select name="section" x-model="data.section" required class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <select name="section" x-model="data.section" required class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 text-sm focus:ring-slate-500 focus:border-slate-500">
                             <option value="profil">Dropdown Profil</option>
                             <option value="layanan">Dropdown Layanan</option>
                             <option value="dokumen">Dropdown Dokumen</option>
+                            <option value="informasi">Dropdown Informasi</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Label Tautan</label>
-                        <input type="text" name="title" x-model="data.title" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <input type="text" name="title" x-model="data.title" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-slate-500 focus:border-slate-500">
                     </div>
-                    <div x-show="data.section !== 'dokumen' && data.section !== 'profil' && data.section !== 'layanan'">
+                    <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Target URL</label>
-                        <input type="text" name="url" x-model="data.url" :required="data.section !== 'dokumen' && data.section !== 'profil' && data.section !== 'layanan'" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <input type="text" name="url" x-model="data.url" placeholder="Contoh: /sejarah atau https://example.com" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-slate-500 focus:border-slate-500">
                     </div>
-                    <div class="flex gap-4">
-                        <div class="flex-1">
-                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Urutan Tampil</label>
-                            <input type="number" name="order" x-model="data.order" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500">
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Status Tampil</label>
-                            <label class="inline-flex items-center mt-2">
-                                <input type="checkbox" name="is_active" value="1" :checked="data.is_active" class="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
-                                <span class="ml-2 text-sm text-slate-700 font-semibold">Tampilkan</span>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Urutan Tampil</label>
+                        <input type="number" name="order" x-model="data.order" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-slate-500 focus:border-slate-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Status Publikasi</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label :class="(data && (data.is_active == 1 || data.is_active === true)) ? 'border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-2.5 p-2.5 rounded-xl border cursor-pointer transition select-none">
+                                <input type="radio" name="is_active" value="1" :checked="data && (data.is_active == 1 || data.is_active === true)" @change="data.is_active = 1" class="text-emerald-600 focus:ring-emerald-500 w-4 h-4">
+                                <div>
+                                    <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                                        Publikasikan
+                                    </div>
+                                    <div class="text-[10px] text-slate-500">Tampil di menu</div>
+                                </div>
+                            </label>
+
+                            <label :class="(data && (data.is_active == 0 || data.is_active === false)) ? 'border-amber-500 bg-amber-50/60 ring-1 ring-amber-500' : 'border-slate-200 bg-white hover:bg-slate-50'" class="flex items-center gap-2.5 p-2.5 rounded-xl border cursor-pointer transition select-none">
+                                <input type="radio" name="is_active" value="0" :checked="data && (data.is_active == 0 || data.is_active === false)" @change="data.is_active = 0" class="text-amber-600 focus:ring-amber-500 w-4 h-4">
+                                <div>
+                                    <div class="font-extrabold text-slate-900 text-xs flex items-center gap-1">
+                                        <span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span>
+                                        Simpan Draf
+                                    </div>
+                                    <div class="text-[10px] text-slate-500">Sembunyikan</div>
+                                </div>
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="bg-slate-50 px-6 py-4 flex justify-end gap-3 rounded-b-2xl">
                     <button type="button" @click="open = false" class="px-4 py-2 text-slate-600 font-semibold text-sm hover:bg-slate-200 rounded-xl transition">Batal</button>
-                    <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl shadow-sm transition">Simpan Perubahan</button>
+                    <button type="submit" class="px-5 py-2 bg-slate-600 hover:bg-slate-700 text-white font-bold text-sm rounded-xl shadow-sm transition">Simpan Perubahan</button>
                 </div>
             </form>
         </div>

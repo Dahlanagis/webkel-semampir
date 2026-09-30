@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard Utama')
-@section('header-title', 'Dashboard Utama SIMPEL KELURAHAN')
-@section('header-subtitle', 'Ringkasan publikasi konten, informasi, dan data kependudukan')
+@section('title', 'Dashboard')
+@section('header-title', 'Panel Utama Kelurahan Semampir')
+@section('header-subtitle', 'Pusat kendali informasi publik, pelayanan warga, dan berita wilayah')
 
 @section('content')
 <div class="space-y-5 sm:space-y-6">
@@ -17,20 +17,20 @@
 
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
             <div class="space-y-2">
-                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] sm:text-xs font-semibold">
-                    <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-                    <span>Portal Administrator SIMPEL KELURAHAN</span>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] sm:text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Portal Administrator Kelurahan Semampir</span>
                 </div>
                 <h2 class="text-lg sm:text-xl md:text-2xl font-black text-slate-900 tracking-tight leading-snug">
                     Selamat Datang Kembali, {{ Auth::user()->name ?? 'Administrator' }}!
                 </h2>
-                <p class="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
-                    Sistem Manajemen Pelayanan Kelurahan Patokan siap membantu Anda mempublikasikan berita, mengelola galeri, dan memperbarui informasi publik.
+                <p class="text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
+                    Kelola berita kegiatan, galeri foto, pelayanan warga, dan informasi publik Kelurahan Semampir dengan mudah dan cepat.
                 </p>
             </div>
 
             <div class="shrink-0 flex items-center gap-3">
-                <a href="{{ route('admin.berita.index') }}" class="w-full sm:w-auto px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl text-xs shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                <a href="{{ route('admin.berita.index') }}" class="w-full sm:w-auto px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl text-xs shadow-md shadow-emerald-600/20 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                     <span>Kelola Berita</span>
                 </a>
@@ -45,21 +45,21 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
 
         <!-- CARD 2: Total Berita -->
-        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-emerald-200/80 shadow-sm hover:shadow-md transition">
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
             <div class="flex items-center justify-between">
                 <div>
-                    <span class="text-[11px] sm:text-xs font-bold text-emerald-700 uppercase tracking-wider">Artikel & Berita</span>
-                    <h3 class="text-2xl sm:text-3xl font-black text-emerald-900 mt-1">
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-700 uppercase tracking-wider">Artikel & Berita</span>
+                    <h3 class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
                         {{ number_format($totalBerita ?? 0) }}
                     </h3>
                 </div>
-                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center font-bold shadow-inner shrink-0">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-slate-50 text-slate-600 border border-slate-200 flex items-center justify-center font-bold shadow-inner shrink-0">
                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
                 </div>
             </div>
-            <div class="mt-3.5 pt-3 border-t border-emerald-100 flex items-center justify-between text-[11px]">
-                <span class="text-emerald-800 font-medium">Informasi Web</span>
-                <a href="{{ route('admin.berita.index') }}" class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold border border-emerald-200 hover:bg-emerald-200 transition">Lihat Data</a>
+            <div class="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                <span class="text-slate-800 font-medium">Informasi Web</span>
+                <a href="{{ route('admin.berita.index') }}" class="px-2 py-0.5 rounded bg-slate-100 text-slate-800 font-bold border border-slate-200 hover:bg-slate-200 transition">Lihat Data</a>
             </div>
         </div>
 
@@ -113,7 +113,7 @@
         <div class="p-4 sm:p-6 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-slate-50/60">
             <div>
                 <h3 class="text-sm sm:text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                    <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                    <svg class="w-5 h-5 text-slate-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
                     <span>Artikel & Berita Terbaru</span>
                 </h3>
                 <p class="text-xs text-slate-500 mt-0.5">Daftar publikasi berita dan artikel yang baru saja ditambahkan</p>
@@ -167,8 +167,8 @@
                             <!-- Status Badge -->
                             <td class="py-3.5 px-4 sm:px-5 text-center whitespace-nowrap">
                                 @if($post->published_at)
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-200">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
                                         <span>Terbit</span>
                                     </span>
                                 @else
@@ -182,7 +182,7 @@
                             <!-- Aksi -->
                             <td class="py-3.5 px-4 sm:px-5 text-right whitespace-nowrap">
                                 <a href="{{ route('admin.berita.index') }}" 
-                                   class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-[11px] rounded-lg shadow-sm transition border border-emerald-200">
+                                   class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-[11px] rounded-lg shadow-sm transition border border-slate-200">
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                     <span>Lihat/Edit</span>
                                 </a>

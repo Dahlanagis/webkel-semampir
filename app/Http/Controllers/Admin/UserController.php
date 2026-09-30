@@ -45,27 +45,30 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // Bersihkan dan normalkan format nomor WhatsApp
+        $rawWhatsapp = (string)$request->input('whatsapp');
+        $whatsappClean = preg_replace('/[^0-9]/', '', $rawWhatsapp);
+        if (str_starts_with($whatsappClean, '62')) {
+            $whatsappClean = '0' . substr($whatsappClean, 2);
+        }
+        $request->merge([
+            'whatsapp' => $whatsappClean,
+            'referral_code' => strtoupper(trim((string)$request->input('referral_code'))),
+        ]);
+
         $request->validate([
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'name' => 'required|string|max:255',
             'username' => 'required|string|min:3|max:50|alpha_dash|unique:users,username',
             'role' => 'required|in:staff,admin',
-            'email' => ['required', 'email', 'max:255', 'ends_with:@gmail.com', 'unique:users,email'],
-            'whatsapp' => ['required', 'regex:/^0[0-9]{10,12}$/'],
-            'referral_code' => ['required', 'regex:/^[A-Za-z]{3}[0-9]{3}$/'],
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'regex:/[A-Z]/',       // Huruf Besar
-                'regex:/[a-z]/',       // Huruf Kecil
-                'regex:/[0-9]/',       // Angka
-                'regex:/[@#$%!*_\-]/', // Kode Unik / Simbol
-            ],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'whatsapp' => ['required', 'regex:/^0[0-9]{9,13}$/'],
+            'referral_code' => ['required', 'string', 'min:3', 'max:20', 'alpha_num'],
+            'password' => ['required', 'string', 'min:6'],
         ], [
-            'avatar.image' => 'Foto profil harus berupa file gambar.',
-            'avatar.mimes' => 'Format foto profil wajib JPG, PNG, atau WEBP.',
-            'avatar.max' => 'Ukuran foto profil maksimal 5MB.',
+            'avatar.image' => 'File ditolak! Foto profil harus berupa file gambar.',
+            'avatar.mimes' => 'File ditolak! Format foto profil wajib JPG, PNG, atau WEBP.',
+            'avatar.max' => 'File ditolak! Ukuran foto profil maksimal 5 MB.',
             'name.required' => 'Nama Lengkap Pengguna wajib diisi.',
             'username.required' => 'Username Login wajib diisi.',
             'username.min' => 'Username minimal 3 karakter.',
@@ -73,17 +76,17 @@ class UserController extends Controller
             'username.unique' => 'Username ini sudah digunakan.',
             'role.required' => 'Role Hak Akses wajib dipilih.',
             'role.in' => 'Role yang dipilih tidak valid.',
-            'email.required' => 'Email Resmi Administrator wajib diisi.',
+            'email.required' => 'Email Pengguna wajib diisi.',
             'email.email' => 'Format email tidak valid.',
-            'email.ends_with' => 'Email wajib berakhiran @gmail.com (contoh: nama@gmail.com).',
             'email.unique' => 'Email sudah terdaftar dalam sistem.',
-            'whatsapp.required' => 'No. WhatsApp (Validasi 1) wajib diisi.',
-            'whatsapp.regex' => 'No. WhatsApp harus diawali angka 0 & panjang 11-13 digit angka.',
-            'referral_code.required' => 'Kode Referral (Validasi 2) wajib diisi.',
-            'referral_code.regex' => 'Kode Referral harus tepat 3 huruf & 3 angka (6 karakter, misal ADI123).',
+            'whatsapp.required' => 'No. WhatsApp wajib diisi.',
+            'whatsapp.regex' => 'No. WhatsApp tidak valid (contoh: 08123456789).',
+            'referral_code.required' => 'Kode Referral wajib diisi.',
+            'referral_code.min' => 'Kode Referral minimal 3 karakter.',
+            'referral_code.max' => 'Kode Referral maksimal 20 karakter.',
+            'referral_code.alpha_num' => 'Kode Referral hanya boleh berisi huruf dan angka (misal ADI123).',
             'password.required' => 'Password Keamanan wajib diisi.',
-            'password.min' => 'Password minimal 8 karakter.',
-            'password.regex' => 'Password harus memenuhi syarat kombinasi rumit (Huruf Besar A-Z, Huruf Kecil a-z, Angka 0-9, & Simbol @,#,$,%,!,*,_,-).',
+            'password.min' => 'Password minimal 6 karakter.',
         ]);
 
         $avatarPath = null;
@@ -113,27 +116,30 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        // Bersihkan dan normalkan format nomor WhatsApp
+        $rawWhatsapp = (string)$request->input('whatsapp');
+        $whatsappClean = preg_replace('/[^0-9]/', '', $rawWhatsapp);
+        if (str_starts_with($whatsappClean, '62')) {
+            $whatsappClean = '0' . substr($whatsappClean, 2);
+        }
+        $request->merge([
+            'whatsapp' => $whatsappClean,
+            'referral_code' => strtoupper(trim((string)$request->input('referral_code'))),
+        ]);
+
         $request->validate([
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'name' => 'required|string|max:255',
             'username' => 'required|string|min:3|max:50|alpha_dash|unique:users,username,' . $id,
             'role' => 'required|in:staff,admin',
-            'email' => ['required', 'email', 'max:255', 'ends_with:@gmail.com', 'unique:users,email,' . $id],
-            'whatsapp' => ['required', 'regex:/^0[0-9]{10,12}$/'],
-            'referral_code' => ['required', 'regex:/^[A-Za-z]{3}[0-9]{3}$/'],
-            'password' => [
-                'nullable',
-                'string',
-                'min:8',
-                'regex:/[A-Z]/',
-                'regex:/[a-z]/',
-                'regex:/[0-9]/',
-                'regex:/[@#$%!*_\-]/',
-            ],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $id],
+            'whatsapp' => ['required', 'regex:/^0[0-9]{9,13}$/'],
+            'referral_code' => ['required', 'string', 'min:3', 'max:20', 'alpha_num'],
+            'password' => ['nullable', 'string', 'min:6'],
         ], [
-            'avatar.image' => 'Foto profil harus berupa file gambar.',
-            'avatar.mimes' => 'Format foto profil wajib JPG, PNG, atau WEBP.',
-            'avatar.max' => 'Ukuran foto profil maksimal 5MB.',
+            'avatar.image' => 'File ditolak! Foto profil harus berupa file gambar.',
+            'avatar.mimes' => 'File ditolak! Format foto profil wajib JPG, PNG, atau WEBP.',
+            'avatar.max' => 'File ditolak! Ukuran foto profil maksimal 5 MB.',
             'name.required' => 'Nama Lengkap Pengguna wajib diisi.',
             'username.required' => 'Username Login wajib diisi.',
             'username.min' => 'Username minimal 3 karakter.',
@@ -141,16 +147,16 @@ class UserController extends Controller
             'username.unique' => 'Username ini sudah digunakan.',
             'role.required' => 'Role Hak Akses wajib dipilih.',
             'role.in' => 'Role yang dipilih tidak valid.',
-            'email.required' => 'Email Resmi Administrator wajib diisi.',
+            'email.required' => 'Email Pengguna wajib diisi.',
             'email.email' => 'Format email tidak valid.',
-            'email.ends_with' => 'Email wajib berakhiran @gmail.com (contoh: nama@gmail.com).',
             'email.unique' => 'Email sudah terdaftar.',
-            'whatsapp.required' => 'No. WhatsApp (Validasi 1) wajib diisi.',
-            'whatsapp.regex' => 'No. WhatsApp harus diawali angka 0 & panjang 11-13 digit angka.',
-            'referral_code.required' => 'Kode Referral (Validasi 2) wajib diisi.',
-            'referral_code.regex' => 'Kode Referral harus tepat 3 huruf & 3 angka (6 karakter, misal ADI123).',
-            'password.min' => 'Password minimal 8 karakter.',
-            'password.regex' => 'Password harus memenuhi syarat kombinasi rumit (Huruf Besar A-Z, Huruf Kecil a-z, Angka 0-9, & Simbol @,#,$,%,!,*,_,-).',
+            'whatsapp.required' => 'No. WhatsApp wajib diisi.',
+            'whatsapp.regex' => 'No. WhatsApp tidak valid (contoh: 08123456789).',
+            'referral_code.required' => 'Kode Referral wajib diisi.',
+            'referral_code.min' => 'Kode Referral minimal 3 karakter.',
+            'referral_code.max' => 'Kode Referral maksimal 20 karakter.',
+            'referral_code.alpha_num' => 'Kode Referral hanya boleh berisi huruf dan angka (misal ADI123).',
+            'password.min' => 'Password minimal 6 karakter.',
         ]);
 
         $data = [
@@ -170,23 +176,6 @@ class UserController extends Controller
         }
 
         if ($request->filled('password')) {
-            // Verifikasi bahwa kedua kode validasi (No. WhatsApp & Kode Referral) HARUS benar ketika merubah password
-            $isWhatsappValid = ($user->whatsapp === $request->input('whatsapp'));
-            $isReferralValid = (strtoupper($user->referral_code ?? '') === strtoupper($request->input('referral_code')));
-
-            if (!$isWhatsappValid || !$isReferralValid) {
-                $customErrors = [];
-                if (!$isWhatsappValid) {
-                    $customErrors['whatsapp'] = 'No. WhatsApp (Validasi 1) tidak sesuai dengan data akun terdaftar.';
-                }
-                if (!$isReferralValid) {
-                    $customErrors['referral_code'] = 'Kode Referral (Validasi 2) tidak sesuai dengan data akun terdaftar.';
-                }
-                $customErrors['password'] = 'Perubahan password ditolak! Kedua kode validasi (Validasi 1: WhatsApp & Validasi 2: Kode Referral) HARUS terverifikasi benar.';
-
-                return back()->withErrors($customErrors)->withInput();
-            }
-
             $data['password'] = Hash::make($request->input('password'));
         }
 

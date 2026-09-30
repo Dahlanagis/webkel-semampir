@@ -19,4 +19,13 @@ class DocumentFile extends Model
     {
         return $this->belongsTo(Document::class);
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($file) {
+            if ($file->file_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($file->file_path)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($file->file_path);
+            }
+        });
+    }
 }

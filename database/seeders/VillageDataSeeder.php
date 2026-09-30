@@ -18,7 +18,7 @@ class VillageDataSeeder extends Seeder
         $catBerita = Category::create([
             'name' => 'Berita Utama',
             'slug' => 'berita-utama',
-            'description' => 'Seputar informasi kegiatan utama dan kabar terkini Kelurahan Patokan.',
+            'description' => 'Seputar informasi kegiatan utama dan kabar terkini Kelurahan Semampir.',
             'color_code' => 'emerald',
         ]);
 
@@ -45,7 +45,7 @@ class VillageDataSeeder extends Seeder
 
         // 2. Announcements Ticker
         Announcement::create([
-            'title' => 'Jadwal Pelayanan Mandiri Terpadu Kelurahan Patokan Buka Setiap Senin-Jumat Pukul 08.00 - 15.30 WIB',
+            'title' => 'Jadwal Pelayanan Mandiri Terpadu Kelurahan Semampir Buka Setiap Senin-Jumat Pukul 08.00 - 15.30 WIB',
             'content' => 'Warga diharapkan membawa dokumen fisik pendukung saat mengajukan permohonan surat keterangan.',
             'badge_type' => 'INFO',
             'is_active' => true,
@@ -61,7 +61,7 @@ class VillageDataSeeder extends Seeder
         ]);
 
         Announcement::create([
-            'title' => 'Pencairan Bantuan Sosial Pangan Pokok Tahap III Tempat Pendopo Kelurahan Patokan',
+            'title' => 'Pencairan Bantuan Sosial Pangan Pokok Tahap III Tempat Pendopo Kelurahan Semampir',
             'content' => 'Harap membawa KTP Asli dan Kartu Keluarga.',
             'badge_type' => 'BANSOS',
             'is_active' => true,
@@ -115,7 +115,7 @@ class VillageDataSeeder extends Seeder
                 'slug' => 'pengaduan-dan-aspirasi-warga',
                 'icon' => 'chat-bubble-left-ellipsis',
                 'description' => 'Kanal resmi penyampaian masukan, keluhan fasilitas umum, dan laporan lingkungan secara real-time.',
-                'requirement_info' => 'Identitas pelapor terverifikasi (KTP Patokan).',
+                'requirement_info' => 'Identitas pelapor terverifikasi (KTP Semampir).',
                 'action_url' => '#',
                 'badge_label' => 'Respon 24 Jam',
                 'order' => 5,
@@ -139,11 +139,11 @@ class VillageDataSeeder extends Seeder
         // 4. Posts (Berita & Feature Slider)
         $postsData = [
             [
-                'title' => 'Kelurahan Patokan Luncurkan Portal Pelayanan Publik Digital Berbasis Mobile',
+                'title' => 'Kelurahan Semampir Luncurkan Portal Pelayanan Publik Digital Berbasis Mobile',
                 'category_id' => $catPemerintahan->id,
-                'author' => 'Lurah Patokan',
-                'excerpt' => 'Guna meningkatkan mutu pelayanan publik yang cepat, akuntabel, dan ramah warga, Kelurahan Patokan menginisiasi sistem pelayanan mandiri digital.',
-                'content' => 'Dalam rangka mendukung transformasi digital di Kabupaten Probolinggo, Kelurahan Patokan secara resmi merilis portal informasi terpadu. Portal ini memudahkan warga mengakses syarat pengurusan surat, mengecek transparansi anggaran, hingga menyampaikan pengaduan keluhan lingkungan secara langsung.',
+                'author' => 'Lurah Semampir',
+                'excerpt' => 'Guna meningkatkan mutu pelayanan publik yang cepat, akuntabel, dan ramah warga, Kelurahan Semampir menginisiasi sistem pelayanan mandiri digital.',
+                'content' => 'Dalam rangka mendukung transformasi digital di Kabupaten Probolinggo, Kelurahan Semampir secara resmi merilis portal informasi terpadu. Portal ini memudahkan warga mengakses syarat pengurusan surat, mengecek transparansi anggaran, hingga menyampaikan pengaduan keluhan lingkungan secara langsung.',
                 'image' => 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80',
                 'views' => 428,
                 'is_featured' => true,
@@ -163,11 +163,11 @@ class VillageDataSeeder extends Seeder
                 'published_at' => now()->subDays(3),
             ],
             [
-                'title' => 'Pelatihan Kewirausahaan & Pemasaran Digital bagi Pelaku UMKM Kelurahan Patokan',
+                'title' => 'Pelatihan Kewirausahaan & Pemasaran Digital bagi Pelaku UMKM Kelurahan Semampir',
                 'category_id' => $catPemberdayaan->id,
                 'author' => 'Kasi Pemberdayaan',
                 'excerpt' => 'Sebanyak 40 pelaku UMKM lokal mengikuti bimbingan teknis pengemasan produk dan strategi berjualan via e-commerce dan sosial media.',
-                'content' => 'Pemerintah Kelurahan Patokan terus mendorong kemandirian ekonomi masyarakat melalui pelatihan berkala. Peserta diajarkan teknik fotografi produk sederhana menggunakan smartphone serta pendaftaran sertifikasi halal gratis.',
+                'content' => 'Pemerintah Kelurahan Semampir terus mendorong kemandirian ekonomi masyarakat melalui pelatihan berkala. Peserta diajarkan teknik fotografi produk sederhana menggunakan smartphone serta pendaftaran sertifikasi halal gratis.',
                 'image' => 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80',
                 'views' => 195,
                 'is_featured' => false,
@@ -191,7 +191,7 @@ class VillageDataSeeder extends Seeder
                 'category_id' => $catPemerintahan->id,
                 'author' => 'Tim Penyusun RKPK',
                 'excerpt' => 'Perwakilan tokoh masyarakat dan RT/RW menyepakati prioritas usulan pembangunan infrastruktur dan pemberdayaan sosial.',
-                'content' => 'Musrenbangkel Patokan menetapkan tiga skala prioritas utama: pavingisasi jalan pemukiman RW 03, perbaikan penerangan jalan umum (PJU), dan penguatan kapasitas modal koperasi wanita kelurahan.',
+                'content' => 'Musrenbangkel Semampir menetapkan tiga skala prioritas utama: pavingisasi jalan pemukiman RW 03, perbaikan penerangan jalan umum (PJU), dan penguatan kapasitas modal koperasi wanita kelurahan.',
                 'image' => 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80',
                 'views' => 520,
                 'is_featured' => true,
@@ -220,7 +220,7 @@ class VillageDataSeeder extends Seeder
         // 5. Galleries
         $galleriesData = [
             [
-                'title' => 'Apel Pagi & Pembinaan Perangkat Kelurahan Patokan',
+                'title' => 'Apel Pagi & Pembinaan Perangkat Kelurahan Semampir',
                 'image' => 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80',
                 'category' => 'Pemerintahan',
                 'caption' => 'Penegakan kedisiplinan aparat kelurahan untuk pelayanan prima.',

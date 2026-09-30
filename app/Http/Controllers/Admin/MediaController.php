@@ -77,13 +77,23 @@ class MediaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'file' => 'required|file|max:10240', // Max 10MB
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'file' => 'required|file|max:102400', // Max 100MB
             'folder' => 'nullable|string|max:50',
         ], [
             'file.required' => 'Pilih berkas media yang ingin diunggah.',
-            'file.max' => 'Ukuran berkas maksimal 10MB.',
+            'file.file' => 'File ditolak! Berkas yang diunggah tidak valid.',
+            'file.max' => 'File ditolak! Ukuran berkas maksimal 100 MB.',
         ]);
+
+        if ($validator->fails()) {
+            if ($request->expectsJson() || $request->ajax() || str_contains($request->header('Accept', ''), 'application/json')) {
+                return response()->json([
+                    'message' => $validator->errors()->first()
+                ], 422);
+            }
+            return back()->withErrors($validator)->withInput();
+        }
 
         $folder = $request->input('folder', 'uploads');
         $folder = preg_replace('/[^a-zA-Z0-9_\-]/', '', $folder) ?: 'uploads';
@@ -97,7 +107,12 @@ class MediaController extends Controller
         ActivityLog::record('CREATE', "Mengunggah berkas media baru: {$path}");
 
         if ($request->expectsJson() || $request->ajax() || str_contains($request->header('Accept', ''), 'application/json') || $request->header('origin')) {
-            return response()->json(['location' => asset('storage/' . $path)]);
+            $url = asset('storage/' . $path);
+            return response()->json([
+                'location' => $url,
+                'url' => $url,
+                'filename' => $filename,
+            ]);
         }
 
         return back()->with('status', "Berkas media '{$filename}' berhasil diunggah.");

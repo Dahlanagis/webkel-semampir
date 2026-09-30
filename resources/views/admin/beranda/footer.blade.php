@@ -19,7 +19,7 @@
         <div class="space-y-4 text-xs">
             <div>
                 <label class="block font-bold text-slate-700 mb-1.5">Deskripsi Singkat</label>
-                <textarea name="footer_description" rows="3" class="tinymce-editor w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-600">{{ old('footer_description', $profile['footer_description'] ?? '') }}</textarea>
+                <textarea name="footer_description" id="footer_editor" rows="3" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-600">{{ old('footer_description', $profile['footer_description'] ?? '') }}</textarea>
             </div>
         </div>
 
@@ -28,14 +28,23 @@
             <p class="text-xs text-slate-500">Masukkan link lengkap (termasuk https://) ke akun resmi kelurahan.</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mt-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs mt-4">
+            <div>
+                <label class="block font-bold text-slate-700 mb-1.5">Link Facebook</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <i class="fab fa-facebook"></i>
+                    </div>
+                    <input type="text" name="social_facebook" value="{{ old('social_facebook', $profile['social_facebook'] ?? '') }}" class="w-full pl-9 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-600" placeholder="https://facebook.com/...">
+                </div>
+            </div>
             <div>
                 <label class="block font-bold text-slate-700 mb-1.5">Link Instagram</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <i class="fab fa-instagram"></i>
                     </div>
-                    <input type="text" name="social_instagram" value="{{ old('social_instagram', $profile['social_instagram'] ?? '') }}" class="w-full pl-9 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-600" placeholder="https://instagram.com/...">
+                    <input type="text" name="social_instagram" value="{{ old('social_instagram', $profile['social_instagram'] ?? '') }}" class="w-full pl-9 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-600" placeholder="https://instagram.com/...">
                 </div>
             </div>
             <div>
@@ -44,7 +53,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <i class="fab fa-youtube"></i>
                     </div>
-                    <input type="text" name="social_youtube" value="{{ old('social_youtube', $profile['social_youtube'] ?? '') }}" class="w-full pl-9 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-600" placeholder="https://youtube.com/...">
+                    <input type="text" name="social_youtube" value="{{ old('social_youtube', $profile['social_youtube'] ?? '') }}" class="w-full pl-9 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-600" placeholder="https://youtube.com/...">
                 </div>
             </div>
             <div>
@@ -53,7 +62,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <i class="fab fa-tiktok"></i>
                     </div>
-                    <input type="text" name="social_tiktok" value="{{ old('social_tiktok', $profile['social_tiktok'] ?? '') }}" class="w-full pl-9 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-600" placeholder="https://tiktok.com/...">
+                    <input type="text" name="social_tiktok" value="{{ old('social_tiktok', $profile['social_tiktok'] ?? '') }}" class="w-full pl-9 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-600" placeholder="https://tiktok.com/...">
                 </div>
             </div>
             <div>
@@ -62,7 +71,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <i class="fab fa-whatsapp"></i>
                     </div>
-                    <input type="text" name="social_whatsapp" value="{{ old('social_whatsapp', $profile['social_whatsapp'] ?? '') }}" class="w-full pl-9 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-600" placeholder="https://wa.me/...">
+                    <input type="text" name="social_whatsapp" value="{{ old('social_whatsapp', $profile['social_whatsapp'] ?? '') }}" class="w-full pl-9 p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-600" placeholder="https://wa.me/...">
                 </div>
             </div>
         </div>
@@ -87,29 +96,18 @@
         </div>
 
         <div class="pt-3 border-t border-slate-100 flex justify-end mt-6">
-            <button type="submit" class="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition">Simpan Perubahan</button>
+            <button type="submit" class="px-5 py-2 bg-slate-700 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition">Simpan Perubahan</button>
         </div>
     </form>
 </div>
 
-<!-- TinyMCE Script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- Summernote Initialization -->
 <script>
-    tinymce.init({
-        selector: '.tinymce-editor',
-        plugins: 'lists link image media table code help fullscreen wordcount',
-        toolbar: 'styles | bold underline removeformat | forecolor backcolor | bullist numlist align | table | link image media | fullscreen code help',
-        menubar: false,
-        height: 250,
-        placeholder: 'Ketik konten di sini...',
-        content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #334155; }',
-        setup: function (editor) {
-            editor.on('init', function () {
-                var container = editor.getContainer();
-                container.style.border = '2px solid #6ee7b7'; // emerald-300 / hijau
-                container.style.borderRadius = '0.5rem';
-                container.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
-                container.style.overflow = 'hidden';
+    $(document).ready(function() {
+        if (typeof window.initSimpelSummernote === 'function') {
+            window.initSimpelSummernote('#footer_editor', {
+                height: 220,
+                placeholder: 'Ketik konten di sini (bisa sisipkan gambar/tabel)...'
             });
         }
     });

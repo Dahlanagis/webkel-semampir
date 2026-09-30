@@ -143,7 +143,7 @@ class ResidentController extends Controller
      */
     public function export(Request $request): StreamedResponse
     {
-        $fileName = 'data_penduduk_patokan_' . date('Ymd_His') . '.csv';
+        $fileName = 'data_penduduk_semampir_' . date('Ymd_His') . '.csv';
 
         $query = Resident::latest();
 

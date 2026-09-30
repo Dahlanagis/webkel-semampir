@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::updateOrCreate(
-            ['email' => 'admin@kelurahan-patokan.go.id'],
+            ['email' => 'admin@kelurahan-semampir.go.id'],
             [
                 'name' => 'Administrator Kelurahan',
                 'password' => bcrypt('password'),
@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         );
 
         User::updateOrCreate(
-            ['email' => 'staff@kelurahan-patokan.go.id'],
+            ['email' => 'staff@kelurahan-semampir.go.id'],
             [
                 'name' => 'Staf Pelayanan Kelurahan',
                 'password' => bcrypt('password'),

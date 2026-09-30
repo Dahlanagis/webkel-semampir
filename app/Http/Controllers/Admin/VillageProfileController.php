@@ -40,39 +40,93 @@ class VillageProfileController extends Controller
                 if (!isset($data['service_metrics'])) {
                     $data['service_metrics'] = self::getDefaultServiceMetrics();
                 }
+
+                // Sinkronisasi data alokasi APBD dari tabel apbdes jika tabel tersedia
+                try {
+                    if (\Illuminate\Support\Facades\Schema::hasTable('apbdes')) {
+                        $year = (int) ($data['apbd']['year'] ?? date('Y'));
+                        $dbAllocations = \App\Models\Apbdes::where('tahun', $year)->orderBy('id', 'asc')->get();
+                        if ($dbAllocations->isEmpty()) {
+                            $latestYear = \App\Models\Apbdes::max('tahun');
+                            if ($latestYear) {
+                                $dbAllocations = \App\Models\Apbdes::where('tahun', $latestYear)->orderBy('id', 'asc')->get();
+                            }
+                        }
+                        if ($dbAllocations->isNotEmpty()) {
+                            $data['apbd']['allocations'] = $dbAllocations->map(function ($item) {
+                                return [
+                                    'id' => $item->id,
+                                    'tahun' => $item->tahun,
+                                    'kode_rekening' => $item->kode_rekening,
+                                    'name' => $item->nama_bidang,
+                                    'amount' => number_format((float)$item->anggaran, 0, ',', '.'),
+                                    'pct' => rtrim(rtrim(number_format((float)$item->persentase, 2, ',', '.'), '0'), ','),
+                                    'desc' => $item->deskripsi ?? '',
+                                ];
+                            })->toArray();
+                        }
+                    }
+
+                    // Sinkronisasi data statistik wilayah dari model RegionalStatistic
+                    if (\Illuminate\Support\Facades\Schema::hasTable('regional_statistics')) {
+                        $regStat = \App\Models\RegionalStatistic::getActive();
+                        if ($regStat) {
+                            $data['stats']['penduduk'] = number_format($regStat->total_penduduk, 0, ',', '.');
+                            $data['stats']['kk'] = number_format($regStat->jumlah_kk, 0, ',', '.');
+                            $data['stats']['rt_rw'] = sprintf('%02d / %02d', $regStat->jumlah_rt, $regStat->jumlah_rw);
+                            $data['stats']['luas'] = rtrim(rtrim(number_format($regStat->luas_wilayah, 2, ',', '.'), '0'), ',') . ' km²';
+
+                            $data['demographics']['total'] = number_format($regStat->total_penduduk, 0, ',', '.');
+                            $data['demographics']['male'] = number_format($regStat->jumlah_laki_laki, 0, ',', '.');
+                            $data['demographics']['female'] = number_format($regStat->jumlah_perempuan, 0, ',', '.');
+                            $data['demographics']['productive_count'] = number_format($regStat->usia_produktif, 0, ',', '.');
+                            $data['demographics']['productive_pct'] = (string) $regStat->persentase_usia_produktif;
+                            $data['demographics']['child_count'] = number_format($regStat->usia_anak, 0, ',', '.');
+                            $data['demographics']['child_pct'] = (string) $regStat->persentase_usia_anak;
+                            $data['demographics']['elderly_count'] = number_format($regStat->usia_lansia, 0, ',', '.');
+                            $data['demographics']['elderly_pct'] = (string) $regStat->persentase_usia_lansia;
+                            $data['demographics']['avg_family_size'] = number_format($regStat->rata_rata_jiwa_per_kk, 2, ',', '.');
+                            $data['demographics']['density'] = number_format($regStat->kepadatan_penduduk, 1, ',', '.');
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    // Fallback to json configuration
+                }
+
                 return $data;
             }
         }
 
         // Default Fallback
         return [
-            'village_name' => 'Kelurahan Patokan',
+            'village_name' => 'Kelurahan Semampir',
             'subdistrict' => 'Kecamatan Kraksaan',
             'regency' => 'Kabupaten Probolinggo',
             'head_name' => 'H. Ahmad Fauzi, S.STP, M.Si',
             'head_nip' => '19800512 200501 1 004',
             'head_photo' => null,
             'welcome_title' => 'Komitmen Pelayanan Publik yang Transparan, Cepat, & Responsif',
-            'welcome_text' => '<p>Melalui sistem portal terpadu ini, Pemerintah Kelurahan Patokan berkomitmen penuh dalam mewujudkan pelayanan publik modern yang berbasis transparansi, kemudahan akses dokumen mandiri, dan akuntabilitas pengelolaan anggaran.</p><p>Kami terus berinovasi untuk memberikan pelayanan terbaik bagi warga Kraksaan tanpa kerumitan administrasi, ramah, akuntabel, dan 100% bebas dari segala bentuk pungutan liar.</p>',
-            'vision' => 'Terwujudnya Pelayanan Publik Kelurahan Patokan yang Transparan, Akuntabel, Berbasis Digital, dan Berkelanjutan Demi Kesejahteraan Masyarakat.',
+            'welcome_text' => '<p>Melalui sistem portal terpadu ini, Pemerintah Kelurahan Semampir berkomitmen penuh dalam mewujudkan pelayanan publik modern yang berbasis transparansi, kemudahan akses dokumen mandiri, dan akuntabilitas pengelolaan anggaran.</p><p>Kami terus berinovasi untuk memberikan pelayanan terbaik bagi warga Kraksaan tanpa kerumitan administrasi, ramah, akuntabel, dan 100% bebas dari segala bentuk pungutan liar.</p>',
+            'vision' => 'Terwujudnya Pelayanan Publik Kelurahan Semampir yang Transparan, Akuntabel, Berbasis Digital, dan Berkelanjutan Demi Kesejahteraan Masyarakat.',
             'mission' => '<ol><li>Meningkatkan kualitas pelayanan administrasi kependudukan secara cepat dan tepat sasaran.</li><li>Mendorong transparansi pengelolaan informasi dan dana pembangunan kelurahan.</li><li>Mengembangkan pemberdayaan ekonomi warga berbasis kemitraan daerah.</li></ol>',
-            'history_text' => '<p>Nama <strong>"Patokan"</strong> memiliki latar belakang sejarah etimologi yang berakar dari kata dasar <em>"Patok"</em>, yang berarti titik acuan penanda atau tiang pembatas wilayah.</p><p>Pada masa era kadipaten abad ke-18 dan masa pemerintahan kolonial di pesisir utara Probolinggo, wilayah ini difungsikan sebagai titik ukur nol dan acuan batas administrasi tanah wilayah Kraksaan. Di lokasi ini ditanam sebuah <strong>patok batu hitam besar</strong> yang menjadi patokan para musafir, pedagang, dan petugas karesidenan saat mengukur jarak jalur pos (De Grote Postweg).</p><p>Lambat laun, pemukiman di sekitar pilar patok penanda tersebut berkembang pesat dan akrab disapa warga dengan sebutan <strong>Dusun Patokan</strong>. Berkat letaknya yang sangat strategis di persimpangan jalan utama dan dekat dengan pusat perniagaan, wilayah ini terus bertumbuh menjadi desa pusat kegiatan masyarakat Kraksaan.</p>',
+            'history_text' => '<p>Nama <strong>"Semampir"</strong> memiliki latar belakang sejarah etimologi yang berakar dari kata dasar <em>"Patok"</em>, yang berarti titik acuan penanda atau tiang pembatas wilayah.</p><p>Pada masa era kadipaten abad ke-18 dan masa pemerintahan kolonial di pesisir utara Probolinggo, wilayah ini difungsikan sebagai titik ukur nol dan acuan batas administrasi tanah wilayah Kraksaan. Di lokasi ini ditanam sebuah <strong>patok batu hitam besar</strong> yang menjadi semampir para musafir, pedagang, dan petugas karesidenan saat mengukur jarak jalur pos (De Grote Postweg).</p><p>Lambat laun, pemukiman di sekitar pilar patok penanda tersebut berkembang pesat dan akrab disapa warga dengan sebutan <strong>Dusun Semampir</strong>. Berkat letaknya yang sangat strategis di persimpangan jalan utama dan dekat dengan pusat perniagaan, wilayah ini terus bertumbuh menjadi desa pusat kegiatan masyarakat Kraksaan.</p>',
             'office_hours_mon_thu' => '08.00 - 15.30 WIB',
             'office_hours_fri' => '08.00 - 14.30 WIB',
             'phone' => '(0335) 841-209',
             'whatsapp' => '0812-3456-7890',
-            'whatsapp_service_text' => 'Pemerintah Kelurahan Patokan menyediakan layanan WhatsApp untuk mempermudah Anda dalam mendapatkan informasi, menyampaikan pengaduan, atau menanyakan seputar pelayanan publik tanpa harus datang ke kantor kelurahan.',
-            'email' => 'kelurahanpatokan@probolinggokab.go.id',
-            'address' => 'Jl. Pahlawan No. 01, Kelurahan Patokan, Kecamatan Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282',
-            'map_embed' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15822.464673673551!2d113.40748130833777!3d-7.756187513813955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd70068a4d4bf59%3A0x67a3f0196c810!2sPatokan%2C%20Kec.%20Kraksaan%2C%20Kabupaten%20Probolinggo%2C%20Jawa%20Timur!5e0!3m2!1sid!2sid!4v1708412000000!5m2!1sid!2sid',
-            'footer_description' => 'Website Resmi Kelurahan Patokan, Kecamatan Kraksaan, Kabupaten Probolinggo - Portal Informasi Publik, Pelayanan Administrasi Kependudukan, Surat Keterangan Online, Berita, dan Pembangunan Kemasyarakatan.',
-            'social_instagram' => '#',
-            'social_youtube' => '#',
-            'social_tiktok' => '#',
-            'social_whatsapp' => '#',
+            'whatsapp_service_text' => 'Pemerintah Kelurahan Semampir menyediakan layanan WhatsApp untuk mempermudah Anda dalam mendapatkan informasi, menyampaikan pengaduan, atau menanyakan seputar pelayanan publik tanpa harus datang ke kantor kelurahan.',
+            'email' => 'kelurahansemampir@probolinggokab.go.id',
+            'address' => 'Jl. Pahlawan No. 01, Kelurahan Semampir, Kecamatan Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282',
+            'map_embed' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15822.464673673551!2d113.40748130833777!3d-7.756187513813955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd70068a4d4bf59%3A0x67a3f0196c810!2sSemampir%2C%20Kec.%20Kraksaan%2C%20Kabupaten%20Probolinggo%2C%20Jawa%20Timur!5e0!3m2!1sid!2sid!4v1708412000000!5m2!1sid!2sid',
+            'footer_description' => 'Website Resmi Kelurahan Semampir, Kecamatan Kraksaan, Kabupaten Probolinggo - Portal Informasi Publik, Pelayanan Administrasi Kependudukan, Surat Keterangan Online, Berita, dan Pembangunan Kemasyarakatan.',
+            'social_facebook' => 'https://facebook.com/kelurahansemampir',
+            'social_instagram' => 'https://instagram.com/kelurahansemampir',
+            'social_youtube' => 'https://youtube.com/@kelurahansemampir',
+            'social_tiktok' => 'https://tiktok.com/@kelurahansemampir',
+            'social_whatsapp' => '0812-3456-7890',
             'qr_code_image' => null,
             'sekel_photo' => null,
-            'lurah_tupoksi' => 'Penyelenggara utama urusan pemerintahan, ketertiban umum, pelayanan publik, dan pembinaan wilayah Patokan.',
+            'lurah_tupoksi' => 'Penyelenggara utama urusan pemerintahan, ketertiban umum, pelayanan publik, dan pembinaan wilayah Semampir.',
             'sekel_tupoksi' => 'Pengelola administrasi umum, perencanaan operasional, keuangan, dan pelayanan surat-menyurat kelurahan.',
             'kasi_pem_tupoksi' => 'Pelayanan KTP/KK, pengawasan ketertiban lingkungan, dan pengelolaan data pertanahan & PBB.',
             'kasi_kesra_tupoksi' => 'Penerbitan SKTM, koordinasi bantuan sosial kementerian, kesehatan posyandu, dan keagamaan.',
@@ -82,6 +136,13 @@ class VillageProfileController extends Controller
             'apbd' => self::getDefaultApbd(),
             'territory' => self::getDefaultTerritory(),
             'service_metrics' => self::getDefaultServiceMetrics(),
+            'maklumat_text' => 'Dengan ini, kami seluruh ASN dan Pegawai Pemerintah Kelurahan Semampir menyatakan sanggup menyelenggarakan pelayanan sesuai standar pelayanan yang telah ditetapkan dan siap menerima sanksi sesuai ketentuan perundang-undangan yang berlaku apabila pelayanan tidak sesuai janji.',
+            'maklumat_nomor_sk' => '188.45/04/426.411.01/2026',
+            'maklumat_caption' => 'Dokumen Piagam Penetapan Standar Maklumat Pelayanan Publik Kelurahan Semampir Tahun 2026',
+            'maklumat_file' => null,
+            'maklumat_file_type' => null,
+            'maklumat_file_name' => null,
+            'maklumat_file_size' => null,
         ];
     }
 
@@ -110,11 +171,11 @@ class VillageProfileController extends Controller
             'density' => '3.438',
             'avg_family_size' => '3.2',
             'occupations' => [
-                ['name' => 'Pedagang / Pelaku UMKM Mikro', 'count' => '1.840', 'pct' => '32.8'],
-                ['name' => 'Karyawan Swasta & Jasa Komersial', 'count' => '1.420', 'pct' => '25.3'],
-                ['name' => 'Aparatur Sipil Negara (ASN / TNI / POLRI)', 'count' => '760', 'pct' => '13.5'],
-                ['name' => 'Petani / Buruh Tani / Peternak', 'count' => '620', 'pct' => '11.0'],
-                ['name' => 'Lainnya / Sektor Informal Mandiri', 'count' => '970', 'pct' => '17.4'],
+                ['name' => 'Pedagang / Pelaku UMKM Mikro', 'sector' => 'Perdagangan', 'count' => '1.840', 'pct' => '32.8'],
+                ['name' => 'Karyawan Swasta & Jasa Komersial', 'sector' => 'Swasta', 'count' => '1.420', 'pct' => '25.3'],
+                ['name' => 'Aparatur Sipil Negara (ASN / TNI / POLRI)', 'sector' => 'PNS/TNI/Polri', 'count' => '760', 'pct' => '13.5'],
+                ['name' => 'Petani / Buruh Tani / Peternak', 'sector' => 'Pertanian', 'count' => '620', 'pct' => '11.0'],
+                ['name' => 'Lainnya / Sektor Informal Mandiri', 'sector' => 'Lainnya', 'count' => '970', 'pct' => '17.4'],
             ],
             'educations' => [
                 ['name' => 'Tamat SMA / SMK / Sederajat', 'count' => '3.240', 'pct' => '38.4'],
@@ -134,9 +195,9 @@ class VillageProfileController extends Controller
             'realized_budget' => '985.400.000',
             'realized_pct' => '67.9',
             'allocations' => [
-                ['name' => 'Pembangunan Infrastruktur, Fisik, & Perbaikan Sanitasi Lingkungan', 'amount' => '652.500.000', 'pct' => '45', 'desc' => 'Pavingisasi jalan gang, normalisasi selokan RW 02-05, dan lampu penerangan jalan umum (PJU).'],
-                ['name' => 'Pemberdayaan Masyarakat, Kesejahteraan Sosial, & UMKM', 'amount' => '435.000.000', 'pct' => '30', 'desc' => 'Pelatihan digital marketing wirausaha muda, subsidi posyandu balita & lansia, serta bantuan bibit pekarangan.'],
-                ['name' => 'Operasional Penyelenggaraan Pelayanan & Administrasi Kantor', 'amount' => '362.500.000', 'pct' => '25', 'desc' => 'Infrastruktur server pelayanan mandiri digital, alat tulis kantor, pemeliharaan gedung, dan honor kebersihan.'],
+                ['id' => 1, 'tahun' => 2026, 'name' => 'Pembangunan Infrastruktur, Fisik, & Perbaikan Sanitasi Lingkungan', 'amount' => '652.500.000', 'pct' => '45', 'desc' => 'Pavingisasi jalan gang, normalisasi selokan RW 02-05, dan lampu penerangan jalan umum (PJU).'],
+                ['id' => 2, 'tahun' => 2026, 'name' => 'Pemberdayaan Masyarakat, Kesejahteraan Sosial, & UMKM', 'amount' => '435.000.000', 'pct' => '30', 'desc' => 'Pelatihan digital marketing wirausaha muda, subsidi posyandu balita & lansia, serta bantuan bibit pekarangan.'],
+                ['id' => 3, 'tahun' => 2026, 'name' => 'Operasional Penyelenggaraan Pelayanan & Administrasi Kantor', 'amount' => '362.500.000', 'pct' => '25', 'desc' => 'Infrastruktur server pelayanan mandiri digital, alat tulis kantor, pemeliharaan gedung, dan honor kebersihan.'],
             ]
         ];
     }
@@ -183,6 +244,50 @@ class VillageProfileController extends Controller
         return view('admin.beranda.visi-misi-sejarah', compact('profile'));
     }
 
+    public function sejarah()
+    {
+        $profile = self::getProfileData();
+        return view('admin.beranda.sejarah', compact('profile'));
+    }
+
+    public function tupoksi()
+    {
+        $page = \App\Models\Page::firstOrCreate(
+            ['slug' => 'tupoksi'],
+            [
+                'category' => 'profile',
+                'title' => 'Tugas Pokok & Fungsi (Tupoksi)',
+                'subtitle' => 'Landasan tugas pokok, wewenang, dan fungsi kerja aparatur Pemerintah Kelurahan.',
+                'badge_text' => 'Tupoksi',
+                'type' => 'standard',
+                'is_active' => true,
+                'order' => 6,
+                'content' => '<h3>Tugas Pokok & Fungsi Kelurahan</h3><p>Kelurahan mempunyai tugas pokok menyelenggarakan urusan pemerintahan umum, ketentraman dan ketertiban umum, pemberdayaan masyarakat, serta pelayanan publik di tingkat kelurahan sesuai ketentuan peraturan perundang-undangan.</p>'
+            ]
+        );
+        $profile = self::getProfileData();
+        return view('admin.beranda.tupoksi', compact('page', 'profile'));
+    }
+
+    public function updateTupoksi(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'subtitle' => 'nullable|string',
+            'content' => 'required|string',
+        ]);
+
+        $page = \App\Models\Page::where('slug', 'tupoksi')->firstOrFail();
+        $page->update([
+            'title' => $request->title,
+            'subtitle' => $request->subtitle,
+            'content' => $request->content,
+            'is_active' => $request->boolean('is_active', true),
+        ]);
+
+        return back()->with('status', 'Data Tugas Pokok & Fungsi (TUPOKSI) berhasil diperbarui.');
+    }
+
     public function banner()
     {
         $profile = self::getProfileData();
@@ -195,10 +300,43 @@ class VillageProfileController extends Controller
         return view('admin.beranda.statistik', compact('profile'));
     }
 
-    public function transparansi()
+    public function statistikWilayah()
     {
         $profile = self::getProfileData();
-        return view('admin.beranda.transparansi', compact('profile'));
+        $regionalStatistic = \App\Models\RegionalStatistic::getActive();
+        return view('admin.beranda.statistik-wilayah', compact('profile', 'regionalStatistic'));
+    }
+
+    public function transparansi(Request $request)
+    {
+        $profile = self::getProfileData();
+
+        $availableYears = [];
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('apbdes')) {
+                $availableYears = \App\Models\Apbdes::distinct()->orderBy('tahun', 'desc')->pluck('tahun')->toArray();
+            }
+        } catch (\Throwable $e) {}
+
+        $currentYear = (int) ($profile['apbd']['year'] ?? date('Y'));
+        if (!in_array($currentYear, $availableYears)) {
+            array_unshift($availableYears, $currentYear);
+        }
+        $availableYears = array_values(array_unique($availableYears));
+        rsort($availableYears);
+
+        $selectedYear = $request->query('tahun');
+        if ($selectedYear === 'all') {
+            $apbdesList = \App\Models\Apbdes::orderBy('tahun', 'desc')->orderBy('id', 'asc')->get();
+        } elseif ($selectedYear && is_numeric($selectedYear)) {
+            $selectedYear = (int)$selectedYear;
+            $apbdesList = \App\Models\Apbdes::where('tahun', $selectedYear)->orderBy('id', 'asc')->get();
+        } else {
+            $selectedYear = $availableYears[0] ?? (int)date('Y');
+            $apbdesList = \App\Models\Apbdes::where('tahun', $selectedYear)->orderBy('id', 'asc')->get();
+        }
+
+        return view('admin.beranda.transparansi', compact('profile', 'apbdesList', 'availableYears', 'selectedYear'));
     }
 
     public function kontak()
@@ -224,6 +362,35 @@ class VillageProfileController extends Controller
      */
     public function update(Request $request)
     {
+        $request->validate([
+            'head_photo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'sekel_photo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'kasi_pem_photo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'kasi_kesra_photo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'kasi_ekbang_photo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'history_hero_image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'hero_image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'qr_code_image' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
+        ], [
+            'head_photo.image' => 'File ditolak! Foto pimpinan harus berupa file gambar.',
+            'head_photo.mimes' => 'File ditolak! Format foto pimpinan harus JPG, PNG, atau WEBP.',
+            'head_photo.max' => 'File ditolak! Ukuran foto pimpinan maksimal 5 MB.',
+            'sekel_photo.mimes' => 'File ditolak! Format foto harus JPG, PNG, atau WEBP.',
+            'sekel_photo.max' => 'File ditolak! Ukuran foto maksimal 5 MB.',
+            'kasi_pem_photo.mimes' => 'File ditolak! Format foto harus JPG, PNG, atau WEBP.',
+            'kasi_pem_photo.max' => 'File ditolak! Ukuran foto maksimal 5 MB.',
+            'kasi_kesra_photo.mimes' => 'File ditolak! Format foto harus JPG, PNG, atau WEBP.',
+            'kasi_kesra_photo.max' => 'File ditolak! Ukuran foto maksimal 5 MB.',
+            'kasi_ekbang_photo.mimes' => 'File ditolak! Format foto harus JPG, PNG, atau WEBP.',
+            'kasi_ekbang_photo.max' => 'File ditolak! Ukuran foto maksimal 5 MB.',
+            'history_hero_image.mimes' => 'File ditolak! Format gambar sejarah harus JPG, PNG, atau WEBP.',
+            'history_hero_image.max' => 'File ditolak! Ukuran gambar sejarah maksimal 5 MB.',
+            'hero_image.mimes' => 'File ditolak! Format banner hero harus JPG, PNG, atau WEBP.',
+            'hero_image.max' => 'File ditolak! Ukuran banner hero maksimal 5 MB.',
+            'qr_code_image.mimes' => 'File ditolak! Format barcode QR harus JPG, PNG, atau WEBP.',
+            'qr_code_image.max' => 'File ditolak! Ukuran barcode QR maksimal 5 MB.',
+        ]);
+
         $existingData = self::getProfileData();
         $section = $request->input('section');
         $statusMsg = 'Profil kelurahan berhasil diperbarui.';
@@ -233,7 +400,10 @@ class VillageProfileController extends Controller
             $existingData['head_name'] = $request->input('head_name', '');
             $existingData['head_nip'] = $request->input('head_nip', '');
             $existingData['welcome_title'] = $request->input('welcome_title', '');
-            $existingData['welcome_text'] = $request->input('welcome_text', '');
+            $welcomeText = $request->input('welcome_text', '');
+            // Bersihkan styling inline warna pudar bekas copas dari website
+            $welcomeText = preg_replace('/style="[^"]*(color:\s*(rgb\(203,\s*213,\s*225\)|#cbd5e1|rgb\(226,\s*232,\s*240\)|#e2e8f0)|background-color:\s*(rgb\(248,\s*250,\s*252\)|#f8fafc))[^"]*"/i', '', $welcomeText);
+            $existingData['welcome_text'] = $welcomeText;
 
             if ($request->hasFile('head_photo')) {
                 if (!empty($existingData['head_photo']) && Storage::disk('public')->exists($existingData['head_photo'])) {
@@ -245,9 +415,13 @@ class VillageProfileController extends Controller
 
         } elseif ($section === 'sotk') {
             $existingData['sekel_name'] = $request->input('sekel_name', '');
+            $existingData['sekel_role'] = $request->input('sekel_role', 'Sekretaris Kelurahan');
             $existingData['kasi_pem_name'] = $request->input('kasi_pem_name', '');
+            $existingData['kasi_pem_role'] = $request->input('kasi_pem_role', 'Kasi Pemerintahan & Trantib');
             $existingData['kasi_kesra_name'] = $request->input('kasi_kesra_name', '');
+            $existingData['kasi_kesra_role'] = $request->input('kasi_kesra_role', 'Kasi Pelayanan & Kesra');
             $existingData['kasi_ekbang_name'] = $request->input('kasi_ekbang_name', '');
+            $existingData['kasi_ekbang_role'] = $request->input('kasi_ekbang_role', 'Kasi Pemberdayaan & Ekbang');
 
             $existingData['lurah_tupoksi'] = $request->input('lurah_tupoksi', '');
             $existingData['sekel_tupoksi'] = $request->input('sekel_tupoksi', '');
@@ -264,11 +438,52 @@ class VillageProfileController extends Controller
                     $existingData[$photoKey] = $request->file($photoKey)->store('profile', 'public');
                 }
             }
-            $statusMsg = 'Struktur Organisasi (SOTK) berhasil diperbarui.';
 
-        } elseif ($section === 'visi_misi_sejarah') {
+            // Proses Anggota / Pejabat Tambahan Dinamis
+            $rawMembers = $request->input('members', []);
+            $processedMembers = [];
+            if (is_array($rawMembers)) {
+                foreach ($rawMembers as $index => $m) {
+                    $name = trim($m['name'] ?? '');
+                    if ($name === '') {
+                        continue;
+                    }
+                    $photoPath = $m['existing_photo'] ?? null;
+                    if ($request->hasFile("member_photos.{$index}")) {
+                        if (!empty($photoPath) && Storage::disk('public')->exists($photoPath)) {
+                            Storage::disk('public')->delete($photoPath);
+                        }
+                        $photoPath = $request->file("member_photos.{$index}")->store('profile', 'public');
+                    }
+                    $processedMembers[] = [
+                        'name' => $name,
+                        'position' => trim($m['position'] ?? 'Staf Kelurahan'),
+                        'photo' => $photoPath,
+                        'tupoksi' => trim($m['tupoksi'] ?? ''),
+                    ];
+                }
+            }
+            $existingData['sotk_members'] = $processedMembers;
+
+            $statusMsg = 'Struktur Organisasi (SOTK) dan data anggota berhasil diperbarui.';
+
+        } elseif ($section === 'visi_misi' || $section === 'visi_misi_sejarah') {
             $existingData['vision'] = $request->input('vision', '');
             $existingData['mission'] = $request->input('mission', '');
+
+            if ($request->has('history_text')) {
+                $existingData['history_text'] = $request->input('history_text', '');
+            }
+
+            if ($request->hasFile('history_hero_image')) {
+                if (!empty($existingData['history_hero_image']) && Storage::disk('public')->exists($existingData['history_hero_image'])) {
+                    Storage::disk('public')->delete($existingData['history_hero_image']);
+                }
+                $existingData['history_hero_image'] = $request->file('history_hero_image')->store('profile', 'public');
+            }
+            $statusMsg = 'Visi dan Misi Kelurahan berhasil diperbarui.';
+
+        } elseif ($section === 'sejarah') {
             $existingData['history_text'] = $request->input('history_text', '');
 
             if ($request->hasFile('history_hero_image')) {
@@ -277,7 +492,7 @@ class VillageProfileController extends Controller
                 }
                 $existingData['history_hero_image'] = $request->file('history_hero_image')->store('profile', 'public');
             }
-            $statusMsg = 'Visi, Misi, dan Sejarah berhasil diperbarui.';
+            $statusMsg = 'Sejarah & Asal Usul Kelurahan berhasil diperbarui.';
 
         } elseif ($section === 'banner') {
             if ($request->hasFile('hero_image')) {
@@ -307,10 +522,15 @@ class VillageProfileController extends Controller
             $statusMsg = 'Alamat dan Peta Lokasi berhasil diperbarui.';
 
         } elseif ($section === 'footer') {
-            $existingData['footer_description'] = $request->input('footer_description', '');
+            $footerDesc = $request->input('footer_description', '');
+            // Bersihkan styling inline warna pudar bekas copas dari website
+            $footerDesc = preg_replace('/style="[^"]*(color:\s*(rgb\(203,\s*213,\s*225\)|#cbd5e1|rgb\(226,\s*232,\s*240\)|#e2e8f0)|background-color:\s*(rgb\(248,\s*250,\s*252\)|#f8fafc))[^"]*"/i', '', $footerDesc);
+            $existingData['footer_description'] = $footerDesc;
+            $existingData['social_facebook'] = $request->input('social_facebook', '');
             $existingData['social_instagram'] = $request->input('social_instagram', '');
             $existingData['social_youtube'] = $request->input('social_youtube', '');
             $existingData['social_tiktok'] = $request->input('social_tiktok', '');
+            $existingData['social_whatsapp'] = $request->input('social_whatsapp', '');
             
             if ($request->hasFile('qr_code_image')) {
                 if (!empty($existingData['qr_code_image']) && Storage::disk('public')->exists($existingData['qr_code_image'])) {
@@ -331,93 +551,198 @@ class VillageProfileController extends Controller
 
         } elseif ($section === 'demografi') {
             $demographics = $existingData['demographics'] ?? self::getDefaultDemographics();
-            
-            $totalStr = $request->input('demo_total', '0');
-            $totalNum = (float) str_replace(['.', ','], ['', '.'], $totalStr);
-            $totalNumActual = $totalNum > 0 ? $totalNum : 1;
 
             $maleStr = $request->input('demo_male', '0');
             $maleNum = (float) str_replace(['.', ','], ['', '.'], $maleStr);
-            
+
             $femaleStr = $request->input('demo_female', '0');
             $femaleNum = (float) str_replace(['.', ','], ['', '.'], $femaleStr);
 
-            if (($maleNum + $femaleNum) > $totalNum) {
-                return back()->withErrors(['Jumlah Laki-laki dan Perempuan tidak boleh melebihi Total Populasi Penduduk.'])->withInput();
+            // Validasi: Nilai tidak boleh negatif (< 0)
+            if ($maleNum < 0 || $femaleNum < 0) {
+                return back()->withErrors(['Jumlah penduduk (Laki-laki atau Perempuan) tidak boleh bernilai negatif (< 0).'])->withInput();
             }
 
-            $demographics['total'] = $totalStr;
-            $demographics['male'] = $request->input('demo_male', '');
-            $demographics['female'] = $request->input('demo_female', '');
+            // FORMULA OTOMATIS: total_penduduk = jumlah_pria + jumlah_wanita
+            // Selalu dihitung ulang di backend sebelum disimpan ke database/storage untuk menjaga konsistensi data
+            $totalNum = $maleNum + $femaleNum;
+            $totalFormatted = number_format($totalNum, 0, ',', '.');
+            $totalNumActual = $totalNum > 0 ? $totalNum : 1;
 
+            // Kelompok Usia
             $prodStr = $request->input('demo_prod_count', '0');
             $prodNum = (float) str_replace(['.', ','], ['', '.'], $prodStr);
-            $demographics['productive_count'] = $prodStr;
-            $demographics['productive_pct'] = str_replace('.', ',', (string)round(($prodNum / $totalNumActual) * 100, 1));
 
             $childStr = $request->input('demo_child_count', '0');
             $childNum = (float) str_replace(['.', ','], ['', '.'], $childStr);
-            $demographics['child_count'] = $childStr;
-            $demographics['child_pct'] = str_replace('.', ',', (string)round(($childNum / $totalNumActual) * 100, 1));
 
             $eldStr = $request->input('demo_elderly_count', '0');
             $eldNum = (float) str_replace(['.', ','], ['', '.'], $eldStr);
-            $demographics['elderly_count'] = $eldStr;
+
+            // Validasi non-negatif kelompok usia
+            if ($prodNum < 0 || $childNum < 0 || $eldNum < 0) {
+                return back()->withErrors(['Nilai kategori Kelompok Usia tidak boleh bernilai negatif (< 0).'])->withInput();
+            }
+
+            // Validasi batas maksimal: total penjumlahan kelompok usia <= total_penduduk
+            $totalKelompokUsia = $prodNum + $childNum + $eldNum;
+            if ($totalKelompokUsia > $totalNum) {
+                return back()->withErrors([
+                    "Jumlah Kelompok Usia tidak boleh melebihi total penduduk ({$totalFormatted} jiwa)."
+                ])->withInput();
+            }
+
+            // Tingkat Pendidikan
+            $eduNames = $request->input('edu_name', []);
+            $eduCounts = $request->input('edu_count', []);
+            $educations = [];
+            $totalPendidikan = 0;
+
+            foreach ($eduNames as $i => $name) {
+                if (!empty($name)) {
+                    $cStr = $eduCounts[$i] ?? '0';
+                    $cNum = (float) str_replace(['.', ','], ['', '.'], $cStr);
+                    if ($cNum < 0) {
+                        return back()->withErrors(['Nilai kategori Tingkat Pendidikan tidak boleh bernilai negatif (< 0).'])->withInput();
+                    }
+                    $totalPendidikan += $cNum;
+                    $educations[] = [
+                        'name' => $name,
+                        'count' => number_format($cNum, 0, ',', '.'),
+                        'pct' => str_replace('.', ',', (string)round(($cNum / $totalNumActual) * 100, 1))
+                    ];
+                }
+            }
+
+            if ($totalPendidikan > $totalNum) {
+                return back()->withErrors([
+                    "Jumlah Tingkat Pendidikan tidak boleh melebihi total penduduk ({$totalFormatted} jiwa)."
+                ])->withInput();
+            }
+
+            // Mata Pencaharian
+            $occNames = $request->input('occ_name', []);
+            $occSectors = $request->input('occ_sector', []);
+            $occCounts = $request->input('occ_count', []);
+            $occupations = [];
+            $totalPekerjaan = 0;
+
+            foreach ($occNames as $i => $name) {
+                if (!empty($name)) {
+                    $cStr = $occCounts[$i] ?? '0';
+                    $cNum = (float) str_replace(['.', ','], ['', '.'], $cStr);
+                    if ($cNum < 0) {
+                        return back()->withErrors(['Nilai kategori Mata Pencaharian tidak boleh bernilai negatif (< 0).'])->withInput();
+                    }
+                    $totalPekerjaan += $cNum;
+                    $occupations[] = [
+                        'name' => $name,
+                        'sector' => $occSectors[$i] ?? 'Lainnya',
+                        'count' => number_format($cNum, 0, ',', '.'),
+                        'pct' => str_replace('.', ',', (string)round(($cNum / $totalNumActual) * 100, 1))
+                    ];
+                }
+            }
+
+            if ($totalPekerjaan > $totalNum) {
+                return back()->withErrors([
+                    "Jumlah Mata Pencaharian tidak boleh melebihi total penduduk ({$totalFormatted} jiwa)."
+                ])->withInput();
+            }
+
+            // Simpan data kependudukan
+            $demographics['total'] = $totalFormatted;
+            $demographics['male'] = number_format($maleNum, 0, ',', '.');
+            $demographics['female'] = number_format($femaleNum, 0, ',', '.');
+
+            $demographics['productive_count'] = number_format($prodNum, 0, ',', '.');
+            $demographics['productive_pct'] = str_replace('.', ',', (string)round(($prodNum / $totalNumActual) * 100, 1));
+
+            $demographics['child_count'] = number_format($childNum, 0, ',', '.');
+            $demographics['child_pct'] = str_replace('.', ',', (string)round(($childNum / $totalNumActual) * 100, 1));
+
+            $demographics['elderly_count'] = number_format($eldNum, 0, ',', '.');
             $demographics['elderly_pct'] = str_replace('.', ',', (string)round(($eldNum / $totalNumActual) * 100, 1));
 
             $demographics['density'] = $request->input('demo_density', '');
             $demographics['avg_family_size'] = $request->input('demo_avg_family', '');
 
-            $occNames = $request->input('occ_name', []);
-            $occCounts = $request->input('occ_count', []);
-            $occupations = [];
-            foreach ($occNames as $i => $name) {
-                if (!empty($name)) {
-                    $cStr = $occCounts[$i] ?? '0';
-                    $cNum = (float) str_replace(['.', ','], ['', '.'], $cStr);
-                    $occupations[] = [
-                        'name' => $name,
-                        'count' => $cStr,
-                        'pct' => str_replace('.', ',', (string)round(($cNum / $totalNumActual) * 100, 1))
-                    ];
-                }
-            }
             $demographics['occupations'] = $occupations;
-
-            $eduNames = $request->input('edu_name', []);
-            $eduCounts = $request->input('edu_count', []);
-            $educations = [];
-            foreach ($eduNames as $i => $name) {
-                if (!empty($name)) {
-                    $cStr = $eduCounts[$i] ?? '0';
-                    $cNum = (float) str_replace(['.', ','], ['', '.'], $cStr);
-                    $educations[] = [
-                        'name' => $name,
-                        'count' => $cStr,
-                        'pct' => str_replace('.', ',', (string)round(($cNum / $totalNumActual) * 100, 1))
-                    ];
-                }
-            }
             $demographics['educations'] = $educations;
 
             $existingData['demographics'] = $demographics;
-            $statusMsg = 'Data Demografi Lengkap berhasil diperbarui.';
+            $existingData['stats']['penduduk'] = $totalFormatted;
 
-        } elseif ($section === 'kemitraan') {
-            $kemitraanData = [];
-            $titles = $request->input('kemitraan_title', []);
-            $urls = $request->input('kemitraan_url', []);
-            
-            foreach ($titles as $index => $title) {
-                if (!empty($title)) {
-                    $kemitraanData[] = [
-                        'title' => $title,
-                        'url' => $urls[$index] ?? '#'
-                    ];
+            // Sinkronisasi otomatis ke tabel regional_statistics
+            if (\Illuminate\Support\Facades\Schema::hasTable('regional_statistics')) {
+                $regStat = \App\Models\RegionalStatistic::getActive();
+                if ($regStat) {
+                    $regStat->total_penduduk = (int)$totalNum;
+                    $regStat->jumlah_laki_laki = (int)$maleNum;
+                    $regStat->jumlah_perempuan = (int)$femaleNum;
+                    $regStat->usia_produktif = (int)$prodNum;
+                    $regStat->usia_anak = (int)$childNum;
+                    $regStat->usia_lansia = (int)$eldNum;
+                    $regStat->save();
+
+                    \Illuminate\Support\Facades\Cache::forget('regional_statistic_' . $regStat->tahun);
+                    \Illuminate\Support\Facades\Cache::forget('regional_statistic_active');
                 }
             }
-            $existingData['kemitraan'] = $kemitraanData;
-            $statusMsg = 'Daftar Kemitraan Instansi berhasil diperbarui.';
+
+            $statusMsg = 'Data Demografi Lengkap berhasil diperbarui dan disinkronkan ke database statistik.';
+
+        } elseif ($section === 'statistik_wilayah') {
+            $validated = $request->validate([
+                'tahun' => 'required|integer|min:2020|max:2050',
+                'luas_wilayah' => 'required|numeric|min:0.01',
+                'jumlah_rt' => 'required|integer|min:1',
+                'jumlah_rw' => 'required|integer|min:1',
+                'jumlah_kk' => 'required|integer|min:1',
+                'pertumbuhan_penduduk' => 'nullable|numeric',
+                'sumber_data' => 'required|string|max:255',
+                'catatan' => 'nullable|string',
+            ]);
+
+            if (\Illuminate\Support\Facades\Schema::hasTable('regional_statistics')) {
+                $regStat = \App\Models\RegionalStatistic::getActive($validated['tahun']);
+                if (!$regStat) {
+                    $regStat = new \App\Models\RegionalStatistic();
+                    $regStat->tahun = $validated['tahun'];
+                    $regStat->nama_kelurahan = 'Kelurahan Semampir';
+                    $regStat->nama_kecamatan = 'Kecamatan Kraksaan';
+                    $regStat->nama_kabupaten = 'Kabupaten Probolinggo';
+                    $regStat->total_penduduk = 5000;
+                    $regStat->jumlah_laki_laki = 4180;
+                    $regStat->jumlah_perempuan = 4245;
+                    $regStat->usia_produktif = 5610;
+                    $regStat->usia_anak = 1825;
+                    $regStat->usia_lansia = 990;
+                    $regStat->is_active = true;
+                }
+
+                $regStat->luas_wilayah = (float) $validated['luas_wilayah'];
+                $regStat->jumlah_rt = (int) $validated['jumlah_rt'];
+                $regStat->jumlah_rw = (int) $validated['jumlah_rw'];
+                $regStat->jumlah_kk = (int) $validated['jumlah_kk'];
+                $regStat->pertumbuhan_penduduk = (float) ($validated['pertumbuhan_penduduk'] ?? 1.2);
+                $regStat->sumber_data = $validated['sumber_data'];
+                $regStat->catatan = $validated['catatan'] ?? null;
+                $regStat->save();
+
+                \Illuminate\Support\Facades\Cache::forget('regional_statistic_' . $regStat->tahun);
+                \Illuminate\Support\Facades\Cache::forget('regional_statistic_active');
+
+                // Sinkronkan ke struktur JSON profil
+                $existingData['stats'] = [
+                    'penduduk' => number_format($regStat->total_penduduk, 0, ',', '.'),
+                    'kk' => number_format($regStat->jumlah_kk, 0, ',', '.'),
+                    'rt_rw' => sprintf('%02d / %02d', $regStat->jumlah_rt, $regStat->jumlah_rw),
+                    'luas' => rtrim(rtrim(number_format($regStat->luas_wilayah, 2, ',', '.'), '0'), ',') . ' km²',
+                ];
+            }
+
+            $statusMsg = 'Data Statistik Wilayah (Luas, RT/RW, KK, dan Kepadatan) TA ' . $validated['tahun'] . ' berhasil diperbarui!';
 
         } elseif ($section === 'wilayah') {
             $existingData['territory'] = [
@@ -442,8 +767,19 @@ class VillageProfileController extends Controller
             $statusMsg = 'Metrik Capaian Layanan Publik berhasil diperbarui.';
 
         } elseif ($section === 'apbd') {
+            $request->validate([
+                'apbd_year' => 'required|integer|between:2000,2099',
+                'apbd_total' => 'required',
+                'apbd_realized' => 'required',
+                'apbd_realized_pct' => 'required',
+            ], [
+                'apbd_year.required' => 'Tahun anggaran wajib diisi.',
+                'apbd_year.integer' => 'Format tahun anggaran harus berupa angka 4 digit (YYYY).',
+                'apbd_year.between' => 'Tahun anggaran harus berada dalam rentang tahun 2000 - 2099.',
+            ]);
+
             $apbd = $existingData['apbd'] ?? self::getDefaultApbd();
-            $apbd['year'] = $request->input('apbd_year', '');
+            $apbd['year'] = $request->input('apbd_year');
             $apbd['total_budget'] = $request->input('apbd_total', '');
             $apbd['realized_budget'] = $request->input('apbd_realized', '');
             $apbd['realized_pct'] = $request->input('apbd_realized_pct', '');
@@ -464,45 +800,145 @@ class VillageProfileController extends Controller
                     ];
                 }
             }
-            $apbd['allocations'] = $allocations;
+            if (!empty($allocations)) {
+                $apbd['allocations'] = $allocations;
+            }
             $existingData['apbd'] = $apbd;
             $statusMsg = 'Transparansi APBD berhasil diperbarui.';
         }
 
         File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-        return back()->with('status', $statusMsg);
+        return back()->with('status', $statusMsg)->with('success', $statusMsg);
     }
 
     public function storeApbd(Request $request)
     {
-        $existingData = self::getProfileData();
-        $apbd = $existingData['apbd'] ?? self::getDefaultApbd();
-        $allocations = $apbd['allocations'] ?? [];
+        $request->validate([
+            'apbd_year' => 'required|integer|between:2000,2099',
+            'apbd_alloc_name' => 'required|string|max:255',
+            'apbd_alloc_amount' => 'required',
+            'apbd_alloc_pct' => 'required',
+            'apbd_alloc_desc' => 'nullable|string',
+            'apbd_kode_rekening' => 'nullable|string|max:50',
+        ], [
+            'apbd_year.required' => 'Tahun anggaran wajib diisi.',
+            'apbd_year.integer' => 'Format tahun anggaran harus berupa angka 4 digit (YYYY).',
+            'apbd_year.between' => 'Tahun anggaran harus berada dalam rentang tahun 2000 - 2099.',
+            'apbd_alloc_name.required' => 'Nama bidang alokasi wajib diisi.',
+            'apbd_alloc_amount.required' => 'Jumlah anggaran wajib diisi.',
+            'apbd_alloc_pct.required' => 'Persentase alokasi wajib diisi.',
+        ]);
 
-        $allocations[] = [
-            'name' => $request->input('apbd_alloc_name'),
-            'amount' => $request->input('apbd_alloc_amount'),
-            'pct' => $request->input('apbd_alloc_pct'),
-            'desc' => $request->input('apbd_alloc_desc', '')
-        ];
+        $tahun = (int) $request->input('apbd_year');
+        $namaBidang = trim($request->input('apbd_alloc_name'));
 
-        $apbd['allocations'] = $allocations;
-        $existingData['apbd'] = $apbd;
-        File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        // Cek constraint unik kombinasi (tahun, nama_bidang)
+        $exists = \App\Models\Apbdes::where('tahun', $tahun)
+            ->whereRaw('LOWER(TRIM(nama_bidang)) = ?', [strtolower($namaBidang)])
+            ->exists();
 
-        return back()->with('success', 'Bidang alokasi APBD baru berhasil ditambahkan.');
+        if ($exists) {
+            return back()->withErrors([
+                'apbd_alloc_name' => "Bidang anggaran '{$namaBidang}' untuk tahun anggaran {$tahun} sudah terdaftar. Silakan gunakan nama bidang lain atau perbarui data yang ada."
+            ])->withInput();
+        }
+
+        $amountNum = (float) str_replace(['.', ','], ['', '.'], $request->input('apbd_alloc_amount', '0'));
+        if ($amountNum < 0) {
+            return back()->withErrors(['apbd_alloc_amount' => 'Nilai anggaran tidak boleh bernilai negatif (< 0).'])->withInput();
+        }
+
+        $pctNum = (float) str_replace(['%', ' '], '', str_replace(',', '.', $request->input('apbd_alloc_pct', '0')));
+        if ($pctNum < 0 || $pctNum > 100) {
+            return back()->withErrors(['apbd_alloc_pct' => 'Persentase alokasi anggaran harus berada di antara 0% dan 100%.'])->withInput();
+        }
+
+        \App\Models\Apbdes::create([
+            'tahun' => $tahun,
+            'kode_rekening' => $request->input('apbd_kode_rekening'),
+            'nama_bidang' => $namaBidang,
+            'anggaran' => $amountNum,
+            'realisasi' => 0,
+            'persentase' => $pctNum,
+            'deskripsi' => $request->input('apbd_alloc_desc', ''),
+        ]);
+
+        $this->syncApbdJson($tahun);
+
+        return redirect()->route('admin.beranda.transparansi', ['tahun' => $tahun])
+            ->with('success', "Bidang alokasi APBD '{$namaBidang}' (TA {$tahun}) berhasil ditambahkan.");
     }
 
-    public function updateApbd(Request $request, $index)
+    public function updateApbd(Request $request, $id)
     {
+        $request->validate([
+            'apbd_year' => 'required|integer|between:2000,2099',
+            'apbd_alloc_name' => 'required|string|max:255',
+            'apbd_alloc_amount' => 'required',
+            'apbd_alloc_pct' => 'required',
+            'apbd_alloc_desc' => 'nullable|string',
+            'apbd_kode_rekening' => 'nullable|string|max:50',
+        ], [
+            'apbd_year.required' => 'Tahun anggaran wajib diisi.',
+            'apbd_year.integer' => 'Format tahun anggaran harus berupa angka 4 digit (YYYY).',
+            'apbd_year.between' => 'Tahun anggaran harus berada dalam rentang tahun 2000 - 2099.',
+            'apbd_alloc_name.required' => 'Nama bidang alokasi wajib diisi.',
+            'apbd_alloc_amount.required' => 'Jumlah anggaran wajib diisi.',
+            'apbd_alloc_pct.required' => 'Persentase alokasi wajib diisi.',
+        ]);
+
+        $tahun = (int) $request->input('apbd_year');
+        $namaBidang = trim($request->input('apbd_alloc_name'));
+
+        // Cek constraint unik kombinasi (tahun, nama_bidang) kecualikan ID saat ini
+        $exists = \App\Models\Apbdes::where('tahun', $tahun)
+            ->whereRaw('LOWER(TRIM(nama_bidang)) = ?', [strtolower($namaBidang)])
+            ->where('id', '!=', $id)
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors([
+                'apbd_alloc_name' => "Bidang anggaran '{$namaBidang}' untuk tahun anggaran {$tahun} sudah terdaftar. Silakan gunakan nama bidang lain."
+            ])->withInput();
+        }
+
+        $amountNum = (float) str_replace(['.', ','], ['', '.'], $request->input('apbd_alloc_amount', '0'));
+        if ($amountNum < 0) {
+            return back()->withErrors(['apbd_alloc_amount' => 'Nilai anggaran tidak boleh bernilai negatif (< 0).'])->withInput();
+        }
+
+        $pctNum = (float) str_replace(['%', ' '], '', str_replace(',', '.', $request->input('apbd_alloc_pct', '0')));
+        if ($pctNum < 0 || $pctNum > 100) {
+            return back()->withErrors(['apbd_alloc_pct' => 'Persentase alokasi anggaran harus berada di antara 0% dan 100%.'])->withInput();
+        }
+
+        $apbdes = \App\Models\Apbdes::find($id);
+        if ($apbdes) {
+            $apbdes->update([
+                'tahun' => $tahun,
+                'kode_rekening' => $request->input('apbd_kode_rekening', $apbdes->kode_rekening),
+                'nama_bidang' => $namaBidang,
+                'anggaran' => $amountNum,
+                'persentase' => $pctNum,
+                'deskripsi' => $request->input('apbd_alloc_desc', ''),
+            ]);
+
+            $this->syncApbdJson($tahun);
+
+            return redirect()->route('admin.beranda.transparansi', ['tahun' => $tahun])
+                ->with('success', "Data bidang alokasi '{$namaBidang}' berhasil diperbarui.");
+        }
+
+        // Fallback untuk array JSON jika id berupa index legacy
         $existingData = self::getProfileData();
         $apbd = $existingData['apbd'] ?? self::getDefaultApbd();
         $allocations = $apbd['allocations'] ?? [];
 
-        if (isset($allocations[$index])) {
-            $allocations[$index] = [
-                'name' => $request->input('apbd_alloc_name'),
+        if (isset($allocations[$id])) {
+            $allocations[$id] = [
+                'tahun' => $tahun,
+                'name' => $namaBidang,
                 'amount' => $request->input('apbd_alloc_amount'),
                 'pct' => $request->input('apbd_alloc_pct'),
                 'desc' => $request->input('apbd_alloc_desc', '')
@@ -512,20 +948,31 @@ class VillageProfileController extends Controller
             $existingData['apbd'] = $apbd;
             File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-            return back()->with('success', 'Data bidang alokasi berhasil diperbarui.');
+            return redirect()->route('admin.beranda.transparansi', ['tahun' => $tahun])
+                ->with('success', 'Data bidang alokasi berhasil diperbarui.');
         }
 
         return back()->withErrors(['Bidang alokasi tidak ditemukan.']);
     }
 
-    public function destroyApbd($index)
+    public function destroyApbd($id)
     {
+        $apbdes = \App\Models\Apbdes::find($id);
+        if ($apbdes) {
+            $tahun = $apbdes->tahun;
+            $apbdes->delete();
+            $this->syncApbdJson($tahun);
+
+            return redirect()->route('admin.beranda.transparansi', ['tahun' => $tahun])
+                ->with('success', 'Bidang alokasi APBD berhasil dihapus.');
+        }
+
         $existingData = self::getProfileData();
         $apbd = $existingData['apbd'] ?? self::getDefaultApbd();
         $allocations = $apbd['allocations'] ?? [];
 
-        if (isset($allocations[$index])) {
-            array_splice($allocations, $index, 1);
+        if (isset($allocations[$id])) {
+            array_splice($allocations, $id, 1);
             $apbd['allocations'] = $allocations;
             $existingData['apbd'] = $apbd;
             File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
@@ -541,26 +988,52 @@ class VillageProfileController extends Controller
         $existingData = self::getProfileData();
         $demographics = $existingData['demographics'] ?? self::getDefaultDemographics();
         $key = $type === 'education' ? 'educations' : 'occupations';
+        $categoryName = $type === 'education' ? 'Tingkat Pendidikan' : 'Mata Pencaharian';
         $items = $demographics[$key] ?? [];
 
-        $totalStr = $demographics['total'] ?? '1';
+        $totalStr = $demographics['total'] ?? '0';
         $totalNum = (float) str_replace(['.', ','], ['', '.'], $totalStr);
-        $totalNum = $totalNum > 0 ? $totalNum : 1;
+        $totalFormatted = number_format($totalNum, 0, ',', '.');
+        $totalNumActual = $totalNum > 0 ? $totalNum : 1;
 
         $cStr = $request->input('stat_count', '0');
         $cNum = (float) str_replace(['.', ','], ['', '.'], $cStr);
 
-        $items[] = [
+        // Validasi: Nilai tidak boleh negatif (< 0)
+        if ($cNum < 0) {
+            return back()->withErrors(["Nilai kategori {$categoryName} tidak boleh bernilai negatif (< 0)."])->withInput();
+        }
+
+        // Validasi batas maksimal: akumulasi kategori <= total_penduduk
+        $currentSum = 0;
+        foreach ($items as $item) {
+            $currentSum += (float) str_replace(['.', ','], ['', '.'], $item['count'] ?? 0);
+        }
+        $newTotal = $currentSum + $cNum;
+
+        if ($newTotal > $totalNum) {
+            return back()->withErrors([
+                "Jumlah {$categoryName} tidak boleh melebihi total penduduk ({$totalFormatted} jiwa)."
+            ])->withInput();
+        }
+
+        $newItem = [
             'name' => $request->input('stat_name'),
-            'count' => $cStr,
-            'pct' => str_replace('.', ',', (string)round(($cNum / $totalNum) * 100, 1))
+            'count' => number_format($cNum, 0, ',', '.'),
+            'pct' => str_replace('.', ',', (string)round(($cNum / $totalNumActual) * 100, 1))
         ];
+
+        if ($type === 'occupation') {
+            $newItem['sector'] = $request->input('stat_sector', 'Lainnya');
+        }
+
+        $items[] = $newItem;
 
         $demographics[$key] = $items;
         $existingData['demographics'] = $demographics;
         File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-        return back()->with('success', 'Data statistik berhasil ditambahkan.');
+        return back()->with('success', "Data {$categoryName} berhasil ditambahkan.");
     }
 
     public function updateStatistik(Request $request, $type, $index)
@@ -568,27 +1041,55 @@ class VillageProfileController extends Controller
         $existingData = self::getProfileData();
         $demographics = $existingData['demographics'] ?? self::getDefaultDemographics();
         $key = $type === 'education' ? 'educations' : 'occupations';
+        $categoryName = $type === 'education' ? 'Tingkat Pendidikan' : 'Mata Pencaharian';
         $items = $demographics[$key] ?? [];
 
         if (isset($items[$index])) {
-            $totalStr = $demographics['total'] ?? '1';
+            $totalStr = $demographics['total'] ?? '0';
             $totalNum = (float) str_replace(['.', ','], ['', '.'], $totalStr);
-            $totalNum = $totalNum > 0 ? $totalNum : 1;
+            $totalFormatted = number_format($totalNum, 0, ',', '.');
+            $totalNumActual = $totalNum > 0 ? $totalNum : 1;
 
             $cStr = $request->input('stat_count', '0');
             $cNum = (float) str_replace(['.', ','], ['', '.'], $cStr);
 
-            $items[$index] = [
+            // Validasi: Nilai tidak boleh negatif (< 0)
+            if ($cNum < 0) {
+                return back()->withErrors(["Nilai kategori {$categoryName} tidak boleh bernilai negatif (< 0)."])->withInput();
+            }
+
+            // Validasi batas maksimal setelah update
+            $currentSum = 0;
+            foreach ($items as $idx => $item) {
+                if ($idx != $index) {
+                    $currentSum += (float) str_replace(['.', ','], ['', '.'], $item['count'] ?? 0);
+                }
+            }
+            $newTotal = $currentSum + $cNum;
+
+            if ($newTotal > $totalNum) {
+                return back()->withErrors([
+                    "Jumlah {$categoryName} tidak boleh melebihi total penduduk ({$totalFormatted} jiwa)."
+                ])->withInput();
+            }
+
+            $updatedItem = [
                 'name' => $request->input('stat_name'),
-                'count' => $cStr,
-                'pct' => str_replace('.', ',', (string)round(($cNum / $totalNum) * 100, 1))
+                'count' => number_format($cNum, 0, ',', '.'),
+                'pct' => str_replace('.', ',', (string)round(($cNum / $totalNumActual) * 100, 1))
             ];
+
+            if ($type === 'occupation') {
+                $updatedItem['sector'] = $request->input('stat_sector', 'Lainnya');
+            }
+
+            $items[$index] = $updatedItem;
 
             $demographics[$key] = $items;
             $existingData['demographics'] = $demographics;
             File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-            return back()->with('success', 'Data statistik berhasil diperbarui.');
+            return back()->with('success', "Data {$categoryName} berhasil diperbarui.");
         }
 
         return back()->withErrors(['Data tidak ditemukan.']);
@@ -611,5 +1112,34 @@ class VillageProfileController extends Controller
         }
 
         return back()->withErrors(['Data tidak ditemukan.']);
+    }
+
+    /**
+     * Helper untuk mensinkronisasi data APBD dari database ke file JSON profil.
+     */
+    protected function syncApbdJson($year = null): void
+    {
+        try {
+            if (!File::exists($this->configPath)) {
+                return;
+            }
+            $existingData = json_decode(File::get($this->configPath), true) ?: [];
+            $targetYear = $year ?: ($existingData['apbd']['year'] ?? date('Y'));
+            $dbAllocations = \App\Models\Apbdes::where('tahun', $targetYear)->orderBy('id', 'asc')->get();
+            if ($dbAllocations->isNotEmpty()) {
+                $existingData['apbd']['allocations'] = $dbAllocations->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'tahun' => $item->tahun,
+                        'kode_rekening' => $item->kode_rekening,
+                        'name' => $item->nama_bidang,
+                        'amount' => number_format((float)$item->anggaran, 0, ',', '.'),
+                        'pct' => rtrim(rtrim(number_format((float)$item->persentase, 2, ',', '.'), '0'), ','),
+                        'desc' => $item->deskripsi ?? '',
+                    ];
+                })->toArray();
+                File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            }
+        } catch (\Throwable $e) {}
     }
 }

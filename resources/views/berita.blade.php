@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Berita & Informasi - ' . ($villageProfile['village_name'] ?? 'Kelurahan Patokan'))
+@section('title', 'Berita & Informasi - ' . ($villageProfile['village_name'] ?? 'Kelurahan Semampir'))
 
 @section('content')
 
@@ -14,7 +14,7 @@
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div>
                 <h1 class="text-xl sm:text-2xl font-black text-slate-900 mb-1">Berita & Kabar Kelurahan</h1>
-                <p class="text-sm text-slate-500">Kabar terkini seputar pelayanan, kegiatan, pembangunan, dan pengumuman Kelurahan Patokan.</p>
+                <p class="text-sm text-slate-500">Kabar terkini seputar pelayanan, kegiatan, pembangunan, dan pengumuman Kelurahan Semampir.</p>
             </div>
             <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl font-bold text-sm transition-all shadow-sm shrink-0">
                 <i class="fas fa-arrow-left text-slate-400"></i>
@@ -28,13 +28,13 @@
             {{-- Filter Pill Header Bar --}}
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex items-center gap-2 overflow-x-auto no-scrollbar">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1.5">
-                    <i class="fas fa-filter text-emerald-600"></i> Filter Topik:
+                    <i class="fas fa-filter text-slate-600"></i> Filter Topik:
                 </span>
 
                 {{-- Semua Berita --}}
                 <a href="{{ route('berita') }}"
                    class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0
-                          {{ !request('kategori') ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-600 bg-slate-100 hover:bg-slate-200' }}">
+                          {{ !request('kategori') ? 'bg-slate-600 text-white shadow-md' : 'text-slate-600 bg-slate-100 hover:bg-slate-200' }}">
                     <span>Semua Berita</span>
                     <span class="px-1.5 py-0.5 rounded text-[10px] {{ !request('kategori') ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600' }}">
                         {{ $posts->total() }}
@@ -48,7 +48,7 @@
                     @endphp
                     <a href="{{ route('berita', ['kategori' => $cat->slug]) }}"
                        class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0
-                              {{ $isActive ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-600 bg-slate-200 hover:bg-slate-300' }}">
+                              {{ $isActive ? 'bg-slate-600 text-white shadow-md' : 'text-slate-600 bg-slate-200 hover:bg-slate-300' }}">
                         <span>{{ $cat->name }}</span>
                         <span class="px-1.5 py-0.5 rounded text-[10px] {{ $isActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600' }}">
                             {{ $cat->posts_count }}
@@ -65,7 +65,7 @@
                             
                             {{-- Thumbnail --}}
                             <a href="{{ route('berita.detail', $post->slug) }}" class="h-48 sm:h-52 relative overflow-hidden bg-slate-900 block w-full shrink-0">
-                                <span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-black uppercase tracking-wider absolute top-3 left-3 z-10 shadow-sm">
+                                <span class="bg-slate-100 text-slate-700 px-2 py-1 rounded text-[10px] font-black uppercase tracking-wider absolute top-3 left-3 z-10 shadow-sm">
                                     {{ $post->category->name ?? 'Informasi' }}
                                 </span>
                                 <img src="{{ $post->image_url }}"
@@ -78,12 +78,12 @@
                             <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
                                 <div>
                                     <div class="flex items-center gap-2 text-[11px] text-slate-400 font-semibold mb-2">
-                                        <span><i class="far fa-calendar-alt text-emerald-600 mr-1"></i>{{ $post->published_at ? $post->published_at->locale('id')->isoFormat('D MMM Y') : $post->created_at->isoFormat('D MMM Y') }}</span>
+                                        <span><i class="far fa-calendar-alt text-slate-600 mr-1"></i>{{ $post->published_at ? $post->published_at->locale('id')->isoFormat('D MMM Y') : $post->created_at->isoFormat('D MMM Y') }}</span>
                                         <span>•</span>
                                         <span><i class="far fa-eye mr-1"></i>{{ number_format($post->views) }} views</span>
                                     </div>
 
-                                    <h3 class="font-bold text-slate-800 text-sm group-hover:text-emerald-600 transition line-clamp-2 leading-snug">
+                                    <h3 class="font-bold text-slate-800 text-sm group-hover:text-slate-600 transition line-clamp-2 leading-snug">
                                         <a href="{{ route('berita.detail', $post->slug) }}">
                                             {{ $post->title }}
                                         </a>
@@ -96,7 +96,7 @@
 
                                 <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
                                     <a href="{{ route('berita.detail', $post->slug) }}"
-                                       class="text-xs font-bold text-emerald-600 hover:text-emerald-700 transition flex items-center gap-1.5">
+                                       class="text-xs font-bold text-slate-600 hover:text-slate-700 transition flex items-center gap-1.5">
                                         <span>Baca Selengkapnya</span>
                                         <i class="fas fa-chevron-right text-[10px]"></i>
                                     </a>
@@ -119,7 +119,7 @@
                     </div>
                     <h3 class="text-lg font-bold text-slate-800 mb-1">Belum Ada Berita</h3>
                     <p class="text-sm text-slate-500 mb-4">Belum ada berita atau artikel yang diterbitkan untuk kategori ini.</p>
-                    <a href="{{ route('berita') }}" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition inline-block shadow-sm">
+                    <a href="{{ route('berita') }}" class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white font-bold text-xs rounded-xl transition inline-block shadow-sm">
                         Lihat Semua Berita
                     </a>
                 </div>
