@@ -215,7 +215,7 @@
                 @endif
 
                 <!-- Login Form -->
-                <form action="{{ route('login') }}" method="POST" class="space-y-3">
+                <form action="{{ route('login', [], false) }}" method="POST" class="space-y-3">
                     @csrf
 
                     <!-- Username Field -->
@@ -327,7 +327,7 @@
             <div @click="showForgotModal = false" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
 
             <div class="relative bg-white rounded-3xl text-left overflow-hidden shadow-2xl max-w-lg w-full border border-slate-200 my-8">
-                <form action="{{ route('password.reset.submit') }}" method="POST">
+                <form action="{{ route('password.reset.submit', [], false) }}" method="POST">
                     @csrf
                     
                     <!-- Header -->
