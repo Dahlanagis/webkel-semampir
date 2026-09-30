@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 // Tandai environment Vercel
 putenv('VERCEL=1');
 $_ENV['VERCEL'] = '1';
@@ -32,5 +36,13 @@ if (is_dir($localAppStorage)) {
     }
 }
 
-// Teruskan ke entrypoint publik Laravel
-require __DIR__ . '/../public/index.php';
+try {
+    // Teruskan ke entrypoint publik Laravel
+    require __DIR__ . '/../public/index.php';
+} catch (\Throwable $e) {
+    http_response_code(500);
+    echo "<h2>Laravel Error on Vercel:</h2>";
+    echo "<p style='color:red;'><strong>" . htmlspecialchars($e->getMessage()) . "</strong></p>";
+    echo "<p>Di file: <code>" . htmlspecialchars($e->getFile()) . ":" . $e->getLine() . "</code></p>";
+    echo "<pre style='background:#f4f4f4;padding:10px;border:1px solid #ccc;overflow:auto;'>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+}
