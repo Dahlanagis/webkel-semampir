@@ -26,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             // We use * because it's needed in both public app layout and admin layout
             $profilePath = storage_path('app/village_profile.json');
+            if (!file_exists($profilePath)) {
+                $profilePath = base_path('storage/app/village_profile.json');
+            }
             $villageProfile = [];
             if (file_exists($profilePath)) {
                 $villageProfile = json_decode(file_get_contents($profilePath), true) ?? [];
@@ -39,31 +42,42 @@ class AppServiceProvider extends ServiceProvider
 
         // Share service types globally untuk navbar layouts.app
         View::composer('layouts.app', function ($view) {
-            if (\Illuminate\Support\Facades\Schema::hasTable('navigation_menus')) {
-                $menus = \App\Models\NavigationMenu::where('is_active', true)
-                    ->orderBy('order')
-                    ->get()
-                    ->groupBy('section');
-                
-                $view->with('navProfil', $menus->get('profil', collect()));
-                $view->with('navLayanan', $menus->get('layanan', collect()));
-                $view->with('navDokumen', $menus->get('dokumen', collect()));
-                $view->with('navInformasi', $menus->get('informasi', collect()));
-            } else {
-                // Fallback before migration is run
+            try {
+                if (\Illuminate\Support\Facades\Schema::hasTable('navigation_menus')) {
+                    $menus = \App\Models\NavigationMenu::where('is_active', true)
+                        ->orderBy('order')
+                        ->get()
+                        ->groupBy('section');
+                    
+                    $view->with('navProfil', $menus->get('profil', collect()));
+                    $view->with('navLayanan', $menus->get('layanan', collect()));
+                    $view->with('navDokumen', $menus->get('dokumen', collect()));
+                    $view->with('navInformasi', $menus->get('informasi', collect()));
+                } else {
+                    $view->with('navProfil', collect());
+                    $view->with('navLayanan', collect());
+                    $view->with('navDokumen', collect());
+                    $view->with('navInformasi', collect());
+                }
+
+                if (\Illuminate\Support\Facades\Schema::hasTable('announcements')) {
+                    $view->with('globalAnnouncements', \App\Models\Announcement::where('is_active', true)->latest()->get());
+                } else {
+                    $view->with('globalAnnouncements', collect());
+                }
+
+                if (\Illuminate\Support\Facades\Schema::hasTable('pages')) {
+                    $view->with('profilePages', \App\Models\Page::where('category', 'profile')->where('is_active', true)->orderBy('order')->get());
+                } else {
+                    $view->with('profilePages', collect());
+                }
+            } catch (\Throwable $e) {
+                // Fallback jika database belum terkoneksi / migrate
                 $view->with('navProfil', collect());
                 $view->with('navLayanan', collect());
                 $view->with('navDokumen', collect());
                 $view->with('navInformasi', collect());
-            }
-
-            if (\Illuminate\Support\Facades\Schema::hasTable('announcements')) {
-                $view->with('globalAnnouncements', \App\Models\Announcement::where('is_active', true)->latest()->get());
-            }
-
-            if (\Illuminate\Support\Facades\Schema::hasTable('pages')) {
-                $view->with('profilePages', \App\Models\Page::where('category', 'profile')->where('is_active', true)->orderBy('order')->get());
-            } else {
+                $view->with('globalAnnouncements', collect());
                 $view->with('profilePages', collect());
             }
         });

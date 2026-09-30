@@ -28,7 +28,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         });
     })->create();
 
-if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL'])) {
+if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL']) || getenv('VERCEL') || !empty($_ENV['AWS_LAMBDA_FUNCTION_NAME'])) {
     $app->useStoragePath('/tmp/storage');
 }
 
