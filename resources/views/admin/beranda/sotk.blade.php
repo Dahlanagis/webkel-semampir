@@ -125,6 +125,45 @@
         };
         this.showModal = true;
     },
+    hasChanges: false,
+    syncDomInputs() {
+        // 1. Sinkronisasi Pejabat Struktural Inti ke input tersembunyi
+        this.coreOfficers.forEach(co => {
+            const elName = document.getElementById('input_' + co.key + '_name');
+            if (elName) elName.value = co.name || '';
+            const elNip = document.getElementById('input_' + co.key + '_nip');
+            if (elNip) elNip.value = co.nip || '';
+            const elRole = document.getElementById('input_' + co.key + '_role');
+            if (elRole) elRole.value = co.role_label || '';
+            const elTupoksi = document.getElementById('input_' + co.key + '_tupoksi');
+            if (elTupoksi) elTupoksi.value = co.tupoksi || '';
+
+            if (co.key === 'head') {
+                const lurahTa = document.getElementById('textarea_lurah_tupoksi');
+                if (lurahTa) lurahTa.value = co.tupoksi || '';
+            }
+        });
+
+        // 2. Sinkronisasi Anggota Tambahan ke input tersembunyi
+        const container = document.getElementById('dynamic_members_inputs_container');
+        if (container) {
+            let html = '';
+            this.members.forEach((m, idx) => {
+                const safeName = (m.name || '').replace(/"/g, '&quot;');
+                const safeNip = (m.nip || '').replace(/"/g, '&quot;');
+                const safePosition = (m.position || '').replace(/"/g, '&quot;');
+                const safeTupoksi = (m.tupoksi || '').replace(/"/g, '&quot;');
+                const safePhoto = (m.photo || '').replace(/"/g, '&quot;');
+
+                html += `<input type="hidden" name="members[${idx}][name]" value="${safeName}">`;
+                html += `<input type="hidden" name="members[${idx}][nip]" value="${safeNip}">`;
+                html += `<input type="hidden" name="members[${idx}][position]" value="${safePosition}">`;
+                html += `<input type="hidden" name="members[${idx}][tupoksi]" value="${safeTupoksi}">`;
+                html += `<input type="hidden" name="members[${idx}][existing_photo]" value="${safePhoto}">`;
+            });
+            container.innerHTML = html;
+        }
+    },
     saveModal() {
         if (!this.modalForm.name || !this.modalForm.name.trim()) {
             alert('Silakan masukkan nama lengkap pejabat / anggota.');
@@ -135,6 +174,8 @@
             alert('Silakan masukkan jabatan / posisi.');
             return;
         }
+
+        this.hasChanges = true;
 
         if (this.modalType === 'core') {
             const co = this.coreOfficers[this.modalIndex];
@@ -154,6 +195,7 @@
                     }
                 });
             }
+            this.syncDomInputs();
             this.showModal = false;
             return;
         }
@@ -206,15 +248,21 @@
             }
         }
 
+        this.syncDomInputs();
         this.showModal = false;
     },
     removeMember(index) {
         const m = this.members[index];
         if (confirm('Hapus ' + (m.name || 'anggota ini') + ' dari daftar SOTK?')) {
             this.members.splice(index, 1);
+            this.hasChanges = true;
+            this.syncDomInputs();
         }
     },
     prepareSubmit(e) {
+        // Sinkronisasi data DOM terbaru
+        this.syncDomInputs();
+
         // Hubungkan file pejabat inti jika diubah
         this.coreOfficers.forEach(co => {
             if (co.file) {
@@ -245,28 +293,55 @@
         @csrf
         <input type="hidden" name="section" value="sotk">
 
-        <!-- Hidden Inputs: Pejabat Struktural Inti -->
-        <template x-for="co in coreOfficers" :key="co.key">
-            <div class="hidden">
-                <input type="hidden" :name="co.key + '_name'" :value="co.name">
-                <input type="hidden" :name="co.key + '_nip'" :value="co.nip || ''">
-                <input type="hidden" :name="co.key + '_role'" :value="co.role_label">
-                <input type="hidden" :name="co.key + '_tupoksi'" :value="co.tupoksi">
-                <input type="file" :name="co.key + '_photo'" :id="'hidden_file_' + co.key" class="hidden">
-            </div>
+        <!-- Hidden Inputs: Pejabat Struktural Inti (Static inputs to ensure reliable POST submission) -->
+        <div id="core_officers_hidden_inputs">
+            @php
+                $coreDefs = [
+                    ['key' => 'head', 'name' => 'head_name', 'nip' => 'head_nip', 'role' => 'head_role', 'tupoksi' => 'head_tupoksi', 'def_role' => 'Lurah', 'val_tupoksi' => $profile['lurah_tupoksi'] ?? ''],
+                    ['key' => 'sekel', 'name' => 'sekel_name', 'nip' => 'sekel_nip', 'role' => 'sekel_role', 'tupoksi' => 'sekel_tupoksi', 'def_role' => 'Sekretaris Kelurahan', 'val_tupoksi' => $profile['sekel_tupoksi'] ?? ''],
+                    ['key' => 'kasi_pem', 'name' => 'kasi_pem_name', 'nip' => 'kasi_pem_nip', 'role' => 'kasi_pem_role', 'tupoksi' => 'kasi_pem_tupoksi', 'def_role' => 'Kasi Pemerintahan & Trantib', 'val_tupoksi' => $profile['kasi_pem_tupoksi'] ?? ''],
+                    ['key' => 'kasi_kesra', 'name' => 'kasi_kesra_name', 'nip' => 'kasi_kesra_nip', 'role' => 'kasi_kesra_role', 'tupoksi' => 'kasi_kesra_tupoksi', 'def_role' => 'Kasi Pelayanan & Kesra', 'val_tupoksi' => $profile['kasi_kesra_tupoksi'] ?? ''],
+                    ['key' => 'kasi_ekbang', 'name' => 'kasi_ekbang_name', 'nip' => 'kasi_ekbang_nip', 'role' => 'kasi_ekbang_role', 'tupoksi' => 'kasi_ekbang_tupoksi', 'def_role' => 'Kasi Pemberdayaan & Ekbang', 'val_tupoksi' => $profile['kasi_ekbang_tupoksi'] ?? ''],
+                ];
+            @endphp
+            @foreach($coreDefs as $cDef)
+                <input type="hidden" name="{{ $cDef['name'] }}" id="input_{{ $cDef['key'] }}_name" value="{{ $profile[$cDef['name']] ?? '' }}">
+                <input type="hidden" name="{{ $cDef['nip'] }}" id="input_{{ $cDef['key'] }}_nip" value="{{ $profile[$cDef['nip']] ?? '' }}">
+                <input type="hidden" name="{{ $cDef['role'] }}" id="input_{{ $cDef['key'] }}_role" value="{{ $profile[$cDef['role']] ?? $cDef['def_role'] }}">
+                <input type="hidden" name="{{ $cDef['tupoksi'] }}" id="input_{{ $cDef['key'] }}_tupoksi" value="{{ $cDef['val_tupoksi'] }}">
+                <input type="file" name="{{ $cDef['key'] }}_photo" id="hidden_file_{{ $cDef['key'] }}" class="hidden">
+            @endforeach
+        </div>
+
+        <!-- Hidden Inputs: Anggota Tambahan (Dynamic container synchronized on submit & changes) -->
+        <div id="dynamic_members_inputs_container">
+            @foreach(array_values($profile['sotk_members'] ?? []) as $index => $member)
+                <input type="hidden" name="members[{{ $index }}][name]" id="input_member_{{ $index }}_name" value="{{ $member['name'] ?? '' }}">
+                <input type="hidden" name="members[{{ $index }}][nip]" id="input_member_{{ $index }}_nip" value="{{ $member['nip'] ?? '' }}">
+                <input type="hidden" name="members[{{ $index }}][position]" id="input_member_{{ $index }}_position" value="{{ $member['position'] ?? '' }}">
+                <input type="hidden" name="members[{{ $index }}][tupoksi]" id="input_member_{{ $index }}_tupoksi" value="{{ $member['tupoksi'] ?? '' }}">
+                <input type="hidden" name="members[{{ $index }}][existing_photo]" id="input_member_{{ $index }}_photo" value="{{ $member['photo'] ?? '' }}">
+            @endforeach
+        </div>
+
+        <!-- Hidden File Inputs for Members (Slots managed by Alpine) -->
+        <template x-for="(member, index) in members" :key="'member_file_' + index">
+            <input type="file" :name="'member_photos[' + index + ']'" :id="'hidden_member_file_' + index" class="hidden">
         </template>
 
-        <!-- Hidden Inputs: Anggota Tambahan -->
-        <template x-for="(member, index) in members" :key="index">
-            <div class="hidden">
-                <input type="hidden" :name="'members[' + index + '][name]'" :value="member.name">
-                <input type="hidden" :name="'members[' + index + '][nip]'" :value="member.nip || ''">
-                <input type="hidden" :name="'members[' + index + '][position]'" :value="member.position">
-                <input type="hidden" :name="'members[' + index + '][tupoksi]'" :value="member.tupoksi || ''">
-                <input type="hidden" :name="'members[' + index + '][existing_photo]'" :value="member.photo || ''">
-                <input type="file" :name="'member_photos[' + index + ']'" :id="'hidden_member_file_' + index" class="hidden">
+        <!-- Indikator Perubahan Belum Disimpan -->
+        <div x-show="hasChanges" style="display: none;" class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-amber-800 shadow-2xs">
+            <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center shrink-0 font-bold">
+                    <i class="fas fa-exclamation text-xs"></i>
+                </span>
+                <span>Terdapat perubahan nama, jabatan, atau <strong>TUPOKSI</strong> yang belum disimpan. Klik <strong>Simpan Perubahan SOTK</strong> untuk menyimpan ke website.</span>
             </div>
-        </template>
+            <button type="submit" class="px-4 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-lg shadow-xs transition shrink-0 cursor-pointer flex items-center gap-1.5">
+                <i class="fas fa-save"></i>
+                <span>Simpan Sekarang</span>
+            </button>
+        </div>
 
         <!-- ======================================================= -->
         <!-- SATU TABEL TERPADU: PEJABAT STRUKTURAL INTI & STAF SOTK -->
@@ -282,14 +357,19 @@
                     </h3>
                     <p class="text-xs text-slate-500 mt-0.5">Kelola informasi nama, jabatan, dan tugas pokok pejabat serta aparatur kelurahan dalam satu tabel terpadu.</p>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
                     <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-3 py-1 rounded-full w-fit" x-text="(coreOfficers.length + members.length) + ' Aparatur Kelurahan'">
                         5 Aparatur Kelurahan
                     </span>
                     <button type="button" @click="openAddMember()" 
-                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition duration-150 flex items-center gap-2 w-fit cursor-pointer">
+                            class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition duration-150 flex items-center gap-1.5 w-fit cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        <span>Tambah Anggota Baru</span>
+                        <span>Tambah Anggota</span>
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow-sm transition duration-150 flex items-center gap-1.5 w-fit cursor-pointer">
+                        <i class="fas fa-save text-emerald-400 text-xs"></i>
+                        <span>Simpan Perubahan SOTK</span>
                     </button>
                 </div>
             </div>
@@ -458,10 +538,11 @@
             </div>
             <div class="mt-3">
                 <textarea name="lurah_tupoksi" 
-                          x-model="coreOfficers.find(c => c.key === 'head').tupoksi"
+                          id="textarea_lurah_tupoksi"
+                          @input="if(coreOfficers && coreOfficers[0]) { coreOfficers[0].tupoksi = $event.target.value; } const inp = document.getElementById('input_head_tupoksi'); if(inp) { inp.value = $event.target.value; } hasChanges = true;"
                           rows="3" 
                           class="w-full p-3.5 text-xs text-slate-700 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition leading-relaxed resize-y placeholder:text-slate-400 shadow-2xs" 
-                          placeholder="Tuliskan uraian tugas pokok dan fungsi Kepala Kelurahan (Lurah)..."></textarea>
+                          placeholder="Tuliskan uraian tugas pokok dan fungsi Kepala Kelurahan (Lurah)...">{{ old('lurah_tupoksi', $profile['lurah_tupoksi'] ?? '') }}</textarea>
                 <div class="text-[10px] text-slate-400 flex items-center justify-between pt-1">
                     <span><i class="fas fa-check-circle text-emerald-500 mr-1"></i>Tampil pada rincian TUPOKSI pimpinan di halaman struktur organisasi</span>
                 </div>

@@ -507,30 +507,43 @@ class VillageProfileController extends Controller
             if ($request->has('head_nip')) {
                 $existingData['head_nip'] = $request->input('head_nip', '');
             }
-            if ($request->has('head_tupoksi') || $request->has('lurah_tupoksi')) {
-                $existingData['lurah_tupoksi'] = $request->input('head_tupoksi', $request->input('lurah_tupoksi', $existingData['lurah_tupoksi'] ?? ''));
+            // TUPOKSI Lurah: cek apakah dikirim via head_tupoksi (modal) atau lurah_tupoksi (textarea)
+            $headTupoksi = $request->input('head_tupoksi');
+            $lurahTupoksi = $request->input('lurah_tupoksi');
+            if ($headTupoksi !== null && trim((string)$headTupoksi) !== '') {
+                $existingData['lurah_tupoksi'] = html_entity_decode(trim((string)$headTupoksi), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            } elseif ($lurahTupoksi !== null) {
+                $existingData['lurah_tupoksi'] = html_entity_decode(trim((string)$lurahTupoksi), ENT_QUOTES | ENT_HTML5, 'UTF-8');
             }
 
-            $existingData['sekel_name'] = $request->input('sekel_name', '');
-            $existingData['sekel_nip'] = $request->input('sekel_nip', '');
-            $existingData['sekel_role'] = $request->input('sekel_role', 'Sekretaris Kelurahan');
+            $existingData['sekel_name'] = trim((string) $request->input('sekel_name', ''));
+            $existingData['sekel_nip'] = trim((string) $request->input('sekel_nip', ''));
+            $existingData['sekel_role'] = trim((string) $request->input('sekel_role', 'Sekretaris Kelurahan'));
 
-            $existingData['kasi_pem_name'] = $request->input('kasi_pem_name', '');
-            $existingData['kasi_pem_nip'] = $request->input('kasi_pem_nip', '');
-            $existingData['kasi_pem_role'] = $request->input('kasi_pem_role', 'Kasi Pemerintahan & Trantib');
+            $existingData['kasi_pem_name'] = trim((string) $request->input('kasi_pem_name', ''));
+            $existingData['kasi_pem_nip'] = trim((string) $request->input('kasi_pem_nip', ''));
+            $existingData['kasi_pem_role'] = trim((string) $request->input('kasi_pem_role', 'Kasi Pemerintahan & Trantib'));
 
-            $existingData['kasi_kesra_name'] = $request->input('kasi_kesra_name', '');
-            $existingData['kasi_kesra_nip'] = $request->input('kasi_kesra_nip', '');
-            $existingData['kasi_kesra_role'] = $request->input('kasi_kesra_role', 'Kasi Pelayanan & Kesra');
+            $existingData['kasi_kesra_name'] = trim((string) $request->input('kasi_kesra_name', ''));
+            $existingData['kasi_kesra_nip'] = trim((string) $request->input('kasi_kesra_nip', ''));
+            $existingData['kasi_kesra_role'] = trim((string) $request->input('kasi_kesra_role', 'Kasi Pelayanan & Kesra'));
 
-            $existingData['kasi_ekbang_name'] = $request->input('kasi_ekbang_name', '');
-            $existingData['kasi_ekbang_nip'] = $request->input('kasi_ekbang_nip', '');
-            $existingData['kasi_ekbang_role'] = $request->input('kasi_ekbang_role', 'Kasi Pemberdayaan & Ekbang');
+            $existingData['kasi_ekbang_name'] = trim((string) $request->input('kasi_ekbang_name', ''));
+            $existingData['kasi_ekbang_nip'] = trim((string) $request->input('kasi_ekbang_nip', ''));
+            $existingData['kasi_ekbang_role'] = trim((string) $request->input('kasi_ekbang_role', 'Kasi Pemberdayaan & Ekbang'));
 
-            $existingData['sekel_tupoksi'] = $request->input('sekel_tupoksi', '');
-            $existingData['kasi_pem_tupoksi'] = $request->input('kasi_pem_tupoksi', '');
-            $existingData['kasi_kesra_tupoksi'] = $request->input('kasi_kesra_tupoksi', '');
-            $existingData['kasi_ekbang_tupoksi'] = $request->input('kasi_ekbang_tupoksi', '');
+            if ($request->has('sekel_tupoksi')) {
+                $existingData['sekel_tupoksi'] = html_entity_decode(trim((string) $request->input('sekel_tupoksi', '')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            }
+            if ($request->has('kasi_pem_tupoksi')) {
+                $existingData['kasi_pem_tupoksi'] = html_entity_decode(trim((string) $request->input('kasi_pem_tupoksi', '')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            }
+            if ($request->has('kasi_kesra_tupoksi')) {
+                $existingData['kasi_kesra_tupoksi'] = html_entity_decode(trim((string) $request->input('kasi_kesra_tupoksi', '')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            }
+            if ($request->has('kasi_ekbang_tupoksi')) {
+                $existingData['kasi_ekbang_tupoksi'] = html_entity_decode(trim((string) $request->input('kasi_ekbang_tupoksi', '')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            }
 
             $sotkKeys = ['head_photo', 'sekel_photo', 'kasi_pem_photo', 'kasi_kesra_photo', 'kasi_ekbang_photo'];
             foreach ($sotkKeys as $photoKey) {
@@ -563,7 +576,7 @@ class VillageProfileController extends Controller
                         'nip' => trim($m['nip'] ?? ''),
                         'position' => trim($m['position'] ?? 'Staf Kelurahan'),
                         'photo' => $photoPath,
-                        'tupoksi' => trim($m['tupoksi'] ?? ''),
+                        'tupoksi' => html_entity_decode(trim((string) ($m['tupoksi'] ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                     ];
                 }
             }
