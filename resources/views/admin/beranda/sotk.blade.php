@@ -707,20 +707,12 @@ function sotkManager() {
                         class="px-4 py-2 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-xl transition cursor-pointer">
                     Batal
                 </button>
-                <div class="flex items-center gap-2">
-                    <button type="button" @click="saveModal()" 
-                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1.5"
-                            title="Simpan perubahan ke daftar di halaman ini">
-                        <i class="fas fa-check"></i>
-                        <span x-text="modalType === 'core' ? 'Simpan Pejabat' : (modalIndex === null ? 'Simpan ke Daftar' : 'Simpan Perubahan')"></span>
-                    </button>
-                    <button type="button" @click="saveModalAndSubmit()" 
-                            class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1.5"
-                            title="Simpan langsung ke server website">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <span>Simpan ke Website</span>
-                    </button>
-                </div>
+                <button type="button" @click="saveModalAndSubmit()" 
+                        class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1.5"
+                        title="Simpan dan langsung perbarui ke website">
+                    <i class="fas fa-save text-emerald-400"></i>
+                    <span x-text="modalType === 'core' ? 'Simpan & Perbarui Website' : (modalIndex === null ? 'Tambah & Simpan ke Website' : 'Simpan & Perbarui Website')"></span>
+                </button>
             </div>
         </div>
     </div>
