@@ -186,19 +186,6 @@
                     </p>
                 </div>
 
-                <!-- Quick Credentials Info Box -->
-                <div class="bg-slate-50 border border-slate-200 text-slate-800 p-3 rounded-xl text-xs flex items-center justify-between shadow-xs">
-                    <div>
-                        <span class="font-bold text-slate-700 block">Kredensial Login Admin:</span>
-                        <span class="font-mono text-[11px] text-slate-600">Username: <strong class="text-blue-700">admin</strong> | Password: <strong class="text-blue-700">password</strong></span>
-                    </div>
-                    <button type="button" 
-                            @click="fillAccount('admin', 'password')" 
-                            class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[10px] font-bold transition shadow-xs cursor-pointer">
-                        Isi Otomatis
-                    </button>
-                </div>
-
                 <!-- Status Messages & Error Banner -->
                 @if(session('status'))
                     <div class="bg-slate-50 border border-slate-200 text-slate-800 px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 shadow-sm">
