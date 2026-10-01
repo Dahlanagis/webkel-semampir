@@ -561,6 +561,14 @@ class VillageProfileController extends Controller
 
             $sotkKeys = ['head_photo', 'sekel_photo', 'kasi_pem_photo', 'kasi_kesra_photo', 'kasi_ekbang_photo'];
             foreach ($sotkKeys as $photoKey) {
+                $shortKey = str_replace('_photo', '', $photoKey);
+                if ($request->input('delete_' . $shortKey . '_photo') == '1' || $request->input('delete_' . $photoKey) == '1') {
+                    if (!empty($existingData[$photoKey]) && Storage::disk('public')->exists($existingData[$photoKey])) {
+                        Storage::disk('public')->delete($existingData[$photoKey]);
+                    }
+                    $existingData[$photoKey] = '';
+                }
+
                 if ($request->hasFile($photoKey)) {
                     if (!empty($existingData[$photoKey]) && Storage::disk('public')->exists($existingData[$photoKey])) {
                         Storage::disk('public')->delete($existingData[$photoKey]);
@@ -578,19 +586,25 @@ class VillageProfileController extends Controller
                     if ($name === '') {
                         continue;
                     }
-                    $photoPath = $m['existing_photo'] ?? null;
+                    $photoPath = trim($m['existing_photo'] ?? '');
                     if ($request->hasFile("member_photos.{$index}")) {
                         if (!empty($photoPath) && Storage::disk('public')->exists($photoPath)) {
                             Storage::disk('public')->delete($photoPath);
                         }
                         $photoPath = $request->file("member_photos.{$index}")->store('profile', 'public');
+                    } elseif ($photoPath === '') {
+                        $oldMemberPhoto = $existingData['sotk_members'][$index]['photo'] ?? null;
+                        if (!empty($oldMemberPhoto) && Storage::disk('public')->exists($oldMemberPhoto)) {
+                            Storage::disk('public')->delete($oldMemberPhoto);
+                        }
+                        $photoPath = null;
                     }
                     $processedMembers[] = [
                         'name' => $name,
                         'nip' => trim($m['nip'] ?? ''),
                         'position' => trim($m['position'] ?? 'Staf Kelurahan'),
                         'parent_key' => trim($m['parent_key'] ?? '') ?: null,
-                        'photo' => $photoPath,
+                        'photo' => $photoPath ?: '',
                         'tupoksi' => html_entity_decode(trim((string) ($m['tupoksi'] ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                     ];
                 }

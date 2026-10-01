@@ -82,7 +82,18 @@ function sotkManager() {
             tupoksi: '',
             photo: '',
             previewPhoto: null,
-            file: null
+            file: null,
+            deletePhoto: false,
+            parent_key: ''
+        },
+        removeModalPhoto() {
+            this.modalForm.previewPhoto = null;
+            this.modalForm.photo = '';
+            this.modalForm.file = null;
+            this.modalForm.deletePhoto = true;
+            if (this.$refs.modalFileInput) {
+                this.$refs.modalFileInput.value = '';
+            }
         },
         openEditCore(index) {
             this.modalType = 'core';
@@ -95,7 +106,9 @@ function sotkManager() {
                 tupoksi: co.tupoksi || '',
                 photo: co.photo || '',
                 previewPhoto: co.previewPhoto,
-                file: co.file || null
+                file: co.file || null,
+                deletePhoto: false,
+                parent_key: ''
             };
             this.showModal = true;
         },
@@ -109,7 +122,9 @@ function sotkManager() {
                 tupoksi: '',
                 photo: '',
                 previewPhoto: null,
-                file: null
+                file: null,
+                deletePhoto: false,
+                parent_key: ''
             };
             this.showModal = true;
         },
@@ -124,7 +139,9 @@ function sotkManager() {
                 tupoksi: m.tupoksi || '',
                 photo: m.photo || '',
                 previewPhoto: m.previewPhoto || (m.photo ? '{{ asset('storage') }}/' + m.photo : null),
-                file: m.file || null
+                file: m.file || null,
+                deletePhoto: false,
+                parent_key: m.parent_key || ''
             };
             this.showModal = true;
         },
@@ -164,6 +181,7 @@ function sotkManager() {
                     addInput('members[' + idx + '][position]', m.position);
                     addInput('members[' + idx + '][tupoksi]', m.tupoksi);
                     addInput('members[' + idx + '][existing_photo]', m.photo);
+                    addInput('members[' + idx + '][parent_key]', m.parent_key || '');
                 });
             }
         },
@@ -189,6 +207,8 @@ function sotkManager() {
                 if (this.modalForm.file) {
                     co.file = this.modalForm.file;
                     co.previewPhoto = this.modalForm.previewPhoto;
+                    const delInput = document.getElementById('delete_' + co.key + '_photo');
+                    if (delInput) delInput.value = '0';
                     this.$nextTick(() => {
                         const fi = document.getElementById('hidden_file_' + co.key);
                         if (fi && co.file) {
@@ -197,6 +217,14 @@ function sotkManager() {
                             fi.files = dt.files;
                         }
                     });
+                } else if (this.modalForm.deletePhoto || !this.modalForm.previewPhoto) {
+                    co.file = null;
+                    co.previewPhoto = null;
+                    co.photo = '';
+                    const fi = document.getElementById('hidden_file_' + co.key);
+                    if (fi) fi.value = '';
+                    const delInput = document.getElementById('delete_' + co.key + '_photo');
+                    if (delInput) delInput.value = '1';
                 }
                 this.syncDomInputs();
                 this.showModal = false;
@@ -210,6 +238,7 @@ function sotkManager() {
                     nip: (this.modalForm.nip || '').trim(),
                     position: this.modalForm.position.trim(),
                     tupoksi: (this.modalForm.tupoksi || '').trim(),
+                    parent_key: this.modalForm.parent_key || '',
                     photo: '',
                     previewPhoto: this.modalForm.previewPhoto,
                     file: this.modalForm.file
@@ -232,6 +261,9 @@ function sotkManager() {
                 target.nip = (this.modalForm.nip || '').trim();
                 target.position = this.modalForm.position.trim();
                 target.tupoksi = (this.modalForm.tupoksi || '').trim();
+                if (this.modalForm.parent_key !== undefined) {
+                    target.parent_key = this.modalForm.parent_key;
+                }
                 if (this.modalForm.file) {
                     target.file = this.modalForm.file;
                     target.previewPhoto = this.modalForm.previewPhoto;
@@ -243,10 +275,12 @@ function sotkManager() {
                             fi.files = dt.files;
                         }
                     });
-                } else if (!this.modalForm.previewPhoto && !this.modalForm.photo) {
+                } else if (this.modalForm.deletePhoto || !this.modalForm.previewPhoto) {
                     target.file = null;
                     target.previewPhoto = null;
                     target.photo = '';
+                    const fi = document.getElementById('hidden_member_file_' + this.modalIndex);
+                    if (fi) fi.value = '';
                 }
             }
 
@@ -327,6 +361,7 @@ function sotkManager() {
                 @if(isset($cDef['tupoksi']))
                     <input type="hidden" name="{{ $cDef['tupoksi'] }}" id="input_{{ $cDef['key'] }}_tupoksi" value="{{ $cDef['val_tupoksi'] }}">
                 @endif
+                <input type="hidden" name="delete_{{ $cDef['key'] }}_photo" id="delete_{{ $cDef['key'] }}_photo" value="0">
                 <input type="file" name="{{ $cDef['key'] }}_photo" id="hidden_file_{{ $cDef['key'] }}" class="hidden">
             @endforeach
         </div>
@@ -339,6 +374,7 @@ function sotkManager() {
                 <input type="hidden" name="members[{{ $index }}][position]" id="input_member_{{ $index }}_position" value="{{ $member['position'] ?? '' }}">
                 <input type="hidden" name="members[{{ $index }}][tupoksi]" id="input_member_{{ $index }}_tupoksi" value="{{ $member['tupoksi'] ?? '' }}">
                 <input type="hidden" name="members[{{ $index }}][existing_photo]" id="input_member_{{ $index }}_photo" value="{{ $member['photo'] ?? '' }}">
+                <input type="hidden" name="members[{{ $index }}][parent_key]" id="input_member_{{ $index }}_parent_key" value="{{ $member['parent_key'] ?? '' }}">
             @endforeach
         </div>
 
@@ -641,12 +677,21 @@ function sotkManager() {
                                     <i class="fas fa-camera text-blue-600"></i>
                                     <span x-text="modalForm.previewPhoto ? 'Ganti Foto' : 'Pilih Foto'"></span>
                                 </button>
-                                <template x-if="modalForm.previewPhoto && modalType !== 'core'">
-                                    <button type="button" @click="modalForm.previewPhoto = null; modalForm.file = null; modalForm.photo = ''" 
-                                            class="text-[11px] text-rose-600 hover:text-rose-800 font-semibold cursor-pointer">
-                                        Hapus Foto
-                                    </button>
-                                </template>
+                                <button type="button" 
+                                        x-show="modalForm.previewPhoto"
+                                        @click="removeModalPhoto()" 
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-lg text-xs font-semibold shadow-2xs cursor-pointer transition"
+                                        title="Hapus foto profil ini">
+                                    <i class="fas fa-trash-alt text-rose-500 text-[10px]"></i>
+                                    <span>Hapus Foto</span>
+                                </button>
+                                <button type="button" 
+                                        x-show="!modalForm.previewPhoto"
+                                        disabled
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 border border-slate-200 text-slate-400 rounded-lg text-xs font-semibold cursor-not-allowed opacity-60">
+                                    <i class="fas fa-trash-alt text-slate-400 text-[10px]"></i>
+                                    <span>Hapus Foto</span>
+                                </button>
                             </div>
                             <input type="file" x-ref="modalFileInput" accept="image/jpeg, image/png, image/webp" class="hidden"
                                    @change="const file = $event.target.files[0]; if(file) { $dispatch('open-cropper', { file: file, aspectRatio: 3/4, onCrop: (blob, url) => { modalForm.file = new File([blob], file.name, {type: file.type}); modalForm.previewPhoto = url; } }); $event.target.value = ''; }">
