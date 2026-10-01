@@ -303,13 +303,7 @@
                                     {{-- Connector line --}}
                                     <div class="w-0.5 h-7 bg-slate-300 absolute top-0 left-1/2 -translate-x-1/2"></div>
                                     
-                                    {{-- Section Badge --}}
-                                    <div class="text-center mb-5 pt-1">
-                                        <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-bold uppercase px-3.5 py-1 rounded-full tracking-wider shadow-2xs">
-                                            <i class="fas fa-users text-slate-500"></i>
-                                            <span>STAF PELAYANAN & JABATAN FUNGSIONAL ({{ count($villageProfile['sotk_members']) }})</span>
-                                        </span>
-                                    </div>
+
 
                                     {{-- Staff Cards Centered --}}
                                     <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
