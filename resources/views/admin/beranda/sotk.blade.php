@@ -347,29 +347,29 @@ function sotkManager() {
         <!-- SATU TABEL TERPADU: PEJABAT STRUKTURAL INTI & STAF SOTK -->
         <!-- ======================================================= -->
         <div>
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-slate-100">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 pb-3 border-b border-slate-100">
                 <div>
-                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                        <span class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+                    <div class="flex items-center gap-2.5 flex-wrap">
+                        <span class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs shrink-0">
                             <i class="fas fa-sitemap"></i>
                         </span>
-                        Daftar Struktur Organisasi & Staf Kelurahan (SOTK)
-                    </h3>
+                        <h3 class="text-base font-bold text-slate-900">Daftar Struktur Organisasi & Staf Kelurahan (SOTK)</h3>
+                        <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 border border-slate-200/60 px-2.5 py-0.5 rounded-full" x-text="(coreOfficers.length + members.length) + ' Aparatur'">
+                            6 Aparatur
+                        </span>
+                    </div>
                     <p class="text-xs text-slate-500 mt-0.5">Kelola informasi nama, jabatan, dan tugas pokok pejabat serta aparatur kelurahan dalam satu tabel terpadu.</p>
                 </div>
-                <div class="flex items-center gap-2 flex-wrap">
-                    <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-3 py-1 rounded-full w-fit" x-text="(coreOfficers.length + members.length) + ' Aparatur Kelurahan'">
-                        5 Aparatur Kelurahan
-                    </span>
+                <div class="flex items-center gap-2.5 shrink-0 flex-wrap sm:flex-nowrap">
                     <button type="button" @click="openAddMember()" 
-                            class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition duration-150 flex items-center gap-1.5 w-fit cursor-pointer">
+                            class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition duration-150 flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         <span>Tambah Anggota</span>
                     </button>
                     <button type="submit" 
-                            class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow-sm transition duration-150 flex items-center gap-1.5 w-fit cursor-pointer">
+                            class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow-sm transition duration-150 flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
                         <i class="fas fa-save text-emerald-400 text-xs"></i>
-                        <span>Simpan Perubahan SOTK</span>
+                        <span>Simpan SOTK</span>
                     </button>
                 </div>
             </div>
