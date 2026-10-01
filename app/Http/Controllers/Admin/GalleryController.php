@@ -26,7 +26,10 @@ class GalleryController extends Controller
         }
 
         $galleries = $query->paginate(12)->withQueryString();
-        $categories = \App\Models\Category::where('type', 'galeri')->get();
+        $categories = \App\Models\Category::orderByRaw("CASE WHEN type = 'galeri' THEN 0 ELSE 1 END")
+            ->orderBy('type', 'asc')
+            ->orderBy('name', 'asc')
+            ->get();
 
         return view('admin.galeri.index', compact('galleries', 'categories'));
     }

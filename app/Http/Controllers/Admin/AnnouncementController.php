@@ -37,9 +37,11 @@ class AnnouncementController extends Controller
         $activeCount = Announcement::where('is_active', true)->count();
         $urgentCount = Announcement::where('is_urgent', true)->count();
         $activeMarquee = Announcement::where('is_active', true)->latest()->get();
-
         $announcements = $query->paginate(10)->withQueryString();
-        $categories = \App\Models\Category::where('type', 'pengumuman')->get();
+        $categories = \App\Models\Category::orderByRaw("CASE WHEN type = 'pengumuman' THEN 0 ELSE 1 END")
+            ->orderBy('type', 'asc')
+            ->orderBy('name', 'asc')
+            ->get();
 
         return view('admin.pengumuman.index', compact('announcements', 'categories', 'totalCount', 'activeCount', 'urgentCount', 'activeMarquee'));
     }

@@ -38,7 +38,10 @@ class AgendaController extends Controller
         }
 
         $agendas = $query->paginate(12)->withQueryString();
-        $categories = Category::where('type', 'agenda')->orderBy('name', 'asc')->get();
+        $categories = Category::orderByRaw("CASE WHEN type = 'agenda' THEN 0 ELSE 1 END")
+            ->orderBy('type', 'asc')
+            ->orderBy('name', 'asc')
+            ->get();
 
         // Statistik Cepat Agenda
         $totalCount = Agenda::count();

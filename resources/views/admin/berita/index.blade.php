@@ -39,10 +39,26 @@
             <div class="flex items-center gap-2.5 w-full sm:w-auto">
                 <select name="category_id" onchange="this.form.submit()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-slate-600 shadow-sm font-medium text-slate-700">
                     <option value="all" {{ request('category_id') == 'all' ? 'selected' : '' }}>Semua Kategori</option>
-                    @foreach($categories as $cat)
-                        <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
-                            {{ $cat->name }}
-                        </option>
+                    @php
+                        $typeLabels = [
+                            'berita' => 'Kategori Berita & Informasi',
+                            'galeri' => 'Kategori Galeri Kegiatan',
+                            'agenda' => 'Kategori Agenda Kegiatan',
+                            'pengumuman' => 'Kategori Pengumuman',
+                            'dokumen' => 'Kategori Dokumen Publik',
+                        ];
+                        $groupedCats = $categories->groupBy('type');
+                    @endphp
+                    @foreach(['berita', 'galeri', 'agenda', 'pengumuman', 'dokumen'] as $gType)
+                        @if(isset($groupedCats[$gType]) && $groupedCats[$gType]->count() > 0)
+                            <optgroup label="── {{ $typeLabels[$gType] ?? ucfirst($gType) }} ──">
+                                @foreach($groupedCats[$gType] as $cat)
+                                    <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
+                                        {{ $cat->name }}
+                                    </option>
+                                @endforeach
+                            </optgroup>
+                        @endif
                     @endforeach
                 </select>
 
@@ -236,8 +252,33 @@
                                             @change="if($event.target.value === 'manual'){ isManualCat = true; $event.target.value = ''; }" 
                                             class="w-full text-xs p-3 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-slate-600 shadow-sm font-medium">
                                         <option value="">-- Pilih Kategori --</option>
-                                        @foreach($categories as $cat)
-                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                        @php
+                                            $typeLabels = [
+                                                'berita' => 'Kategori Berita & Informasi',
+                                                'galeri' => 'Kategori Galeri Kegiatan',
+                                                'agenda' => 'Kategori Agenda Kegiatan',
+                                                'pengumuman' => 'Kategori Pengumuman',
+                                                'dokumen' => 'Kategori Dokumen Publik',
+                                            ];
+                                            $groupedCats = $categories->groupBy('type');
+                                        @endphp
+                                        @foreach(['berita', 'galeri', 'agenda', 'pengumuman', 'dokumen'] as $gType)
+                                            @if(isset($groupedCats[$gType]) && $groupedCats[$gType]->count() > 0)
+                                                <optgroup label="📰 {{ $typeLabels[$gType] ?? ucfirst($gType) }}">
+                                                    @foreach($groupedCats[$gType] as $cat)
+                                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endif
+                                        @endforeach
+                                        @foreach($groupedCats as $gType => $cats)
+                                            @if(!in_array($gType, ['berita', 'galeri', 'agenda', 'pengumuman', 'dokumen']))
+                                                <optgroup label="📰 {{ ucfirst($gType) }}">
+                                                    @foreach($cats as $cat)
+                                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endif
                                         @endforeach
                                         <option value="manual" class="font-bold text-emerald-600">+ Ketik Kategori Baru (Manual)...</option>
                                     </select>
@@ -408,8 +449,33 @@
                                                 @change="if($event.target.value === 'manual'){ isManualCatEdit = true; }" 
                                                 class="w-full text-xs p-3 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-sky-600 font-medium">
                                             <option value="">-- Pilih Kategori --</option>
-                                            @foreach($categories as $cat)
-                                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                            @php
+                                                $typeLabels = [
+                                                    'berita' => 'Kategori Berita & Informasi',
+                                                    'galeri' => 'Kategori Galeri Kegiatan',
+                                                    'agenda' => 'Kategori Agenda Kegiatan',
+                                                    'pengumuman' => 'Kategori Pengumuman',
+                                                    'dokumen' => 'Kategori Dokumen Publik',
+                                                ];
+                                                $groupedCats = $categories->groupBy('type');
+                                            @endphp
+                                            @foreach(['berita', 'galeri', 'agenda', 'pengumuman', 'dokumen'] as $gType)
+                                                @if(isset($groupedCats[$gType]) && $groupedCats[$gType]->count() > 0)
+                                                    <optgroup label="📰 {{ $typeLabels[$gType] ?? ucfirst($gType) }}">
+                                                        @foreach($groupedCats[$gType] as $cat)
+                                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                @endif
+                                            @endforeach
+                                            @foreach($groupedCats as $gType => $cats)
+                                                @if(!in_array($gType, ['berita', 'galeri', 'agenda', 'pengumuman', 'dokumen']))
+                                                    <optgroup label="📰 {{ ucfirst($gType) }}">
+                                                        @foreach($cats as $cat)
+                                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                                        @endforeach
+                                                    </optgroup>
+                                                @endif
                                             @endforeach
                                             <option value="manual" class="font-bold text-sky-600">+ Ketik Kategori Baru (Manual)...</option>
                                         </select>
