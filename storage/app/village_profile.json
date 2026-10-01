@@ -2,7 +2,7 @@
     "village_name": "Kelurahan Semampir",
     "subdistrict": "Kecamatan Kraksaan",
     "regency": "Kabupaten Probolinggo",
-    "head_name": "Latif Hasan Asyari, SH.",
+    "head_name": "Latif Hasan Asyari, S.H",
     "head_nip": "19750612 201001 1 004",
     "head_photo": "profile/lurah_official_blue.jpg",
     "welcome_title": "Komitmen Pelayanan Publik yang Transparan, Cepat, & Responsif",
@@ -168,29 +168,57 @@
     },
     "hero_image": "profile/mWYDaqI6d6EpcghP2lQUlOfe4DXx8ZfmNIdI1G7q.jpg",
     "history_hero_image": "profile/history_hero.png",
-    "sekel_name": "Ahmad halimi s.krim",
-    "sekel_nip": "",
-    "kasi_pem_name": "ahmad matlub s.yam",
-    "kasi_pem_nip": "",
-    "kasi_kesra_name": "ahmad dahlan s,lom",
-    "kasi_kesra_nip": "",
-    "kasi_ekbang_name": "m badri.m.yam",
-    "kasi_ekbang_nip": "",
+    "sekel_name": "Sidiq, SH. MM.",
+    "sekel_nip": "19710312 200906 1 001",
+    "kasi_pem_name": "Margareta, S.E",
+    "kasi_pem_nip": "19600330 201101 2 006",
+    "kasi_kesra_name": "Herman, S.E",
+    "kasi_kesra_nip": "19741001 200801 1 013",
+    "kasi_ekbang_name": "Sabar, S.Sos",
+    "kasi_ekbang_nip": "19690206 199103 1 004",
     "kasi_pem_photo": "profile/kasi_pem.png",
     "kasi_kesra_photo": "profile/kasi_kesra.png",
     "kasi_ekbang_photo": "profile/kasi_ekbang.png",
-    "lurah_tupoksi": "Menyelenggarakan urusan pemerintahan, ketertiban umum, pemberdayaan masyarakat, serta pelayanan publik di tingkat kelurahan.",
-    "sekel_tupoksi": "Pengelola administrasi umum, perencanaan operasional, keuangan, dan pelayanan surat-menyurat kelurahan.",
-    "kasi_pem_tupoksi": "Pelayanan KTP/KK, pengawasan ketertiban lingkungan, dan pengelolaan data pertanahan & PBB.",
-    "kasi_kesra_tupoksi": "Penerbitan SKTM, koordinasi bantuan sosial kementerian, kesehatan posyandu, dan keagamaan",
-    "kasi_ekbang_tupoksi": "Pemberdayaan masyarakat, pembinaan UMKM, fasilitasi pembangunan infrastruktur kelurahan, dan kebersihan lingkungan.",
+    "lurah_tupoksi": "Memimpin penyelenggaraan pemerintahan di Kelurahan Semampir.\nMengkoordinasikan seluruh kegiatan perangkat kelurahan.\nMelaksanakan pelayanan kepada masyarakat.\nMengkoordinasikan pemberdayaan masyarakat dan pembangunan.\nMembina serta mengawasi pelaksanaan tugas perangkat kelurahan.\nMenjaga ketenteraman dan ketertiban wilayah.\nMelaporkan pelaksanaan pemerintahan kepada Camat.",
+    "sekel_tupoksi": "Membantu Lurah dalam pelaksanaan administrasi pemerintahan.\nMengkoordinasikan kegiatan administrasi kelurahan.\nMengelola administrasi surat-menyurat dan kearsipan.\nMengkoordinasikan urusan keuangan, perencanaan, umum dan kepegawaian.\nMenyiapkan bahan laporan kegiatan kelurahan.\nMelaksanakan tugas lain yang diberikan oleh Lurah.",
+    "kasi_pem_tupoksi": "Membantu Lurah dalam bidang pemerintahan.\nMelaksanakan pelayanan administrasi pemerintahan kepada masyarakat.\nMengelola dan menghimpun data kependudukan serta data masyarakat.\nMelaksanakan kegiatan bidang kesejahteraan rakyat.\nMembantu kegiatan sosial dan kemasyarakatan.\nMelaksanakan koordinasi dalam pelayanan masyarakat.\nMelaksanakan tugas lain sesuai arahan Lurah.",
+    "kasi_kesra_tupoksi": "Membantu Lurah dalam bidang ketenteraman dan ketertiban.\nMenjaga ketenteraman dan ketertiban lingkungan kelurahan.\nMelakukan koordinasi terkait keamanan dan ketertiban masyarakat.\nMembantu menangani gangguan ketenteraman dan ketertiban.\nMelaksanakan pembinaan kepada masyarakat mengenai ketertiban lingkungan.\nBerkoordinasi dengan pihak terkait dalam menjaga keamanan wilayah.",
+    "kasi_ekbang_tupoksi": "Membantu Lurah dalam bidang ekonomi dan pembangunan.\nMengkoordinasikan kegiatan pembangunan di wilayah kelurahan.\nMenghimpun data potensi ekonomi masyarakat.\nMembantu pembinaan dan pemberdayaan ekonomi masyarakat.\nMelakukan monitoring kegiatan pembangunan.\nMembantu penyusunan program pembangunan kelurahan.\nMelaksanakan evaluasi kegiatan pembangunan.",
     "sotk_members": [
         {
-            "name": "dahlan",
+            "name": "Imam Mashari, S.Sos",
+            "nip": "19770302 200903 1 004",
+            "position": "Subag Keuangan",
+            "photo": "",
+            "tupoksi": "Melaksanakan administrasi keuangan kelurahan.\nMencatat penerimaan dan pengeluaran keuangan.\nMenyiapkan dokumen administrasi keuangan.\nMembantu penyusunan laporan pertanggungjawaban keuangan.\nMengelola dan menata dokumen keuangan.\nMelaksanakan tugas lain sesuai arahan atasan."
+        },
+        {
+            "name": "Seniri Erhamsah, S.H",
+            "nip": "19860114 202521 1 065",
+            "position": "Subag Perencanaan",
+            "photo": "",
+            "tupoksi": "Menyiapkan bahan perencanaan program dan kegiatan kelurahan.\nMenghimpun data untuk kebutuhan perencanaan.\nMembantu menyusun rencana kerja kelurahan.\nMelakukan monitoring dan evaluasi kegiatan.\nMenyiapkan bahan laporan pelaksanaan program.\nMelaksanakan tugas lain yang diberikan oleh atasan."
+        },
+        {
+            "name": "Ferdi Nur Arifin, S.T",
+            "nip": "19950605 202521 1 111",
+            "position": "Staf Pelaksana",
+            "photo": "",
+            "tupoksi": "Membantu pelaksanaan administrasi kelurahan.\nMembantu pelayanan kepada masyarakat.\nMembantu pengelolaan dan penyusunan dokumen.\nMembantu pelaksanaan tugas Kasi Pemerintahan & Kesra.\nMelaksanakan kegiatan operasional sesuai penugasan.\nMelaksanakan tugas lain yang diberikan oleh atasan."
+        },
+        {
+            "name": "Abdullah",
             "nip": "",
-            "position": "usaha",
-            "photo": "profile/vBJ79jbU74yXY49aYSd7fOVdcxZhg3SkeiGRHXdl.jpg",
-            "tupoksi": "usaha dinas"
+            "position": "Staf Pelaksana (Tenaga Harian Lepas)",
+            "photo": "",
+            "tupoksi": "Membantu pelaksanaan kegiatan operasional kelurahan.\nMembantu tugas pada bidang ketenteraman dan ketertiban.\nMembantu kegiatan lapangan sesuai penugasan.\nMembantu pekerjaan administrasi sesuai kebutuhan.\nMelaksanakan tugas lain yang diberikan oleh atasan."
+        },
+        {
+            "name": "Fenny Yunita Sari, S.E",
+            "nip": "19850612 202521 2 081",
+            "position": "Staf Pelaksana",
+            "photo": "",
+            "tupoksi": "Membantu pelaksanaan administrasi kelurahan.\nMembantu pelayanan kepada masyarakat.\nMembantu pengumpulan dan pengolahan data.\nMembantu pelaksanaan program ekonomi dan pembangunan.\nMembantu menyiapkan dokumen kegiatan.\nMelaksanakan tugas lain sesuai arahan atasan."
         }
     ],
     "maklumat_text": "Dengan ini, kami seluruh ASN dan Pegawai Pemerintah Kelurahan Semampir menyatakan sanggup menyelenggarakan pelayanan sesuai standar pelayanan yang telah ditetapkan dan siap menerima sanksi sesuai ketentuan perundang-undangan yang berlaku apabila pelayanan tidak sesuai janji.",
@@ -237,5 +265,9 @@
             "desc": "Dinas Lingkungan Hidup Kabupaten Probolinggo",
             "logo": "kemitraan/TNtVrVuH16HN5lgd3Qe2jQfUhPM70BPOV2985dmN.png"
         }
-    ]
+    ],
+    "sekel_role": "Sekretaris Lurah",
+    "kasi_pem_role": "Kasi Pemerintahan & Kesra",
+    "kasi_kesra_role": "Kasi Trantib",
+    "kasi_ekbang_role": "Kasi Ekonomi & Pembangunan"
 }
