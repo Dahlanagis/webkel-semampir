@@ -394,33 +394,8 @@
                                     @change="if($event.target.value === 'manual'){ isManualCat = true; form.category_id = ''; }"
                                     class="w-full p-2.5 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 text-slate-700 bg-white">
                                 <option value="">Pilih Kategori (Opsional)</option>
-                                @php
-                                    $typeLabels = [
-                                        'agenda' => 'Kategori Agenda Kegiatan',
-                                        'berita' => 'Kategori Berita & Informasi',
-                                        'galeri' => 'Kategori Galeri Kegiatan',
-                                        'pengumuman' => 'Kategori Pengumuman',
-                                        'dokumen' => 'Kategori Dokumen Publik',
-                                    ];
-                                    $groupedCats = $categories->groupBy('type');
-                                @endphp
-                                @foreach(['agenda', 'berita', 'galeri', 'pengumuman', 'dokumen'] as $gType)
-                                    @if(isset($groupedCats[$gType]) && $groupedCats[$gType]->count() > 0)
-                                        <optgroup label="📅 {{ $typeLabels[$gType] ?? ucfirst($gType) }}">
-                                            @foreach($groupedCats[$gType] as $cat)
-                                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                            @endforeach
-                                        </optgroup>
-                                    @endif
-                                @endforeach
-                                @foreach($groupedCats as $gType => $cats)
-                                    @if(!in_array($gType, ['agenda', 'berita', 'galeri', 'pengumuman', 'dokumen']))
-                                        <optgroup label="📅 {{ ucfirst($gType) }}">
-                                            @foreach($cats as $cat)
-                                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                            @endforeach
-                                        </optgroup>
-                                    @endif
+                                @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                 @endforeach
                                 <option value="manual" class="font-bold text-amber-700">+ Ketik Kategori Baru (Manual)...</option>
                             </select>

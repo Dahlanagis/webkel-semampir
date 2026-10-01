@@ -26,8 +26,7 @@ class GalleryController extends Controller
         }
 
         $galleries = $query->paginate(12)->withQueryString();
-        $categories = \App\Models\Category::orderByRaw("CASE WHEN type = 'galeri' THEN 0 ELSE 1 END")
-            ->orderBy('type', 'asc')
+        $categories = \App\Models\Category::where('type', 'berita')
             ->orderBy('name', 'asc')
             ->get();
 
@@ -62,7 +61,7 @@ class GalleryController extends Controller
             'youtube_url.url' => 'Format link YouTube tidak valid.',
         ]);
 
-        $categoryId = \App\Models\Category::resolveId($request->input('category_id'), $request->input('custom_category'), 'galeri');
+        $categoryId = \App\Models\Category::resolveId($request->input('category_id'), $request->input('custom_category'), 'berita');
         if (!$categoryId) {
             return back()->withErrors(['category_id' => 'Kategori kegiatan wajib dipilih atau diisi.'])->withInput();
         }
@@ -220,7 +219,7 @@ class GalleryController extends Controller
             'youtube_url.url' => 'Format link YouTube tidak valid.',
         ]);
 
-        $categoryId = \App\Models\Category::resolveId($request->input('category_id'), $request->input('custom_category'), 'galeri');
+        $categoryId = \App\Models\Category::resolveId($request->input('category_id'), $request->input('custom_category'), 'berita');
         if (!$categoryId) {
             return back()->withErrors(['category_id' => 'Kategori kegiatan wajib dipilih atau diisi.'])->withInput();
         }

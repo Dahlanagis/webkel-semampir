@@ -31,10 +31,7 @@ class PostController extends Controller
         }
 
         $posts = $query->paginate(10)->withQueryString();
-        $categories = Category::orderByRaw("CASE WHEN type = 'berita' THEN 0 ELSE 1 END")
-            ->orderBy('type', 'asc')
-            ->orderBy('name', 'asc')
-            ->get();
+        $categories = Category::where('type', 'berita')->orderBy('name', 'asc')->get();
 
         return view('admin.berita.index', compact('posts', 'categories'));
     }
