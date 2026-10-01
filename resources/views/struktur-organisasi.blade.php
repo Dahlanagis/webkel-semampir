@@ -128,12 +128,12 @@
 
                 {{-- Org Chart Canvas --}}
                 <div class="overflow-x-auto pb-8 custom-scrollbar">
-                    <div class="min-w-[1140px] max-w-[1300px] mx-auto flex flex-col items-center py-4">
+                    <div class="min-w-[1220px] max-w-[1360px] mx-auto flex flex-col items-center py-4">
 
                         {{-- ==================================================== --}}
                         {{-- TIER 1: LURAH SEMAMPIR (TOP ROOT NODE)               --}}
                         {{-- ==================================================== --}}
-                        <div class="flex flex-col items-center z-20 relative">
+                        <div class="flex flex-col items-center z-30 relative">
                             <div @click="openTupoksiModal({
                                     name: {{ json_encode($villageProfile['head_name'] ?? 'Latif Hasan Asyari, S.H') }},
                                     nip: {{ json_encode($villageProfile['head_nip'] ?? '19750612 201001 1 004') }},
@@ -143,7 +143,7 @@
                                     initial: 'LH',
                                     tupoksi: {{ json_encode($villageProfile['lurah_tupoksi'] ?? 'Memimpin penyelenggaraan pemerintahan di Kelurahan Semampir.') }}
                                  })"
-                                 class="bg-gradient-to-b from-white to-slate-50 rounded-2xl p-4 sm:p-5 border-2 border-slate-900/90 shadow-md hover:shadow-xl hover:border-blue-600 flex flex-col items-center text-center w-72 transition-all duration-300 group cursor-pointer hover:-translate-y-1">
+                                 class="bg-white rounded-2xl p-4 sm:p-5 border-2 border-slate-900 shadow-md hover:shadow-xl hover:border-blue-600 flex flex-col items-center text-center w-72 transition-all duration-300 group cursor-pointer hover:-translate-y-1">
                                 
                                 {{-- Badge Tingkat Jabatan --}}
                                 <div class="mb-2">
@@ -177,10 +177,11 @@
                                 </span>
                             </div>
 
-                            {{-- Vertical Trunk Line down from Lurah --}}
-                            <div class="w-0.5 h-10 bg-gradient-to-b from-slate-800 via-blue-600 to-indigo-500 relative flex items-center justify-center">
-                                <div class="w-4 h-4 rounded-full bg-blue-600 border-2 border-white ring-4 ring-blue-100 shadow-sm flex items-center justify-center z-10 -bottom-2 absolute">
-                                    <i class="fas fa-chevron-down text-[7px] text-white"></i>
+                            {{-- Garis Utama Turun dari Lurah --}}
+                            <div class="flex flex-col items-center relative">
+                                <div style="width: 4px; height: 38px; background-color: #2563eb; border-radius: 9999px;"></div>
+                                <div class="w-7 h-7 rounded-full bg-blue-600 text-white border-2 border-white shadow-md flex items-center justify-center text-[10px] -mt-3.5 z-20">
+                                    <i class="fas fa-chevron-down"></i>
                                 </div>
                             </div>
                         </div>
@@ -188,27 +189,29 @@
                         {{-- ==================================================== --}}
                         {{-- TIER 2 & 3: 4 PILAR DEPARTEMEN DENGAN STAF MASING-MASING --}}
                         {{-- ==================================================== --}}
-                        <div class="w-full relative pt-2">
+                        <div class="w-full relative mt-0">
                             
-                            {{-- Horizontal Distribution Rail across 4 Columns --}}
-                            <div class="relative w-full px-16 sm:px-24">
-                                <div class="w-full h-1 bg-gradient-to-r from-blue-400 via-indigo-600 to-blue-400 rounded-full shadow-2xs"></div>
-                            </div>
-
-                            {{-- 4 Columns Layout: 1.35fr for Sekel (2 subags) + 1fr for each Kasi --}}
-                            <div class="grid grid-cols-[1.35fr_1fr_1fr_1fr] gap-4 sm:gap-6 pt-0 items-start">
+                            {{-- 4 Pilar Utama Sejajar --}}
+                            <div class="w-full flex items-start">
 
                                 {{-- ================================================ --}}
                                 {{-- KOLOM 1: SEKRETARIAT KELURAHAN (SEKEL + 2 SUBAG) --}}
                                 {{-- ================================================ --}}
-                                <div class="flex flex-col items-center relative">
+                                <div class="w-[31%] px-2 flex flex-col items-center relative">
                                     
-                                    {{-- Connector line from top rail to Sekel --}}
-                                    <div class="w-0.5 h-6 bg-gradient-to-b from-indigo-500 to-blue-600 relative">
-                                        <div class="w-2.5 h-2.5 rounded-full bg-blue-600 border-2 border-white shadow-2xs -top-1 left-1/2 -translate-x-1/2 absolute"></div>
+                                    {{-- Rail Horizontal Atas: Dari Tengah (50%) ke Kanan (100%) --}}
+                                    <div class="absolute top-0 right-0" style="left: 50%; height: 4px; background-color: #2563eb; border-radius: 9999px;"></div>
+
+                                    {{-- Garis Turun ke Sekel --}}
+                                    <div class="relative z-10 flex flex-col items-center">
+                                        <div class="w-3.5 h-3.5 rounded-full bg-blue-600 border-2 border-white shadow-2xs"></div>
+                                        <div style="width: 4px; height: 28px; background-color: #2563eb; border-radius: 9999px;"></div>
+                                        <div class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[8px] -mt-2.5 z-20 border-2 border-white shadow-xs">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
                                     </div>
 
-                                    {{-- Card: Sekretaris Kelurahan --}}
+                                    {{-- Kartu: Sekretaris Kelurahan --}}
                                     <div @click="openTupoksiModal({
                                             name: {{ json_encode($villageProfile['sekel_name'] ?? 'Sidiq, SH. MM.') }},
                                             nip: {{ json_encode($villageProfile['sekel_nip'] ?? '19710312 200906 1 001') }},
@@ -218,7 +221,7 @@
                                             initial: 'SK',
                                             tupoksi: {{ json_encode($villageProfile['sekel_tupoksi'] ?? '') }}
                                          })"
-                                         class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-500 shadow-xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[260px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
+                                         class="bg-white rounded-2xl p-4 border-2 border-slate-200 hover:border-blue-600 shadow-sm hover:shadow-md flex flex-col items-center text-center w-full max-w-[250px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                         
                                         <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-2xs mb-2 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200">
                                             <img src="{{ $sekelPhotoUrl }}" 
@@ -247,77 +250,82 @@
                                         </span>
                                     </div>
 
-                                    {{-- Subordinate Branch under Sekel --}}
-                                    <div class="w-full flex flex-col items-center relative">
+                                    {{-- Cabang Hierarki Langsung ke 2 Subag di Bawah Sekel --}}
+                                    <div class="w-full flex flex-col items-center relative mt-0">
                                         
-                                        {{-- Vertical stem down from Sekel --}}
-                                        <div class="w-0.5 h-5 bg-gradient-to-b from-blue-600 to-indigo-500 relative"></div>
+                                        {{-- Garis Tegak Turun dari Sekel --}}
+                                        <div style="width: 4px; height: 30px; background-color: #2563eb; border-radius: 9999px;"></div>
 
-                                        {{-- Junction Node Dot --}}
-                                        <div class="w-3 h-3 rounded-full bg-blue-600 border-2 border-white shadow-2xs -my-1 z-10 flex items-center justify-center">
-                                            <i class="fas fa-chevron-down text-[5.5px] text-white"></i>
+                                        {{-- Simpul Percabangan Lingkaran --}}
+                                        <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[9px] -mt-3 z-20 border-2 border-white shadow-sm">
+                                            <i class="fas fa-chevron-down"></i>
                                         </div>
 
-                                        {{-- Horizontal branch bar across 2 Subags --}}
-                                        <div class="w-[82%] h-0.5 bg-gradient-to-r from-blue-400 via-indigo-500 to-blue-400 rounded-full mt-1"></div>
+                                        {{-- Garis Cabang Horizontal Menghubungkan 2 Subag --}}
+                                        <div class="w-full relative pt-2">
+                                            <div class="grid grid-cols-2 gap-3 w-full relative">
+                                                {{-- Garis Rel Horizontal Cabang (dari tengah kolom kiri ke tengah kolom kanan) --}}
+                                                <div class="absolute top-2" style="left: 25%; right: 25%; height: 4px; background-color: #2563eb; border-radius: 9999px;"></div>
 
-                                        {{-- Grid 2 Subags side-by-side --}}
-                                        <div class="grid grid-cols-2 gap-2.5 w-full pt-3">
-                                            @forelse($sekelMembers as $m)
-                                                @php
-                                                    $mPhoto = !empty($m['photo']) ? asset('storage/' . $m['photo']) : null;
-                                                    $mInitial = strtoupper(substr($m['name'] ?? 'S', 0, 2));
-                                                @endphp
-                                                <div class="flex flex-col items-center relative">
-                                                    {{-- Drop line to card --}}
-                                                    <div class="w-0.5 h-3 bg-blue-400 absolute -top-3 left-1/2 -translate-x-1/2"></div>
-
-                                                    <div @click="openTupoksiModal({
-                                                            name: {{ json_encode($m['name'] ?? 'Subag') }},
-                                                            nip: {{ json_encode($m['nip'] ?? '') }},
-                                                            role: {{ json_encode(strtoupper($m['position'] ?? 'SUBAG')) }},
-                                                            unit: 'Sekretariat Kelurahan',
-                                                            photo: {{ json_encode($mPhoto) }},
-                                                            initial: {{ json_encode($mInitial) }},
-                                                            tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
-                                                         })"
-                                                         class="bg-white rounded-2xl p-3 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
-                                                        
-                                                        <div class="w-13 h-13 rounded-full border border-slate-700 overflow-hidden shadow-2xs mb-1.5 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
-                                                            @if(!empty($mPhoto))
-                                                                <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
-                                                            @else
-                                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-extrabold text-xs uppercase">
-                                                                    {{ $mInitial }}
-                                                                </div>
-                                                            @endif
+                                                @forelse($sekelMembers as $m)
+                                                    @php
+                                                        $mPhoto = !empty($m['photo']) ? asset('storage/' . $m['photo']) : null;
+                                                        $mInitial = strtoupper(substr($m['name'] ?? 'S', 0, 2));
+                                                    @endphp
+                                                    <div class="flex flex-col items-center relative pt-2">
+                                                        {{-- Garis Turun ke Kartu Subag --}}
+                                                        <div style="width: 4px; height: 18px; background-color: #2563eb; border-radius: 9999px;"></div>
+                                                        <div class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[7.5px] -mt-2.5 z-20 border-2 border-white shadow-2xs">
+                                                            <i class="fas fa-arrow-down"></i>
                                                         </div>
 
-                                                        <h6 class="font-bold text-[11px] text-slate-900 leading-tight capitalize truncate w-full">
-                                                            {{ $m['name'] }}
-                                                        </h6>
+                                                        <div @click="openTupoksiModal({
+                                                                name: {{ json_encode($m['name'] ?? 'Subag') }},
+                                                                nip: {{ json_encode($m['nip'] ?? '') }},
+                                                                role: {{ json_encode(strtoupper($m['position'] ?? 'SUBAG')) }},
+                                                                unit: 'Sekretariat Kelurahan',
+                                                                photo: {{ json_encode($mPhoto) }},
+                                                                initial: {{ json_encode($mInitial) }},
+                                                                tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
+                                                             })"
+                                                             class="bg-white rounded-2xl p-3 border-2 border-slate-200 hover:border-blue-600 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
+                                                            
+                                                            <div class="w-13 h-13 rounded-full border border-slate-700 overflow-hidden shadow-2xs mb-1.5 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                                                @if(!empty($mPhoto))
+                                                                    <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
+                                                                @else
+                                                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-extrabold text-xs uppercase">
+                                                                        {{ $mInitial }}
+                                                                    </div>
+                                                                @endif
+                                                            </div>
 
-                                                        @if(!empty($m['nip']))
-                                                            <p class="text-[8.5px] text-slate-500 font-mono mt-0.5 font-medium leading-none">NIP. {{ $m['nip'] }}</p>
-                                                        @endif
+                                                            <h6 class="font-bold text-[11px] text-slate-900 leading-tight capitalize truncate w-full">
+                                                                {{ $m['name'] }}
+                                                            </h6>
 
-                                                        <div class="mt-1.5">
-                                                            <span class="bg-slate-800 text-white font-bold text-[8px] uppercase px-2 py-0.5 rounded-full tracking-wider inline-block">
-                                                                {{ $m['position'] ?? 'SUBAG' }}
+                                                            @if(!empty($m['nip']))
+                                                                <p class="text-[8.5px] text-slate-500 font-mono mt-0.5 font-medium leading-none">NIP. {{ $m['nip'] }}</p>
+                                                            @endif
+
+                                                            <div class="mt-1.5">
+                                                                <span class="bg-slate-800 text-white font-bold text-[8px] uppercase px-2 py-0.5 rounded-full tracking-wider inline-block">
+                                                                    {{ $m['position'] ?? 'SUBAG' }}
+                                                                </span>
+                                                            </div>
+
+                                                            <span class="mt-2 inline-flex items-center gap-1 text-[8.5px] font-bold text-blue-600 group-hover:text-blue-700">
+                                                                <span>TUPOKSI</span>
+                                                                <i class="fas fa-arrow-right text-[7px] group-hover:translate-x-0.5 transition-transform"></i>
                                                             </span>
                                                         </div>
-
-                                                        <span class="mt-2 inline-flex items-center gap-1 text-[8.5px] font-bold text-blue-600 group-hover:text-blue-700">
-                                                            <span>TUPOKSI</span>
-                                                            <i class="fas fa-arrow-right text-[7px] group-hover:translate-x-0.5 transition-transform"></i>
-                                                        </span>
                                                     </div>
-                                                </div>
-                                            @empty
-                                                <div class="col-span-2 text-center text-xs text-slate-400 py-3 italic">
-                                                    Belum ada sub-bagian
-                                                </div>
-                                            @endforelse
+                                                @empty
+                                                    <div class="col-span-2 text-center text-xs text-slate-400 py-3 italic">
+                                                        Belum ada sub-bagian
+                                                    </div>
+                                                @endforelse
+                                            </div>
                                         </div>
 
                                     </div>
@@ -326,14 +334,21 @@
                                 {{-- ================================================ --}}
                                 {{-- KOLOM 2: SEKSI PEMERINTAHAN (KASI PEM + FERDI)   --}}
                                 {{-- ================================================ --}}
-                                <div class="flex flex-col items-center relative">
+                                <div class="w-[23%] px-2 flex flex-col items-center relative">
                                     
-                                    {{-- Connector line from top rail to Kasi Pem --}}
-                                    <div class="w-0.5 h-6 bg-gradient-to-b from-indigo-500 to-blue-600 relative">
-                                        <div class="w-2.5 h-2.5 rounded-full bg-blue-600 border-2 border-white shadow-2xs -top-1 left-1/2 -translate-x-1/2 absolute"></div>
+                                    {{-- Rail Horizontal Atas: Penuh Seluruh Kolom (0% ke 100%) --}}
+                                    <div class="absolute top-0 left-0 right-0" style="height: 4px; background-color: #2563eb; border-radius: 9999px;"></div>
+
+                                    {{-- Garis Turun ke Kasi Pem --}}
+                                    <div class="relative z-10 flex flex-col items-center">
+                                        <div class="w-3.5 h-3.5 rounded-full bg-blue-600 border-2 border-white shadow-2xs"></div>
+                                        <div style="width: 4px; height: 28px; background-color: #2563eb; border-radius: 9999px;"></div>
+                                        <div class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[8px] -mt-2.5 z-20 border-2 border-white shadow-xs">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
                                     </div>
 
-                                    {{-- Card: Kasi Pemerintahan --}}
+                                    {{-- Kartu: Kasi Pemerintahan --}}
                                     <div @click="openTupoksiModal({
                                             name: {{ json_encode($villageProfile['kasi_pem_name'] ?? 'Margareta, S.E') }},
                                             nip: {{ json_encode($villageProfile['kasi_pem_nip'] ?? '19600330 201101 2 006') }},
@@ -343,7 +358,7 @@
                                             initial: 'KP',
                                             tupoksi: {{ json_encode($villageProfile['kasi_pem_tupoksi'] ?? '') }}
                                          })"
-                                         class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-500 shadow-xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[240px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
+                                         class="bg-white rounded-2xl p-4 border-2 border-slate-200 hover:border-blue-600 shadow-sm hover:shadow-md flex flex-col items-center text-center w-full max-w-[240px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                         
                                         <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-2xs mb-2 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200">
                                             <img src="{{ $kasiPemPhotoUrl }}" 
@@ -372,15 +387,16 @@
                                         </span>
                                     </div>
 
-                                    {{-- Direct vertical connector down to subordinate --}}
-                                    <div class="w-0.5 h-9 bg-gradient-to-b from-blue-600 to-indigo-500 relative flex items-center justify-center my-0">
-                                        <div class="w-3.5 h-3.5 rounded-full bg-white border border-blue-400 shadow-2xs flex items-center justify-center text-[7px] text-blue-600 z-10">
+                                    {{-- Garis Sambungan Langsung Tegak ke Staf Pelaksana --}}
+                                    <div class="w-full flex flex-col items-center relative">
+                                        <div style="width: 4px; height: 38px; background-color: #2563eb; border-radius: 9999px;"></div>
+                                        <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[9px] -mt-3 z-20 border-2 border-white shadow-sm">
                                             <i class="fas fa-arrow-down"></i>
                                         </div>
                                     </div>
 
-                                    {{-- Subordinate(s) under Kasi Pem --}}
-                                    <div class="w-full max-w-[240px] space-y-3">
+                                    {{-- Subordinate(s) di Bawah Kasi Pem --}}
+                                    <div class="w-full max-w-[240px] pt-1">
                                         @forelse($kasiPemMembers as $m)
                                             @php
                                                 $mPhoto = !empty($m['photo']) ? asset('storage/' . $m['photo']) : null;
@@ -395,7 +411,7 @@
                                                     initial: {{ json_encode($mInitial) }},
                                                     tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
                                                  })"
-                                                 class="bg-white rounded-2xl p-3.5 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
+                                                 class="bg-white rounded-2xl p-3.5 border-2 border-slate-200 hover:border-blue-600 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                                 
                                                 <div class="w-13 h-13 rounded-full border border-slate-700 overflow-hidden shadow-2xs mb-1.5 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
                                                     @if(!empty($mPhoto))
@@ -440,14 +456,21 @@
                                 {{-- ================================================ --}}
                                 {{-- KOLOM 3: SEKSI KESRA (KASI KESRA + ABDULLAH)     --}}
                                 {{-- ================================================ --}}
-                                <div class="flex flex-col items-center relative">
+                                <div class="w-[23%] px-2 flex flex-col items-center relative">
                                     
-                                    {{-- Connector line from top rail to Kasi Kesra --}}
-                                    <div class="w-0.5 h-6 bg-gradient-to-b from-indigo-500 to-blue-600 relative">
-                                        <div class="w-2.5 h-2.5 rounded-full bg-blue-600 border-2 border-white shadow-2xs -top-1 left-1/2 -translate-x-1/2 absolute"></div>
+                                    {{-- Rail Horizontal Atas: Penuh Seluruh Kolom (0% ke 100%) --}}
+                                    <div class="absolute top-0 left-0 right-0" style="height: 4px; background-color: #2563eb; border-radius: 9999px;"></div>
+
+                                    {{-- Garis Turun ke Kasi Kesra --}}
+                                    <div class="relative z-10 flex flex-col items-center">
+                                        <div class="w-3.5 h-3.5 rounded-full bg-blue-600 border-2 border-white shadow-2xs"></div>
+                                        <div style="width: 4px; height: 28px; background-color: #2563eb; border-radius: 9999px;"></div>
+                                        <div class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[8px] -mt-2.5 z-20 border-2 border-white shadow-xs">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
                                     </div>
 
-                                    {{-- Card: Kasi Kesra --}}
+                                    {{-- Kartu: Kasi Kesra --}}
                                     <div @click="openTupoksiModal({
                                             name: {{ json_encode($villageProfile['kasi_kesra_name'] ?? 'Herman, S.E') }},
                                             nip: {{ json_encode($villageProfile['kasi_kesra_nip'] ?? '19741001 200801 1 013') }},
@@ -457,7 +480,7 @@
                                             initial: 'KK',
                                             tupoksi: {{ json_encode($villageProfile['kasi_kesra_tupoksi'] ?? '') }}
                                          })"
-                                         class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-500 shadow-xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[240px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
+                                         class="bg-white rounded-2xl p-4 border-2 border-slate-200 hover:border-blue-600 shadow-sm hover:shadow-md flex flex-col items-center text-center w-full max-w-[240px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                         
                                         <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-2xs mb-2 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200">
                                             <img src="{{ $kasiKesraPhotoUrl }}" 
@@ -486,15 +509,16 @@
                                         </span>
                                     </div>
 
-                                    {{-- Direct vertical connector down to subordinate --}}
-                                    <div class="w-0.5 h-9 bg-gradient-to-b from-blue-600 to-indigo-500 relative flex items-center justify-center my-0">
-                                        <div class="w-3.5 h-3.5 rounded-full bg-white border border-blue-400 shadow-2xs flex items-center justify-center text-[7px] text-blue-600 z-10">
+                                    {{-- Garis Sambungan Langsung Tegak ke Abdullah --}}
+                                    <div class="w-full flex flex-col items-center relative">
+                                        <div style="width: 4px; height: 38px; background-color: #2563eb; border-radius: 9999px;"></div>
+                                        <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[9px] -mt-3 z-20 border-2 border-white shadow-sm">
                                             <i class="fas fa-arrow-down"></i>
                                         </div>
                                     </div>
 
-                                    {{-- Subordinate(s) under Kasi Kesra --}}
-                                    <div class="w-full max-w-[240px] space-y-3">
+                                    {{-- Subordinate(s) di Bawah Kasi Kesra --}}
+                                    <div class="w-full max-w-[240px] pt-1">
                                         @forelse($kasiKesraMembers as $m)
                                             @php
                                                 $mPhoto = !empty($m['photo']) ? asset('storage/' . $m['photo']) : null;
@@ -509,7 +533,7 @@
                                                     initial: {{ json_encode($mInitial) }},
                                                     tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
                                                  })"
-                                                 class="bg-white rounded-2xl p-3.5 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
+                                                 class="bg-white rounded-2xl p-3.5 border-2 border-slate-200 hover:border-blue-600 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                                 
                                                 <div class="w-13 h-13 rounded-full border border-slate-700 overflow-hidden shadow-2xs mb-1.5 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
                                                     @if(!empty($mPhoto))
@@ -556,14 +580,21 @@
                                 {{-- ================================================ --}}
                                 {{-- KOLOM 4: SEKSI EKBANG (KASI EKBANG + FENNY)       --}}
                                 {{-- ================================================ --}}
-                                <div class="flex flex-col items-center relative">
+                                <div class="w-[23%] px-2 flex flex-col items-center relative">
                                     
-                                    {{-- Connector line from top rail to Kasi Ekbang --}}
-                                    <div class="w-0.5 h-6 bg-gradient-to-b from-indigo-500 to-blue-600 relative">
-                                        <div class="w-2.5 h-2.5 rounded-full bg-blue-600 border-2 border-white shadow-2xs -top-1 left-1/2 -translate-x-1/2 absolute"></div>
+                                    {{-- Rail Horizontal Atas: Dari Kiri (0%) ke Tengah Kolom (50%) --}}
+                                    <div class="absolute top-0 left-0" style="right: 50%; height: 4px; background-color: #2563eb; border-radius: 9999px;"></div>
+
+                                    {{-- Garis Turun ke Kasi Ekbang --}}
+                                    <div class="relative z-10 flex flex-col items-center">
+                                        <div class="w-3.5 h-3.5 rounded-full bg-blue-600 border-2 border-white shadow-2xs"></div>
+                                        <div style="width: 4px; height: 28px; background-color: #2563eb; border-radius: 9999px;"></div>
+                                        <div class="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[8px] -mt-2.5 z-20 border-2 border-white shadow-xs">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
                                     </div>
 
-                                    {{-- Card: Kasi Ekbang --}}
+                                    {{-- Kartu: Kasi Ekbang --}}
                                     <div @click="openTupoksiModal({
                                             name: {{ json_encode($villageProfile['kasi_ekbang_name'] ?? 'Sabar, S.Sos') }},
                                             nip: {{ json_encode($villageProfile['kasi_ekbang_nip'] ?? '19690206 199103 1 004') }},
@@ -573,7 +604,7 @@
                                             initial: 'KE',
                                             tupoksi: {{ json_encode($villageProfile['kasi_ekbang_tupoksi'] ?? '') }}
                                          })"
-                                         class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-500 shadow-xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[240px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
+                                         class="bg-white rounded-2xl p-4 border-2 border-slate-200 hover:border-blue-600 shadow-sm hover:shadow-md flex flex-col items-center text-center w-full max-w-[240px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                         
                                         <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-2xs mb-2 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200">
                                             <img src="{{ $kasiEkbangPhotoUrl }}" 
@@ -602,15 +633,16 @@
                                         </span>
                                     </div>
 
-                                    {{-- Direct vertical connector down to subordinate --}}
-                                    <div class="w-0.5 h-9 bg-gradient-to-b from-blue-600 to-indigo-500 relative flex items-center justify-center my-0">
-                                        <div class="w-3.5 h-3.5 rounded-full bg-white border border-blue-400 shadow-2xs flex items-center justify-center text-[7px] text-blue-600 z-10">
+                                    {{-- Garis Sambungan Langsung Tegak ke Fenny --}}
+                                    <div class="w-full flex flex-col items-center relative">
+                                        <div style="width: 4px; height: 38px; background-color: #2563eb; border-radius: 9999px;"></div>
+                                        <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-[9px] -mt-3 z-20 border-2 border-white shadow-sm">
                                             <i class="fas fa-arrow-down"></i>
                                         </div>
                                     </div>
 
-                                    {{-- Subordinate(s) under Kasi Ekbang --}}
-                                    <div class="w-full max-w-[240px] space-y-3">
+                                    {{-- Subordinate(s) di Bawah Kasi Ekbang --}}
+                                    <div class="w-full max-w-[240px] pt-1">
                                         @forelse($kasiEkbangMembers as $m)
                                             @php
                                                 $mPhoto = !empty($m['photo']) ? asset('storage/' . $m['photo']) : null;
@@ -625,7 +657,7 @@
                                                     initial: {{ json_encode($mInitial) }},
                                                     tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
                                                  })"
-                                                 class="bg-white rounded-2xl p-3.5 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
+                                                 class="bg-white rounded-2xl p-3.5 border-2 border-slate-200 hover:border-blue-600 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                                 
                                                 <div class="w-13 h-13 rounded-full border border-slate-700 overflow-hidden shadow-2xs mb-1.5 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
                                                     @if(!empty($mPhoto))
@@ -651,7 +683,7 @@
                                                     </span>
                                                 </div>
 
-                                                <span class="text-[9.5px] text-slate-500 mt-1 font-medium">Staf Pembangunan</span>
+                                                <span class="text-[9.5px] text-slate-500 mt-1 font-medium">Staf Pendukung</span>
 
                                                 <span class="mt-2 inline-flex items-center gap-1 text-[9px] font-bold text-blue-600 group-hover:text-blue-700">
                                                     <span>Lihat TUPOKSI</span>
@@ -672,7 +704,7 @@
                             {{-- Anggota Tambahan Lainnya (jika ada yang belum terkategori) --}}
                             @if(!empty($otherMembers) && count($otherMembers) > 0)
                                 <div class="pt-10 relative flex flex-col items-center">
-                                    <div class="w-0.5 h-8 bg-slate-300 border-l border-dashed border-slate-400 mb-3"></div>
+                                    <div style="width: 4px; height: 32px; background-color: #94a3b8; border-radius: 9999px;" class="mb-3"></div>
                                     <span class="text-[10px] font-extrabold uppercase px-3 py-1 bg-slate-100 text-slate-600 rounded-full border border-slate-200 mb-4 tracking-wider">
                                         Staf & Jabatan Fungsional Lainnya
                                     </span>
@@ -691,7 +723,7 @@
                                                     initial: {{ json_encode($mInitial) }},
                                                     tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
                                                  })"
-                                                 class="bg-white rounded-2xl p-3.5 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-48 transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
+                                                 class="bg-white rounded-2xl p-3.5 border-2 border-slate-200 hover:border-blue-600 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-48 transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                                 <div class="w-12 h-12 rounded-full border border-slate-700 overflow-hidden shadow-2xs mb-1.5 bg-slate-50 shrink-0 flex items-center justify-center">
                                                     @if(!empty($mPhoto))
                                                         <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
