@@ -189,6 +189,7 @@
             "name": "Imam Mashari, S.Sos",
             "nip": "19770302 200903 1 004",
             "position": "Subag Keuangan",
+            "parent_key": "sekel",
             "photo": "",
             "tupoksi": "Melaksanakan administrasi keuangan kelurahan.\nMencatat penerimaan dan pengeluaran keuangan.\nMenyiapkan dokumen administrasi keuangan.\nMembantu penyusunan laporan pertanggungjawaban keuangan.\nMengelola dan menata dokumen keuangan.\nMelaksanakan tugas lain sesuai arahan atasan."
         },
@@ -196,6 +197,7 @@
             "name": "Seniri Erhamsah, S.H",
             "nip": "19860114 202521 1 065",
             "position": "Subag Perencanaan",
+            "parent_key": "sekel",
             "photo": "",
             "tupoksi": "Menyiapkan bahan perencanaan program dan kegiatan kelurahan.\nMenghimpun data untuk kebutuhan perencanaan.\nMembantu menyusun rencana kerja kelurahan.\nMelakukan monitoring dan evaluasi kegiatan.\nMenyiapkan bahan laporan pelaksanaan program.\nMelaksanakan tugas lain yang diberikan oleh atasan."
         },
@@ -203,13 +205,15 @@
             "name": "Ferdi Nur Arifin, S.T",
             "nip": "19950605 202521 1 111",
             "position": "Staf Pelaksana",
+            "parent_key": "kasi_pem",
             "photo": "",
             "tupoksi": "Membantu pelaksanaan administrasi kelurahan.\nMembantu pelayanan kepada masyarakat.\nMembantu pengelolaan dan penyusunan dokumen.\nMembantu pelaksanaan tugas Kasi Pemerintahan & Kesra.\nMelaksanakan kegiatan operasional sesuai penugasan.\nMelaksanakan tugas lain yang diberikan oleh atasan."
         },
         {
             "name": "Abdullah",
             "nip": "",
-            "position": "Staf Pelaksana (Tenaga Harian Lepas)",
+            "position": "Staf Pelaksana (THL)",
+            "parent_key": "kasi_kesra",
             "photo": "",
             "tupoksi": "Membantu pelaksanaan kegiatan operasional kelurahan.\nMembantu tugas pada bidang ketenteraman dan ketertiban.\nMembantu kegiatan lapangan sesuai penugasan.\nMembantu pekerjaan administrasi sesuai kebutuhan.\nMelaksanakan tugas lain yang diberikan oleh atasan."
         },
@@ -217,6 +221,7 @@
             "name": "Fenny Yunita Sari, S.E",
             "nip": "19850612 202521 2 081",
             "position": "Staf Pelaksana",
+            "parent_key": "kasi_ekbang",
             "photo": "",
             "tupoksi": "Membantu pelaksanaan administrasi kelurahan.\nMembantu pelayanan kepada masyarakat.\nMembantu pengumpulan dan pengolahan data.\nMembantu pelaksanaan program ekonomi dan pembangunan.\nMembantu menyiapkan dokumen kegiatan.\nMelaksanakan tugas lain sesuai arahan atasan."
         }

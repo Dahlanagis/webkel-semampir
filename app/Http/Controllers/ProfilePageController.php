@@ -9,6 +9,10 @@ class ProfilePageController extends Controller
 {
     public function show($slug)
     {
+        if ($slug === 'struktur-organisasi') {
+            return redirect()->route('struktur-organisasi');
+        }
+
         $page = Page::where('slug', $slug)
             ->where('category', 'profile')
             ->where('is_active', true)

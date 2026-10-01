@@ -589,6 +589,7 @@ class VillageProfileController extends Controller
                         'name' => $name,
                         'nip' => trim($m['nip'] ?? ''),
                         'position' => trim($m['position'] ?? 'Staf Kelurahan'),
+                        'parent_key' => trim($m['parent_key'] ?? '') ?: null,
                         'photo' => $photoPath,
                         'tupoksi' => html_entity_decode(trim((string) ($m['tupoksi'] ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                     ];
