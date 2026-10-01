@@ -145,6 +145,10 @@ class VillageProfileController extends Controller
             'regency' => 'Kabupaten Probolinggo',
             'head_name' => 'Latif Hasan Asyari, SH.',
             'head_nip' => '19750612 201001 1 004',
+            'sekel_nip' => '',
+            'kasi_pem_nip' => '',
+            'kasi_kesra_nip' => '',
+            'kasi_ekbang_nip' => '',
             'head_photo' => 'profile/lurah_official_blue.jpg',
             'welcome_title' => 'Komitmen Pelayanan Publik yang Transparan, Cepat, & Responsif',
             'welcome_text' => '<p>Melalui sistem portal terpadu ini, Pemerintah Kelurahan Semampir berkomitmen penuh dalam mewujudkan pelayanan publik modern yang berbasis transparansi, kemudahan akses dokumen mandiri, dan akuntabilitas pengelolaan anggaran.</p><p>Kami terus berinovasi untuk memberikan pelayanan terbaik bagi warga Kraksaan tanpa kerumitan administrasi, ramah, akuntabel, dan 100% bebas dari segala bentuk pungutan liar.</p>',
@@ -497,22 +501,38 @@ class VillageProfileController extends Controller
             $statusMsg = 'Identitas Kelurahan & Sambutan berhasil diperbarui.';
 
         } elseif ($section === 'sotk') {
+            if ($request->filled('head_name')) {
+                $existingData['head_name'] = $request->input('head_name');
+            }
+            if ($request->has('head_nip')) {
+                $existingData['head_nip'] = $request->input('head_nip', '');
+            }
+            if ($request->has('head_tupoksi') || $request->has('lurah_tupoksi')) {
+                $existingData['lurah_tupoksi'] = $request->input('head_tupoksi', $request->input('lurah_tupoksi', $existingData['lurah_tupoksi'] ?? ''));
+            }
+
             $existingData['sekel_name'] = $request->input('sekel_name', '');
+            $existingData['sekel_nip'] = $request->input('sekel_nip', '');
             $existingData['sekel_role'] = $request->input('sekel_role', 'Sekretaris Kelurahan');
+
             $existingData['kasi_pem_name'] = $request->input('kasi_pem_name', '');
+            $existingData['kasi_pem_nip'] = $request->input('kasi_pem_nip', '');
             $existingData['kasi_pem_role'] = $request->input('kasi_pem_role', 'Kasi Pemerintahan & Trantib');
+
             $existingData['kasi_kesra_name'] = $request->input('kasi_kesra_name', '');
+            $existingData['kasi_kesra_nip'] = $request->input('kasi_kesra_nip', '');
             $existingData['kasi_kesra_role'] = $request->input('kasi_kesra_role', 'Kasi Pelayanan & Kesra');
+
             $existingData['kasi_ekbang_name'] = $request->input('kasi_ekbang_name', '');
+            $existingData['kasi_ekbang_nip'] = $request->input('kasi_ekbang_nip', '');
             $existingData['kasi_ekbang_role'] = $request->input('kasi_ekbang_role', 'Kasi Pemberdayaan & Ekbang');
 
-            $existingData['lurah_tupoksi'] = $request->input('lurah_tupoksi', '');
             $existingData['sekel_tupoksi'] = $request->input('sekel_tupoksi', '');
             $existingData['kasi_pem_tupoksi'] = $request->input('kasi_pem_tupoksi', '');
             $existingData['kasi_kesra_tupoksi'] = $request->input('kasi_kesra_tupoksi', '');
             $existingData['kasi_ekbang_tupoksi'] = $request->input('kasi_ekbang_tupoksi', '');
 
-            $sotkKeys = ['sekel_photo', 'kasi_pem_photo', 'kasi_kesra_photo', 'kasi_ekbang_photo'];
+            $sotkKeys = ['head_photo', 'sekel_photo', 'kasi_pem_photo', 'kasi_kesra_photo', 'kasi_ekbang_photo'];
             foreach ($sotkKeys as $photoKey) {
                 if ($request->hasFile($photoKey)) {
                     if (!empty($existingData[$photoKey]) && Storage::disk('public')->exists($existingData[$photoKey])) {
@@ -540,6 +560,7 @@ class VillageProfileController extends Controller
                     }
                     $processedMembers[] = [
                         'name' => $name,
+                        'nip' => trim($m['nip'] ?? ''),
                         'position' => trim($m['position'] ?? 'Staf Kelurahan'),
                         'photo' => $photoPath,
                         'tupoksi' => trim($m['tupoksi'] ?? ''),

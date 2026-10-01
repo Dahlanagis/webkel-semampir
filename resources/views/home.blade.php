@@ -180,7 +180,10 @@ class="relative overflow-x-hidden w-full max-w-full">
                         <!-- Floating Name Badge -->
                         <div class="absolute -bottom-6 inset-x-4 sm:inset-x-6 bg-white py-4 px-3 sm:py-5 sm:px-4 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center">
                             <h3 class="font-bold text-sm sm:text-base text-slate-900 leading-tight">{{ $villageProfile['head_name'] ?? 'Latif Hasan Asyari, SH.' }}</h3>
-                            <p class="text-[9px] sm:text-[10px] text-slate-600 font-bold uppercase tracking-wider mt-1 sm:mt-2">Kepala {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}</p>
+                            <p class="text-[9px] sm:text-[10px] text-slate-600 font-bold uppercase tracking-wider mt-1 sm:mt-1.5">Kepala {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}</p>
+                            @if(!empty($villageProfile['head_nip']))
+                                <p class="text-[9px] sm:text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['head_nip'] }}</p>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -69,6 +69,9 @@
                                     <h3 class="font-bold text-xs text-slate-900 leading-snug">
                                         {{ $villageProfile['head_name'] ?? 'Latif Hasan Asyari, SH.' }}
                                     </h3>
+                                    @if(!empty($villageProfile['head_nip']))
+                                        <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['head_nip'] }}</p>
+                                    @endif
                                     
                                     <div class="mt-1.5">
                                         <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-3 py-1 rounded-md tracking-wider inline-block">
@@ -101,6 +104,9 @@
                                             <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
                                                 {{ $villageProfile['sekel_name'] ?? 'Budi Santoso, S.STP' }}
                                             </h5>
+                                            @if(!empty($villageProfile['sekel_nip']))
+                                                <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['sekel_nip'] }}</p>
+                                            @endif
                                             <div class="mt-2">
                                                 <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
                                                     {{ strtoupper($villageProfile['sekel_role'] ?? 'SEKRETARIS KELURAHAN') }}
@@ -124,6 +130,9 @@
                                             <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
                                                 {{ $villageProfile['kasi_pem_name'] ?? 'Arief Rachman, S.IP' }}
                                             </h5>
+                                            @if(!empty($villageProfile['kasi_pem_nip']))
+                                                <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['kasi_pem_nip'] }}</p>
+                                            @endif
                                             <div class="mt-2">
                                                 <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
                                                     {{ strtoupper($villageProfile['kasi_pem_role'] ?? 'KASI PEMERINTAHAN & TRANTIB') }}
@@ -147,6 +156,9 @@
                                             <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
                                                 {{ $villageProfile['kasi_kesra_name'] ?? 'Siti Aminah, S.Sos' }}
                                             </h5>
+                                            @if(!empty($villageProfile['kasi_kesra_nip']))
+                                                <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['kasi_kesra_nip'] }}</p>
+                                            @endif
                                             <div class="mt-2">
                                                 <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
                                                     {{ strtoupper($villageProfile['kasi_kesra_role'] ?? 'KASI PELAYANAN & KESRA') }}
@@ -170,6 +182,9 @@
                                             <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
                                                 {{ $villageProfile['kasi_ekbang_name'] ?? 'Bambang Wijaya, S.T' }}
                                             </h5>
+                                            @if(!empty($villageProfile['kasi_ekbang_nip']))
+                                                <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['kasi_ekbang_nip'] }}</p>
+                                            @endif
                                             <div class="mt-2">
                                                 <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
                                                     {{ strtoupper($villageProfile['kasi_ekbang_role'] ?? 'KASI PEMBERDAYAAN & EKBANG') }}
@@ -208,6 +223,9 @@
                                                     <h5 class="font-bold text-xs text-slate-900 leading-tight">
                                                         {{ $m['name'] }}
                                                     </h5>
+                                                    @if(!empty($m['nip']))
+                                                        <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $m['nip'] }}</p>
+                                                    @endif
                                                     <div class="mt-2">
                                                         <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-sm">
                                                             {{ $m['position'] ?? 'STAF' }}

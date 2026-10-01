@@ -8,11 +8,24 @@
 <div class="space-y-6" x-data="{
     coreOfficers: [
         {
+            key: 'head',
+            role_label: 'Lurah',
+            badge_title: 'Pimpinan',
+            badge_style: 'bg-slate-900 text-white border-slate-900',
+            name: {{ json_encode($profile['head_name'] ?? 'Latif Hasan Asyari, SH.') }},
+            nip: {{ json_encode($profile['head_nip'] ?? '') }},
+            photo: {{ json_encode($profile['head_photo'] ?? '') }},
+            previewPhoto: {{ !empty($profile['head_photo']) ? json_encode(str_starts_with($profile['head_photo'], 'http') ? $profile['head_photo'] : asset('storage/' . ltrim($profile['head_photo'], '/'))) : 'null' }},
+            tupoksi: {{ json_encode($profile['lurah_tupoksi'] ?? '') }},
+            file: null
+        },
+        {
             key: 'sekel',
             role_label: {{ json_encode($profile['sekel_role'] ?? 'Sekretaris Kelurahan') }},
             badge_title: 'Sekretariat',
             badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
             name: {{ json_encode($profile['sekel_name'] ?? '') }},
+            nip: {{ json_encode($profile['sekel_nip'] ?? '') }},
             photo: {{ json_encode($profile['sekel_photo'] ?? '') }},
             previewPhoto: {{ !empty($profile['sekel_photo']) ? json_encode(asset('storage/' . $profile['sekel_photo'])) : 'null' }},
             tupoksi: {{ json_encode($profile['sekel_tupoksi'] ?? '') }},
@@ -24,6 +37,7 @@
             badge_title: 'Pemerintahan',
             badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
             name: {{ json_encode($profile['kasi_pem_name'] ?? '') }},
+            nip: {{ json_encode($profile['kasi_pem_nip'] ?? '') }},
             photo: {{ json_encode($profile['kasi_pem_photo'] ?? '') }},
             previewPhoto: {{ !empty($profile['kasi_pem_photo']) ? json_encode(asset('storage/' . $profile['kasi_pem_photo'])) : 'null' }},
             tupoksi: {{ json_encode($profile['kasi_pem_tupoksi'] ?? '') }},
@@ -35,6 +49,7 @@
             badge_title: 'Sosial & Kesra',
             badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
             name: {{ json_encode($profile['kasi_kesra_name'] ?? '') }},
+            nip: {{ json_encode($profile['kasi_kesra_nip'] ?? '') }},
             photo: {{ json_encode($profile['kasi_kesra_photo'] ?? '') }},
             previewPhoto: {{ !empty($profile['kasi_kesra_photo']) ? json_encode(asset('storage/' . $profile['kasi_kesra_photo'])) : 'null' }},
             tupoksi: {{ json_encode($profile['kasi_kesra_tupoksi'] ?? '') }},
@@ -46,6 +61,7 @@
             badge_title: 'Perekonomian',
             badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
             name: {{ json_encode($profile['kasi_ekbang_name'] ?? '') }},
+            nip: {{ json_encode($profile['kasi_ekbang_nip'] ?? '') }},
             photo: {{ json_encode($profile['kasi_ekbang_photo'] ?? '') }},
             previewPhoto: {{ !empty($profile['kasi_ekbang_photo']) ? json_encode(asset('storage/' . $profile['kasi_ekbang_photo'])) : 'null' }},
             tupoksi: {{ json_encode($profile['kasi_ekbang_tupoksi'] ?? '') }},
@@ -58,6 +74,7 @@
     modalIndex: null,
     modalForm: {
         name: '',
+        nip: '',
         position: '',
         tupoksi: '',
         photo: '',
@@ -70,6 +87,7 @@
         const co = this.coreOfficers[index];
         this.modalForm = {
             name: co.name,
+            nip: co.nip || '',
             position: co.role_label,
             tupoksi: co.tupoksi || '',
             photo: co.photo || '',
@@ -83,6 +101,7 @@
         this.modalIndex = null;
         this.modalForm = {
             name: '',
+            nip: '',
             position: '',
             tupoksi: '',
             photo: '',
@@ -97,6 +116,7 @@
         const m = this.members[index];
         this.modalForm = {
             name: m.name,
+            nip: m.nip || '',
             position: m.position,
             tupoksi: m.tupoksi || '',
             photo: m.photo || '',
@@ -119,6 +139,7 @@
         if (this.modalType === 'core') {
             const co = this.coreOfficers[this.modalIndex];
             co.name = this.modalForm.name.trim();
+            co.nip = (this.modalForm.nip || '').trim();
             co.role_label = this.modalForm.position.trim();
             co.tupoksi = (this.modalForm.tupoksi || '').trim();
             if (this.modalForm.file) {
@@ -138,15 +159,11 @@
         }
 
         // Modal member tambahan
-        if (!this.modalForm.position || !this.modalForm.position.trim()) {
-            alert('Silakan masukkan jabatan / posisi anggota.');
-            return;
-        }
-
         if (this.modalIndex === null) {
             const newIndex = this.members.length;
             const newMember = {
                 name: this.modalForm.name.trim(),
+                nip: (this.modalForm.nip || '').trim(),
                 position: this.modalForm.position.trim(),
                 tupoksi: (this.modalForm.tupoksi || '').trim(),
                 photo: '',
@@ -168,6 +185,7 @@
         } else {
             const target = this.members[this.modalIndex];
             target.name = this.modalForm.name.trim();
+            target.nip = (this.modalForm.nip || '').trim();
             target.position = this.modalForm.position.trim();
             target.tupoksi = (this.modalForm.tupoksi || '').trim();
             if (this.modalForm.file) {
@@ -227,10 +245,11 @@
         @csrf
         <input type="hidden" name="section" value="sotk">
 
-        <!-- Hidden Inputs: 4 Pejabat Inti -->
+        <!-- Hidden Inputs: Pejabat Struktural Inti -->
         <template x-for="co in coreOfficers" :key="co.key">
             <div class="hidden">
                 <input type="hidden" :name="co.key + '_name'" :value="co.name">
+                <input type="hidden" :name="co.key + '_nip'" :value="co.nip || ''">
                 <input type="hidden" :name="co.key + '_role'" :value="co.role_label">
                 <input type="hidden" :name="co.key + '_tupoksi'" :value="co.tupoksi">
                 <input type="file" :name="co.key + '_photo'" :id="'hidden_file_' + co.key" class="hidden">
@@ -241,6 +260,7 @@
         <template x-for="(member, index) in members" :key="index">
             <div class="hidden">
                 <input type="hidden" :name="'members[' + index + '][name]'" :value="member.name">
+                <input type="hidden" :name="'members[' + index + '][nip]'" :value="member.nip || ''">
                 <input type="hidden" :name="'members[' + index + '][position]'" :value="member.position">
                 <input type="hidden" :name="'members[' + index + '][tupoksi]'" :value="member.tupoksi || ''">
                 <input type="hidden" :name="'members[' + index + '][existing_photo]'" :value="member.photo || ''">
@@ -263,8 +283,8 @@
                     <p class="text-xs text-slate-500 mt-0.5">Kelola informasi nama, jabatan, dan tugas pokok pejabat serta aparatur kelurahan dalam satu tabel terpadu.</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-3 py-1 rounded-full w-fit" x-text="(4 + members.length) + ' Aparatur Kelurahan'">
-                        4 Aparatur Kelurahan
+                    <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-3 py-1 rounded-full w-fit" x-text="(coreOfficers.length + members.length) + ' Aparatur Kelurahan'">
+                        5 Aparatur Kelurahan
                     </span>
                     <button type="button" @click="openAddMember()" 
                             class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition duration-150 flex items-center gap-2 w-fit cursor-pointer">
@@ -281,13 +301,13 @@
                         <tr class="bg-slate-50/90 border-b border-slate-200 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                             <th class="py-3.5 px-3 text-center w-12">#</th>
                             <th class="py-3.5 px-4 text-center w-20">Foto</th>
-                            <th class="py-3.5 px-4 w-1/3">Nama Lengkap & Jabatan</th>
+                            <th class="py-3.5 px-4 w-1/3">Nama Lengkap, NIP & Jabatan</th>
                             <th class="py-3.5 px-4">Tugas Pokok & Fungsi (TUPOKSI)</th>
                             <th class="py-3.5 px-4 text-center w-28">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-xs">
-                        <!-- 1. 4 Pejabat Struktural Inti (Fixed Rows) -->
+                        <!-- 1. Pejabat Struktural Inti (Fixed Rows) -->
                         <template x-for="(co, index) in coreOfficers" :key="co.key">
                             <tr class="hover:bg-slate-50/70 transition group">
                                 <!-- No -->
@@ -311,6 +331,9 @@
                                 <!-- Nama Lengkap & Jabatan -->
                                 <td class="py-3.5 px-4">
                                     <div class="font-bold text-slate-900 text-xs tracking-tight" x-text="co.name || '- Belum diisi -'"></div>
+                                    <template x-if="co.nip && co.nip.trim() !== ''">
+                                        <div class="text-[11px] font-mono text-slate-500 font-medium mt-0.5" x-text="'NIP. ' + co.nip"></div>
+                                    </template>
                                     <div class="mt-1">
                                         <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border"
                                               :class="co.badge_style"
@@ -344,7 +367,7 @@
                         <template x-for="(member, index) in members" :key="index">
                             <tr class="hover:bg-slate-50/70 transition group border-t border-slate-100">
                                 <!-- No -->
-                                <td class="py-3.5 px-3 text-center font-bold text-slate-400 text-xs" x-text="4 + index + 1"></td>
+                                <td class="py-3.5 px-3 text-center font-bold text-slate-400 text-xs" x-text="coreOfficers.length + index + 1"></td>
 
                                 <!-- Foto Thumbnail -->
                                 <td class="py-3.5 px-4 text-center">
@@ -364,6 +387,9 @@
                                 <!-- Nama Lengkap & Jabatan -->
                                 <td class="py-3.5 px-4">
                                     <div class="font-bold text-slate-900 text-xs tracking-tight" x-text="member.name"></div>
+                                    <template x-if="member.nip && member.nip.trim() !== ''">
+                                        <div class="text-[11px] font-mono text-slate-500 font-medium mt-0.5" x-text="'NIP. ' + member.nip"></div>
+                                    </template>
                                     <div class="mt-1">
                                         <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200"
                                               x-text="member.position"></span>
@@ -403,7 +429,7 @@
 
                 <!-- Footer Bar Tabel -->
                 <div class="p-3 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                    <span x-text="'Total: ' + (4 + members.length) + ' Aparatur Kelurahan'"></span>
+                    <span x-text="'Total: ' + (coreOfficers.length + members.length) + ' Aparatur Kelurahan'"></span>
                     <button type="button" @click="openAddMember()" class="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1 cursor-pointer">
                         <i class="fas fa-plus text-xs"></i>
                         <span>Tambah Anggota Baru</span>
@@ -431,9 +457,11 @@
                 </span>
             </div>
             <div class="mt-3">
-                <textarea name="lurah_tupoksi" rows="3" 
+                <textarea name="lurah_tupoksi" 
+                          x-model="coreOfficers.find(c => c.key === 'head').tupoksi"
+                          rows="3" 
                           class="w-full p-3.5 text-xs text-slate-700 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition leading-relaxed resize-y placeholder:text-slate-400 shadow-2xs" 
-                          placeholder="Tuliskan uraian tugas pokok dan fungsi Kepala Kelurahan (Lurah)...">{{ old('lurah_tupoksi', $profile['lurah_tupoksi'] ?? '') }}</textarea>
+                          placeholder="Tuliskan uraian tugas pokok dan fungsi Kepala Kelurahan (Lurah)..."></textarea>
                 <div class="text-[10px] text-slate-400 flex items-center justify-between pt-1">
                     <span><i class="fas fa-check-circle text-emerald-500 mr-1"></i>Tampil pada rincian TUPOKSI pimpinan di halaman struktur organisasi</span>
                 </div>
@@ -533,6 +561,24 @@
                     </label>
                     <input type="text" x-model="modalForm.name" placeholder="Misal: Siti Rahmawati, S.Kom" 
                            class="w-full p-2.5 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 text-slate-800 font-medium bg-white">
+                </div>
+
+                <!-- NIP (Nomor Induk Pegawai) -->
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block font-bold text-slate-700">
+                            NIP (Nomor Induk Pegawai) <span class="text-slate-400 font-normal">(Opsional)</span>
+                        </label>
+                        <span class="text-[10px] text-slate-400 font-mono">Format: 18 digit</span>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <i class="fas fa-id-card text-xs"></i>
+                        </div>
+                        <input type="text" x-model="modalForm.nip" placeholder="Misal: 19750612 201001 1 004 (Kosongkan jika non-PNS)" 
+                               class="w-full pl-8 pr-3 py-2.5 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 text-slate-800 font-mono bg-white">
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1">NIP akan tampil di bawah nama pejabat pada bagan & daftar aparatur.</p>
                 </div>
 
                 <!-- Jabatan / Posisi -->

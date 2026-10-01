@@ -169,9 +169,13 @@
     "hero_image": "profile/mWYDaqI6d6EpcghP2lQUlOfe4DXx8ZfmNIdI1G7q.jpg",
     "history_hero_image": "profile/history_hero.png",
     "sekel_name": "Ahmad halimi s.krim",
+    "sekel_nip": "",
     "kasi_pem_name": "ahmad matlub s.yam",
+    "kasi_pem_nip": "",
     "kasi_kesra_name": "ahmad dahlan s,lom",
+    "kasi_kesra_nip": "",
     "kasi_ekbang_name": "m badri.m.yam",
+    "kasi_ekbang_nip": "",
     "kasi_pem_photo": "profile/kasi_pem.png",
     "kasi_kesra_photo": "profile/kasi_kesra.png",
     "kasi_ekbang_photo": "profile/kasi_ekbang.png",
@@ -183,6 +187,7 @@
     "sotk_members": [
         {
             "name": "dahlan",
+            "nip": "",
             "position": "usaha",
             "photo": "profile/vBJ79jbU74yXY49aYSd7fOVdcxZhg3SkeiGRHXdl.jpg",
             "tupoksi": "usaha dinas"
