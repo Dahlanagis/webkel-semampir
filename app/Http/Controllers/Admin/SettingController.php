@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -82,6 +83,8 @@ class SettingController extends Controller
         }
 
         File::put($this->configPath, json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        ActivityLog::record('UPDATE', 'Memperbarui konfigurasi & pengaturan sistem aplikasi.');
 
         return back()->with('status', 'Pengaturan sistem berhasil diperbarui.');
     }

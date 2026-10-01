@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -73,6 +74,8 @@ class MaklumatPelayananController extends Controller
         }
 
         File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        ActivityLog::record('UPDATE', 'Memperbarui data dan piagam Maklumat Pelayanan publik.');
 
         return back()->with('status', 'Maklumat Pelayanan dan berkas piagam berhasil diperbarui.');
     }

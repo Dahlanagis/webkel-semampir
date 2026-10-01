@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Gallery;
 use App\Models\GalleryImage;
 use Illuminate\Http\Request;
@@ -122,6 +123,8 @@ class GalleryController extends Controller
                 ]);
             }
         }
+
+        ActivityLog::record('CREATE', "Menambahkan dokumentasi galeri baru: {$gallery->title}");
 
         return back()->with('status', 'Foto dokumentasi kegiatan baru berhasil ditambahkan ke galeri.');
     }
@@ -299,6 +302,8 @@ class GalleryController extends Controller
         }
 
         $label = $gallery->type === 'video' ? 'Video kegiatan' : 'Foto galeri kegiatan';
+        ActivityLog::record('UPDATE', "Memperbarui {$label}: {$gallery->title}");
+
         return back()->with('status', $label . ' berhasil diperbarui.');
     }
 
@@ -325,6 +330,8 @@ class GalleryController extends Controller
         } else {
             $image->delete();
         }
+
+        ActivityLog::record('DELETE', "Menghapus foto dari album galeri: {$gallery->title}");
 
         if (request()->expectsJson() || request()->ajax()) {
             return response()->json([
@@ -358,6 +365,7 @@ class GalleryController extends Controller
         $gallery->delete();
 
         $label = $type === 'video' ? 'Video kegiatan' : 'Album foto kegiatan';
+        ActivityLog::record('DELETE', "Menghapus {$label}: {$title}");
 
         if (request()->expectsJson() || request()->ajax()) {
             return response()->json([
@@ -377,6 +385,9 @@ class GalleryController extends Controller
         $gallery = Gallery::findOrFail($id);
         $gallery->show_on_homepage = !$gallery->show_on_homepage;
         $gallery->save();
+
+        $statusText = $gallery->show_on_homepage ? 'ditampilkan di beranda' : 'disembunyikan dari beranda';
+        ActivityLog::record('UPDATE', "Mengubah status galeri '{$gallery->title}' {$statusText}.");
 
         return back()->with('status', 'Status tampil di beranda berhasil diubah.');
     }

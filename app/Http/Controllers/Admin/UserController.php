@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -94,7 +95,7 @@ class UserController extends Controller
             $avatarPath = $request->file('avatar')->store('avatars', 'public');
         }
 
-        User::create([
+        $user = User::create([
             'name' => $request->input('name'),
             'username' => strtolower($request->input('username')),
             'email' => strtolower($request->input('email')),
@@ -105,6 +106,8 @@ class UserController extends Controller
             'role' => $request->input('role'),
             'is_active' => true,
         ]);
+
+        ActivityLog::record('CREATE', "Membuat akun pengguna baru: {$user->name} ({$user->role})");
 
         return back()->with('status', 'Akun pengguna baru berhasil dibuat.');
     }
@@ -181,6 +184,8 @@ class UserController extends Controller
 
         $user->update($data);
 
+        ActivityLog::record('UPDATE', "Memperbarui data akun pengguna: {$user->name} ({$user->role})");
+
         return back()->with('status', "Data akun {$user->name} berhasil diperbarui.");
     }
 
@@ -200,6 +205,8 @@ class UserController extends Controller
         ]);
 
         $statusText = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        ActivityLog::record('UPDATE', "Status akun '{$user->name}' {$statusText}.");
+
         return back()->with('status', "Akun {$user->name} berhasil {$statusText}.");
     }
 
@@ -215,6 +222,8 @@ class UserController extends Controller
             'password' => Hash::make($newPassword),
         ]);
 
+        ActivityLog::record('UPDATE', "Mereset password akun pengguna: {$user->name}");
+
         return back()->with('status', "Password akun {$user->name} berhasil direset ke: {$newPassword}");
     }
 
@@ -224,6 +233,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        $name = $user->name;
 
         if ($user->id === auth()->id()) {
             return back()->with('warning', 'Anda tidak dapat menghapus akun Anda sendiri.');
@@ -235,6 +245,8 @@ class UserController extends Controller
 
         $user->delete();
 
-        return back()->with('status', "Akun {$user->name} berhasil dihapus.");
+        ActivityLog::record('DELETE', "Menghapus akun pengguna: {$name}");
+
+        return back()->with('status', "Akun {$name} berhasil dihapus.");
     }
 }

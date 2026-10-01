@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -42,7 +43,7 @@ class ServiceController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        Service::create([
+        $service = Service::create([
             'title' => $request->input('title'),
             'slug' => Str::slug($request->input('title')),
             'description' => $request->input('description'),
@@ -52,6 +53,8 @@ class ServiceController extends Controller
             'order' => $request->input('order', 0),
             'is_active' => $request->boolean('is_active', true),
         ]);
+
+        ActivityLog::record('CREATE', "Menambahkan layanan publik baru: {$service->title}");
 
         return back()->with('status', 'Layanan publik baru berhasil ditambahkan.');
     }
@@ -84,6 +87,8 @@ class ServiceController extends Controller
             'is_active' => $request->boolean('is_active'),
         ]);
 
+        ActivityLog::record('UPDATE', "Memperbarui layanan publik: {$service->title}");
+
         return back()->with('status', "Layanan publik {$service->title} berhasil diperbarui.");
     }
 
@@ -98,6 +103,8 @@ class ServiceController extends Controller
         ]);
 
         $statusText = $service->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        ActivityLog::record('UPDATE', "Status layanan publik '{$service->title}' {$statusText}.");
+
         return back()->with('status', "Layanan publik {$service->title} berhasil {$statusText}.");
     }
 
@@ -107,8 +114,11 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         $service = Service::findOrFail($id);
+        $title = $service->title;
         $service->delete();
         
-        return back()->with('status', "Layanan publik {$service->title} berhasil dihapus.");
+        ActivityLog::record('DELETE', "Menghapus layanan publik: {$title}");
+
+        return back()->with('status', "Layanan publik {$title} berhasil dihapus.");
     }
 }

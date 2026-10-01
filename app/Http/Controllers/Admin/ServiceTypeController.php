@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\ServiceType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -70,7 +71,7 @@ class ServiceTypeController extends Controller
             $pdfPath = $request->file('pdf_document')->store('services/pdf', 'public');
         }
 
-        ServiceType::create([
+        $serviceType = ServiceType::create([
             'name' => $request->input('name'),
             'slug' => Str::slug($request->input('name')),
             'code' => strtoupper($request->input('code')),
@@ -89,6 +90,8 @@ class ServiceTypeController extends Controller
             'estimated_time' => $request->input('estimated_time'),
             'cost' => $request->input('cost'),
         ]);
+
+        ActivityLog::record('CREATE', "Menambahkan master standar layanan baru: {$serviceType->name}");
 
         return back()->with('status', 'Master Layanan & Jenis Surat baru berhasil ditambahkan.');
     }
@@ -152,6 +155,8 @@ class ServiceTypeController extends Controller
 
         $serviceType->update($data);
 
+        ActivityLog::record('UPDATE', "Memperbarui master layanan: {$serviceType->name}");
+
         return back()->with('status', "Data layanan {$serviceType->name} berhasil diperbarui.");
     }
 
@@ -166,6 +171,8 @@ class ServiceTypeController extends Controller
         ]);
 
         $statusText = $serviceType->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        ActivityLog::record('UPDATE', "Status layanan '{$serviceType->name}' {$statusText}.");
+
         return back()->with('status', "Layanan {$serviceType->name} berhasil {$statusText}.");
     }
 
@@ -180,6 +187,8 @@ class ServiceTypeController extends Controller
         ]);
 
         $statusText = $serviceType->show_on_homepage ? 'ditampilkan di beranda' : 'disembunyikan dari beranda';
+        ActivityLog::record('UPDATE', "Status beranda layanan '{$serviceType->name}' {$statusText}.");
+
         return back()->with('status', "Layanan {$serviceType->name} berhasil {$statusText}.");
     }
 
@@ -189,12 +198,16 @@ class ServiceTypeController extends Controller
     public function destroy($id)
     {
         $serviceType = ServiceType::findOrFail($id);
+        $name = $serviceType->name;
 
         if ($serviceType->pdf_document && Storage::disk('public')->exists($serviceType->pdf_document)) {
             Storage::disk('public')->delete($serviceType->pdf_document);
         }
 
         $serviceType->delete();
+
+        ActivityLog::record('DELETE', "Menghapus layanan: {$name}");
+
         return back()->with('status', "Layanan {$serviceType->name} berhasil dihapus.");
     }
 }

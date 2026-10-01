@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\RelatedLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -138,6 +139,8 @@ class KemitraanMaklumatController extends Controller
 
         $this->saveProfileData($existingData);
 
+        ActivityLog::record('UPDATE', $statusMsg);
+
         return back()->with('status', $statusMsg)->with('success', $statusMsg);
     }
 
@@ -177,6 +180,8 @@ class KemitraanMaklumatController extends Controller
 
         $this->saveProfileData($existingData);
 
+        ActivityLog::record('CREATE', "Menambahkan link terkait/kemitraan: {$newPartner['name']}");
+
         return back()->with('status', 'Link terkait baru berhasil ditambahkan.')->with('success', 'Link terkait baru berhasil ditambahkan.');
     }
 
@@ -209,6 +214,8 @@ class KemitraanMaklumatController extends Controller
             $this->syncRelatedLinksToDb($kemitraan);
             $this->saveProfileData($existingData);
 
+            ActivityLog::record('UPDATE', "Memperbarui link terkait/kemitraan: {$updatedPartner['name']}");
+
             return back()->with('status', 'Data link terkait berhasil diperbarui.')->with('success', 'Data link terkait berhasil diperbarui.');
         }
 
@@ -221,6 +228,7 @@ class KemitraanMaklumatController extends Controller
         $kemitraan = $existingData['kemitraan'] ?? [];
 
         if (isset($kemitraan[$index])) {
+            $deletedName = $kemitraan[$index]['name'] ?? "Mitra #{$index}";
             $logoPath = $kemitraan[$index]['logo'] ?? '';
             if (!empty($logoPath) && Storage::disk('public')->exists($logoPath)) {
                 Storage::disk('public')->delete($logoPath);
@@ -232,6 +240,8 @@ class KemitraanMaklumatController extends Controller
             // Sinkronkan ke database
             $this->syncRelatedLinksToDb($kemitraan);
             $this->saveProfileData($existingData);
+
+            ActivityLog::record('DELETE', "Menghapus link terkait/kemitraan: {$deletedName}");
 
             return back()->with('status', 'Link terkait berhasil dihapus.')->with('success', 'Link terkait berhasil dihapus.');
         }

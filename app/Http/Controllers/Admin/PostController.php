@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -83,7 +84,7 @@ class PostController extends Controller
             $imagePath = $request->input('image_url');
         }
 
-        Post::create([
+        $post = Post::create([
             'title' => $request->input('title'),
             'slug' => Str::slug($request->input('title')) . '-' . Str::random(5),
             'category_id' => $categoryId,
@@ -96,6 +97,8 @@ class PostController extends Controller
             'is_active' => $request->has('is_active') ? $request->boolean('is_active') : true,
             'published_at' => $request->input('published_at') ?? now(),
         ]);
+
+        ActivityLog::record('CREATE', "Mempublikasikan berita/artikel baru: {$post->title}");
 
         return back()->with('status', 'Berita / Artikel baru berhasil dipublikasikan.');
     }
@@ -168,6 +171,8 @@ class PostController extends Controller
             'published_at' => $request->input('published_at') ?? $post->published_at,
         ]);
 
+        ActivityLog::record('UPDATE', "Memperbarui berita/artikel: {$post->title}");
+
         return back()->with('status', "Berita {$post->title} berhasil diperbarui.");
     }
 
@@ -177,10 +182,13 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
+        $title = $post->title;
         if ($post->image && Storage::disk('public')->exists($post->image)) {
             Storage::disk('public')->delete($post->image);
         }
         $post->delete();
+
+        ActivityLog::record('DELETE', "Menghapus berita/artikel: {$title}");
 
         return back()->with('status', 'Berita / Artikel berhasil dihapus.');
     }
@@ -201,6 +209,9 @@ class PostController extends Controller
 
         $post->is_featured = !$post->is_featured;
         $post->save();
+
+        $statusText = $post->is_featured ? 'sebagai Berita Utama' : 'dari Berita Utama';
+        ActivityLog::record('UPDATE', "Mengubah status berita '{$post->title}' {$statusText}.");
 
         return back()->with('status', 'Status Berita Utama berhasil diubah.');
     }

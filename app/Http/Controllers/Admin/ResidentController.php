@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Resident;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -82,11 +83,13 @@ class ResidentController extends Controller
             'gender.required' => 'Jenis kelamin wajib dipilih.',
         ]);
 
-        Resident::create($request->only([
+        $resident = Resident::create($request->only([
             'nik', 'name', 'gender', 'birth_place', 'birth_date',
             'religion', 'marital_status', 'occupation', 'address',
             'rt', 'rw', 'phone_number',
         ]));
+
+        ActivityLog::record('CREATE', "Menambahkan data penduduk baru: {$resident->name} (NIK: {$resident->nik})");
 
         return back()->with('status', 'Data penduduk baru berhasil ditambahkan.');
     }
@@ -124,6 +127,8 @@ class ResidentController extends Controller
             'rt', 'rw', 'phone_number',
         ]));
 
+        ActivityLog::record('UPDATE', "Memperbarui data penduduk: {$resident->name} (NIK: {$resident->nik})");
+
         return back()->with('status', "Data penduduk {$resident->name} berhasil diperbarui.");
     }
 
@@ -133,9 +138,13 @@ class ResidentController extends Controller
     public function destroy($id)
     {
         $resident = Resident::findOrFail($id);
+        $name = $resident->name;
+        $nik = $resident->nik;
         $resident->delete();
 
-        return back()->with('status', "Data penduduk {$resident->name} berhasil dihapus.");
+        ActivityLog::record('DELETE', "Menghapus data penduduk: {$name} (NIK: {$nik})");
+
+        return back()->with('status', "Data penduduk {$name} berhasil dihapus.");
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -364,6 +365,8 @@ class VillageProfileController extends Controller
             'content' => $request->content,
             'is_active' => $request->boolean('is_active', true),
         ]);
+
+        ActivityLog::record('UPDATE', 'Memperbarui data Tugas Pokok & Fungsi (TUPOKSI)');
 
         return back()->with('status', 'Data Tugas Pokok & Fungsi (TUPOKSI) berhasil diperbarui.');
     }
@@ -903,6 +906,8 @@ class VillageProfileController extends Controller
             } catch (\Throwable $e) {}
         }
 
+        ActivityLog::record('UPDATE', $statusMsg);
+
         return back()->with('status', $statusMsg)->with('success', $statusMsg);
     }
 
@@ -959,6 +964,8 @@ class VillageProfileController extends Controller
         ]);
 
         $this->syncApbdJson($tahun);
+
+        ActivityLog::record('CREATE', "Menambahkan pos alokasi APBDes '{$namaBidang}' (TA {$tahun})");
 
         return redirect()->route('admin.beranda.transparansi', ['tahun' => $tahun])
             ->with('success', "Bidang alokasi APBD '{$namaBidang}' (TA {$tahun}) berhasil ditambahkan.");
@@ -1020,6 +1027,8 @@ class VillageProfileController extends Controller
 
             $this->syncApbdJson($tahun);
 
+            ActivityLog::record('UPDATE', "Memperbarui pos alokasi APBDes '{$namaBidang}' (TA {$tahun})");
+
             return redirect()->route('admin.beranda.transparansi', ['tahun' => $tahun])
                 ->with('success', "Data bidang alokasi '{$namaBidang}' berhasil diperbarui.");
         }
@@ -1042,6 +1051,8 @@ class VillageProfileController extends Controller
             $existingData['apbd'] = $apbd;
             File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
+            ActivityLog::record('UPDATE', "Memperbarui pos alokasi APBDes '{$namaBidang}' (TA {$tahun})");
+
             return redirect()->route('admin.beranda.transparansi', ['tahun' => $tahun])
                 ->with('success', 'Data bidang alokasi berhasil diperbarui.');
         }
@@ -1054,8 +1065,11 @@ class VillageProfileController extends Controller
         $apbdes = \App\Models\Apbdes::find($id);
         if ($apbdes) {
             $tahun = $apbdes->tahun;
+            $nama = $apbdes->nama_bidang;
             $apbdes->delete();
             $this->syncApbdJson($tahun);
+
+            ActivityLog::record('DELETE', "Menghapus pos alokasi APBDes '{$nama}' (TA {$tahun})");
 
             return redirect()->route('admin.beranda.transparansi', ['tahun' => $tahun])
                 ->with('success', 'Bidang alokasi APBD berhasil dihapus.');
@@ -1066,10 +1080,13 @@ class VillageProfileController extends Controller
         $allocations = $apbd['allocations'] ?? [];
 
         if (isset($allocations[$id])) {
+            $deletedName = $allocations[$id]['name'] ?? "ID #{$id}";
             array_splice($allocations, $id, 1);
             $apbd['allocations'] = $allocations;
             $existingData['apbd'] = $apbd;
             File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+            ActivityLog::record('DELETE', "Menghapus pos alokasi APBDes '{$deletedName}'");
 
             return back()->with('success', 'Bidang alokasi berhasil dihapus.');
         }
@@ -1127,6 +1144,8 @@ class VillageProfileController extends Controller
         $existingData['demographics'] = $demographics;
         File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
+        ActivityLog::record('CREATE', "Menambahkan data statistik {$categoryName}: {$request->input('stat_name')}");
+
         return back()->with('success', "Data {$categoryName} berhasil ditambahkan.");
     }
 
@@ -1183,6 +1202,8 @@ class VillageProfileController extends Controller
             $existingData['demographics'] = $demographics;
             File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
+            ActivityLog::record('UPDATE', "Memperbarui data statistik {$categoryName}: {$request->input('stat_name')}");
+
             return back()->with('success', "Data {$categoryName} berhasil diperbarui.");
         }
 
@@ -1194,13 +1215,17 @@ class VillageProfileController extends Controller
         $existingData = self::getProfileData();
         $demographics = $existingData['demographics'] ?? self::getDefaultDemographics();
         $key = $type === 'education' ? 'educations' : 'occupations';
+        $categoryName = $type === 'education' ? 'Tingkat Pendidikan' : 'Mata Pencaharian';
         $items = $demographics[$key] ?? [];
 
         if (isset($items[$index])) {
+            $deletedName = $items[$index]['name'] ?? "Index #{$index}";
             array_splice($items, $index, 1);
             $demographics[$key] = $items;
             $existingData['demographics'] = $demographics;
             File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+            ActivityLog::record('DELETE', "Menghapus data statistik {$categoryName}: {$deletedName}");
 
             return back()->with('success', 'Data statistik berhasil dihapus.');
         }

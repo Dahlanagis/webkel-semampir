@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Document;
 use App\Models\DocumentFile;
 use App\Models\NavigationMenu;
@@ -69,6 +70,8 @@ class DocumentController extends Controller
             }
         }
 
+        ActivityLog::record('CREATE', "Menambahkan dokumen publik baru: {$document->name}");
+
         return redirect()->route('admin.documents.index')->with('success', 'Dokumen berhasil ditambahkan.');
     }
 
@@ -132,17 +135,22 @@ class DocumentController extends Controller
             }
         }
 
+        ActivityLog::record('UPDATE', "Memperbarui dokumen publik: {$document->name}");
+
         return redirect()->route('admin.documents.index')->with('success', 'Dokumen berhasil diperbarui.');
     }
 
     public function destroy(Document $document)
     {
         $id = $document->id;
+        $docName = $document->name;
         $document->delete(); // Boot method deletes physical files
         
         NavigationMenu::where('section', 'dokumen')
                 ->where('url', '/dokumen?id=' . $id)
                 ->delete();
+
+        ActivityLog::record('DELETE', "Menghapus dokumen publik: {$docName}");
 
         return redirect()->route('admin.documents.index')->with('success', 'Dokumen berhasil dihapus.');
     }
@@ -150,10 +158,13 @@ class DocumentController extends Controller
     public function destroyFile($id)
     {
         $file = DocumentFile::findOrFail($id);
+        $fileName = $file->name;
         if ($file->file_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($file->file_path)) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($file->file_path);
         }
         $file->delete();
+
+        ActivityLog::record('DELETE', "Menghapus berkas file dokumen: {$fileName}");
 
         return response()->json(['success' => true, 'message' => 'File berhasil dihapus']);
     }

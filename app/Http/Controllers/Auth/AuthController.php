@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -125,6 +126,8 @@ class AuthController extends Controller
             session()->forget('captcha_code');
             $request->session()->regenerate();
 
+            ActivityLog::record('LOGIN', "Pengguna {$user->name} ({$user->email}) berhasil masuk ke panel sistem.", $user);
+
             return $this->redirectUserBasedOnRole($user);
         }
 
@@ -209,6 +212,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
 
+        ActivityLog::record('UPDATE', "Pengguna {$user->name} ({$user->email}) memperbarui password akun melalui validasi lupa password.", $user);
+
         return back()->with('status', 'Password akun ' . $user->name . ' berhasil diperbarui! Silakan masuk dengan password baru Anda.');
     }
 
@@ -231,6 +236,11 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        $currentUser = Auth::user();
+        if ($currentUser) {
+            ActivityLog::record('LOGIN', "Pengguna {$currentUser->name} keluar dari sistem (Logout).", $currentUser);
+        }
+
         Auth::logout();
 
         $request->session()->invalidate();

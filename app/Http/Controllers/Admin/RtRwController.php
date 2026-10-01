@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\RtRw;
 use Illuminate\Http\Request;
 
@@ -65,7 +66,7 @@ class RtRwController extends Controller
             return back()->withErrors(['number' => $request->input('type') . ' ' . $request->input('number') . ' sudah terdaftar.'])->withInput();
         }
 
-        RtRw::create([
+        $rtRw = RtRw::create([
             'type' => $request->input('type'),
             'number' => $request->input('number'),
             'head_name' => $request->input('head_name'),
@@ -73,6 +74,8 @@ class RtRwController extends Controller
             'address' => $request->input('address'),
             'total_kk' => $request->input('total_kk', 0),
         ]);
+
+        ActivityLog::record('CREATE', "Menambahkan data kewilayahan {$rtRw->type} {$rtRw->number} (Ketua: {$rtRw->head_name})");
 
         return back()->with('status', $request->input('type') . ' ' . $request->input('number') . ' berhasil ditambahkan.');
     }
@@ -112,6 +115,8 @@ class RtRwController extends Controller
             'total_kk' => $request->input('total_kk', 0),
         ]);
 
+        ActivityLog::record('UPDATE', "Memperbarui data kewilayahan {$rtRw->type} {$rtRw->number} (Ketua: {$rtRw->head_name})");
+
         return back()->with('status', $rtRw->type . ' ' . $rtRw->number . ' berhasil diperbarui.');
     }
 
@@ -123,6 +128,8 @@ class RtRwController extends Controller
         $rtRw = RtRw::findOrFail($id);
         $label = $rtRw->type . ' ' . $rtRw->number;
         $rtRw->delete();
+
+        ActivityLog::record('DELETE', "Menghapus data kewilayahan {$label}");
 
         return back()->with('status', "{$label} berhasil dihapus.");
     }

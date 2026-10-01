@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -45,6 +46,8 @@ class PageController extends Controller
         }
 
         $page->update($data);
+
+        ActivityLog::record('UPDATE', "Memperbarui halaman statis/profil: {$page->title}");
 
         return redirect()->route('admin.pages.index')->with('success', 'Halaman berhasil diperbarui.');
     }

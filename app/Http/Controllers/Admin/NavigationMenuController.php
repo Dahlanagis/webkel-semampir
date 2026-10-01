@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\NavigationMenu;
 use Illuminate\Http\Request;
 
@@ -123,6 +124,8 @@ class NavigationMenuController extends Controller
             ]
         );
 
+        ActivityLog::record('CREATE', "Menambahkan menu navigasi: {$request->title} (Menu: " . strtoupper($request->section) . ")");
+
         return back()->with('success', 'Menu navigasi berhasil ditambahkan.');
     }
 
@@ -179,6 +182,8 @@ class NavigationMenuController extends Controller
             }
         }
 
+        ActivityLog::record('UPDATE', "Memperbarui menu navigasi: {$request->title} (Menu: " . strtoupper($request->section) . ")");
+
         return back()->with('success', 'Menu navigasi berhasil diperbarui.');
     }
 
@@ -188,6 +193,9 @@ class NavigationMenuController extends Controller
         if (in_array($navigation->url, $protectedUrls)) {
             return back()->with('error', 'Menu utama profil sistem tidak dapat dihapus.');
         }
+
+        $title = $navigation->title;
+        $section = $navigation->section;
 
         if ($navigation->section === 'dokumen') {
             if (preg_match('/id=(\d+)/', $navigation->url, $matches)) {
@@ -212,6 +220,9 @@ class NavigationMenuController extends Controller
             }
         }
         $navigation->delete();
+
+        ActivityLog::record('DELETE', "Menghapus menu navigasi: {$title} (Menu: " . strtoupper($section) . ")");
+
         return back()->with('success', 'Menu navigasi berhasil dihapus.');
     }
 }

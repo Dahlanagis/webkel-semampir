@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
 
@@ -67,7 +68,7 @@ class AnnouncementController extends Controller
             return back()->withErrors(['category_id' => 'Kategori pengumuman wajib dipilih atau diisi.'])->withInput();
         }
 
-        Announcement::create([
+        $announcement = Announcement::create([
             'title' => $request->input('title'),
             'category_id' => $categoryId,
             'content' => $request->input('content'),
@@ -76,6 +77,8 @@ class AnnouncementController extends Controller
             'is_active' => $request->boolean('is_active', true),
             'is_urgent' => $request->boolean('is_urgent'),
         ]);
+
+        ActivityLog::record('CREATE', "Menambahkan pengumuman baru: {$announcement->title}");
 
         return back()->with('status', 'Pengumuman / Teks Berjalan baru berhasil ditambahkan.');
     }
@@ -113,6 +116,8 @@ class AnnouncementController extends Controller
             'is_urgent' => $request->boolean('is_urgent'),
         ]);
 
+        ActivityLog::record('UPDATE', "Memperbarui pengumuman: {$announcement->title}");
+
         return back()->with('status', "Pengumuman {$announcement->title} berhasil diperbarui.");
     }
 
@@ -127,6 +132,8 @@ class AnnouncementController extends Controller
         ]);
 
         $statusText = $announcement->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        ActivityLog::record('UPDATE', "Status pengumuman '{$announcement->title}' {$statusText}.");
+
         return back()->with('status', "Pengumuman {$announcement->title} berhasil {$statusText}.");
     }
 
@@ -136,7 +143,10 @@ class AnnouncementController extends Controller
     public function destroy($id)
     {
         $announcement = Announcement::findOrFail($id);
+        $title = $announcement->title;
         $announcement->delete();
+
+        ActivityLog::record('DELETE', "Menghapus pengumuman: {$title}");
 
         return back()->with('status', 'Pengumuman berhasil dihapus.');
     }
