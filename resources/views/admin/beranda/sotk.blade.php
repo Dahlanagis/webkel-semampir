@@ -5,101 +5,77 @@
 @section('header-subtitle', 'Kelola informasi nama dan foto pejabat struktural kelurahan.')
 
 @section('content')
-<div class="space-y-6" x-data="{
-    coreOfficers: [
-        {
-            key: 'head',
-            role_label: 'Lurah',
-            badge_title: 'Pimpinan',
-            badge_style: 'bg-slate-900 text-white border-slate-900',
-            name: {{ json_encode($profile['head_name'] ?? 'Latif Hasan Asyari, SH.') }},
-            nip: {{ json_encode($profile['head_nip'] ?? '') }},
-            photo: {{ json_encode($profile['head_photo'] ?? '') }},
-            previewPhoto: {{ !empty($profile['head_photo']) ? json_encode(str_starts_with($profile['head_photo'], 'http') ? $profile['head_photo'] : asset('storage/' . ltrim($profile['head_photo'], '/'))) : 'null' }},
-            tupoksi: {{ json_encode($profile['lurah_tupoksi'] ?? '') }},
-            file: null
-        },
-        {
-            key: 'sekel',
-            role_label: {{ json_encode($profile['sekel_role'] ?? 'Sekretaris Kelurahan') }},
-            badge_title: 'Sekretariat',
-            badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
-            name: {{ json_encode($profile['sekel_name'] ?? '') }},
-            nip: {{ json_encode($profile['sekel_nip'] ?? '') }},
-            photo: {{ json_encode($profile['sekel_photo'] ?? '') }},
-            previewPhoto: {{ !empty($profile['sekel_photo']) ? json_encode(asset('storage/' . $profile['sekel_photo'])) : 'null' }},
-            tupoksi: {{ json_encode($profile['sekel_tupoksi'] ?? '') }},
-            file: null
-        },
-        {
-            key: 'kasi_pem',
-            role_label: {{ json_encode($profile['kasi_pem_role'] ?? 'Kasi Pemerintahan & Trantib') }},
-            badge_title: 'Pemerintahan',
-            badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
-            name: {{ json_encode($profile['kasi_pem_name'] ?? '') }},
-            nip: {{ json_encode($profile['kasi_pem_nip'] ?? '') }},
-            photo: {{ json_encode($profile['kasi_pem_photo'] ?? '') }},
-            previewPhoto: {{ !empty($profile['kasi_pem_photo']) ? json_encode(asset('storage/' . $profile['kasi_pem_photo'])) : 'null' }},
-            tupoksi: {{ json_encode($profile['kasi_pem_tupoksi'] ?? '') }},
-            file: null
-        },
-        {
-            key: 'kasi_kesra',
-            role_label: {{ json_encode($profile['kasi_kesra_role'] ?? 'Kasi Pelayanan & Kesra') }},
-            badge_title: 'Sosial & Kesra',
-            badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
-            name: {{ json_encode($profile['kasi_kesra_name'] ?? '') }},
-            nip: {{ json_encode($profile['kasi_kesra_nip'] ?? '') }},
-            photo: {{ json_encode($profile['kasi_kesra_photo'] ?? '') }},
-            previewPhoto: {{ !empty($profile['kasi_kesra_photo']) ? json_encode(asset('storage/' . $profile['kasi_kesra_photo'])) : 'null' }},
-            tupoksi: {{ json_encode($profile['kasi_kesra_tupoksi'] ?? '') }},
-            file: null
-        },
-        {
-            key: 'kasi_ekbang',
-            role_label: {{ json_encode($profile['kasi_ekbang_role'] ?? 'Kasi Pemberdayaan & Ekbang') }},
-            badge_title: 'Perekonomian',
-            badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
-            name: {{ json_encode($profile['kasi_ekbang_name'] ?? '') }},
-            nip: {{ json_encode($profile['kasi_ekbang_nip'] ?? '') }},
-            photo: {{ json_encode($profile['kasi_ekbang_photo'] ?? '') }},
-            previewPhoto: {{ !empty($profile['kasi_ekbang_photo']) ? json_encode(asset('storage/' . $profile['kasi_ekbang_photo'])) : 'null' }},
-            tupoksi: {{ json_encode($profile['kasi_ekbang_tupoksi'] ?? '') }},
-            file: null
-        }
-    ],
-    members: {{ json_encode(array_values($profile['sotk_members'] ?? [])) }},
-    showModal: false,
-    modalType: 'member', // 'core' | 'member'
-    modalIndex: null,
-    modalForm: {
-        name: '',
-        nip: '',
-        position: '',
-        tupoksi: '',
-        photo: '',
-        previewPhoto: null,
-        file: null
-    },
-    openEditCore(index) {
-        this.modalType = 'core';
-        this.modalIndex = index;
-        const co = this.coreOfficers[index];
-        this.modalForm = {
-            name: co.name,
-            nip: co.nip || '',
-            position: co.role_label,
-            tupoksi: co.tupoksi || '',
-            photo: co.photo || '',
-            previewPhoto: co.previewPhoto,
-            file: co.file || null
-        };
-        this.showModal = true;
-    },
-    openAddMember() {
-        this.modalType = 'member';
-        this.modalIndex = null;
-        this.modalForm = {
+<script>
+function sotkManager() {
+    return {
+        hasChanges: false,
+        coreOfficers: [
+            {
+                key: 'head',
+                role_label: 'Lurah',
+                badge_title: 'Pimpinan',
+                badge_style: 'bg-slate-900 text-white border-slate-900',
+                name: {!! json_encode($profile['head_name'] ?? 'Latif Hasan Asyari, SH.') !!},
+                nip: {!! json_encode($profile['head_nip'] ?? '') !!},
+                photo: {!! json_encode($profile['head_photo'] ?? '') !!},
+                previewPhoto: {!! !empty($profile['head_photo']) ? json_encode(str_starts_with($profile['head_photo'], 'http') ? $profile['head_photo'] : asset('storage/' . ltrim($profile['head_photo'], '/'))) : 'null' !!},
+                tupoksi: {!! json_encode($profile['lurah_tupoksi'] ?? '') !!},
+                file: null
+            },
+            {
+                key: 'sekel',
+                role_label: {!! json_encode($profile['sekel_role'] ?? 'Sekretaris Kelurahan') !!},
+                badge_title: 'Sekretariat',
+                badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
+                name: {!! json_encode($profile['sekel_name'] ?? '') !!},
+                nip: {!! json_encode($profile['sekel_nip'] ?? '') !!},
+                photo: {!! json_encode($profile['sekel_photo'] ?? '') !!},
+                previewPhoto: {!! !empty($profile['sekel_photo']) ? json_encode(asset('storage/' . $profile['sekel_photo'])) : 'null' !!},
+                tupoksi: {!! json_encode($profile['sekel_tupoksi'] ?? '') !!},
+                file: null
+            },
+            {
+                key: 'kasi_pem',
+                role_label: {!! json_encode($profile['kasi_pem_role'] ?? 'Kasi Pemerintahan & Trantib') !!},
+                badge_title: 'Pemerintahan',
+                badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
+                name: {!! json_encode($profile['kasi_pem_name'] ?? '') !!},
+                nip: {!! json_encode($profile['kasi_pem_nip'] ?? '') !!},
+                photo: {!! json_encode($profile['kasi_pem_photo'] ?? '') !!},
+                previewPhoto: {!! !empty($profile['kasi_pem_photo']) ? json_encode(asset('storage/' . $profile['kasi_pem_photo'])) : 'null' !!},
+                tupoksi: {!! json_encode($profile['kasi_pem_tupoksi'] ?? '') !!},
+                file: null
+            },
+            {
+                key: 'kasi_kesra',
+                role_label: {!! json_encode($profile['kasi_kesra_role'] ?? 'Kasi Pelayanan & Kesra') !!},
+                badge_title: 'Sosial & Kesra',
+                badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
+                name: {!! json_encode($profile['kasi_kesra_name'] ?? '') !!},
+                nip: {!! json_encode($profile['kasi_kesra_nip'] ?? '') !!},
+                photo: {!! json_encode($profile['kasi_kesra_photo'] ?? '') !!},
+                previewPhoto: {!! !empty($profile['kasi_kesra_photo']) ? json_encode(asset('storage/' . $profile['kasi_kesra_photo'])) : 'null' !!},
+                tupoksi: {!! json_encode($profile['kasi_kesra_tupoksi'] ?? '') !!},
+                file: null
+            },
+            {
+                key: 'kasi_ekbang',
+                role_label: {!! json_encode($profile['kasi_ekbang_role'] ?? 'Kasi Pemberdayaan & Ekbang') !!},
+                badge_title: 'Perekonomian',
+                badge_style: 'bg-slate-100 text-slate-800 border-slate-200',
+                name: {!! json_encode($profile['kasi_ekbang_name'] ?? '') !!},
+                nip: {!! json_encode($profile['kasi_ekbang_nip'] ?? '') !!},
+                photo: {!! json_encode($profile['kasi_ekbang_photo'] ?? '') !!},
+                previewPhoto: {!! !empty($profile['kasi_ekbang_photo']) ? json_encode(asset('storage/' . $profile['kasi_ekbang_photo'])) : 'null' !!},
+                tupoksi: {!! json_encode($profile['kasi_ekbang_tupoksi'] ?? '') !!},
+                file: null
+            }
+        ],
+        members: {!! json_encode(array_values($profile['sotk_members'] ?? [])) !!},
+        showModal: false,
+        modalType: 'member',
+        modalIndex: null,
+        modalForm: {
             name: '',
             nip: '',
             position: '',
@@ -107,187 +83,211 @@
             photo: '',
             previewPhoto: null,
             file: null
-        };
-        this.showModal = true;
-    },
-    openEditMember(index) {
-        this.modalType = 'member';
-        this.modalIndex = index;
-        const m = this.members[index];
-        this.modalForm = {
-            name: m.name,
-            nip: m.nip || '',
-            position: m.position,
-            tupoksi: m.tupoksi || '',
-            photo: m.photo || '',
-            previewPhoto: m.previewPhoto || (m.photo ? '{{ asset('storage') }}/' + m.photo : null),
-            file: m.file || null
-        };
-        this.showModal = true;
-    },
-    hasChanges: false,
-    syncDomInputs() {
-        // 1. Sinkronisasi Pejabat Struktural Inti ke input tersembunyi
-        this.coreOfficers.forEach(co => {
-            const elName = document.getElementById('input_' + co.key + '_name');
-            if (elName) elName.value = co.name || '';
-            const elNip = document.getElementById('input_' + co.key + '_nip');
-            if (elNip) elNip.value = co.nip || '';
-            const elRole = document.getElementById('input_' + co.key + '_role');
-            if (elRole) elRole.value = co.role_label || '';
-            const elTupoksi = document.getElementById('input_' + co.key + '_tupoksi');
-            if (elTupoksi) elTupoksi.value = co.tupoksi || '';
+        },
+        openEditCore(index) {
+            this.modalType = 'core';
+            this.modalIndex = index;
+            const co = this.coreOfficers[index];
+            this.modalForm = {
+                name: co.name,
+                nip: co.nip || '',
+                position: co.role_label,
+                tupoksi: co.tupoksi || '',
+                photo: co.photo || '',
+                previewPhoto: co.previewPhoto,
+                file: co.file || null
+            };
+            this.showModal = true;
+        },
+        openAddMember() {
+            this.modalType = 'member';
+            this.modalIndex = null;
+            this.modalForm = {
+                name: '',
+                nip: '',
+                position: '',
+                tupoksi: '',
+                photo: '',
+                previewPhoto: null,
+                file: null
+            };
+            this.showModal = true;
+        },
+        openEditMember(index) {
+            this.modalType = 'member';
+            this.modalIndex = index;
+            const m = this.members[index];
+            this.modalForm = {
+                name: m.name,
+                nip: m.nip || '',
+                position: m.position,
+                tupoksi: m.tupoksi || '',
+                photo: m.photo || '',
+                previewPhoto: m.previewPhoto || (m.photo ? '{{ asset('storage') }}/' + m.photo : null),
+                file: m.file || null
+            };
+            this.showModal = true;
+        },
+        syncDomInputs() {
+            this.coreOfficers.forEach(co => {
+                const elName = document.getElementById('input_' + co.key + '_name');
+                if (elName) elName.value = co.name || '';
+                const elNip = document.getElementById('input_' + co.key + '_nip');
+                if (elNip) elNip.value = co.nip || '';
+                const elRole = document.getElementById('input_' + co.key + '_role');
+                if (elRole) elRole.value = co.role_label || '';
+                const elTupoksi = document.getElementById('input_' + co.key + '_tupoksi');
+                if (elTupoksi) elTupoksi.value = co.tupoksi || '';
 
-            if (co.key === 'head') {
-                const lurahTa = document.getElementById('textarea_lurah_tupoksi');
-                if (lurahTa) lurahTa.value = co.tupoksi || '';
-            }
-        });
-
-        // 2. Sinkronisasi Anggota Tambahan ke input tersembunyi
-        const container = document.getElementById('dynamic_members_inputs_container');
-        if (container) {
-            let html = '';
-            this.members.forEach((m, idx) => {
-                const safeName = (m.name || '').replace(/"/g, '&quot;');
-                const safeNip = (m.nip || '').replace(/"/g, '&quot;');
-                const safePosition = (m.position || '').replace(/"/g, '&quot;');
-                const safeTupoksi = (m.tupoksi || '').replace(/"/g, '&quot;');
-                const safePhoto = (m.photo || '').replace(/"/g, '&quot;');
-
-                html += `<input type="hidden" name="members[${idx}][name]" value="${safeName}">`;
-                html += `<input type="hidden" name="members[${idx}][nip]" value="${safeNip}">`;
-                html += `<input type="hidden" name="members[${idx}][position]" value="${safePosition}">`;
-                html += `<input type="hidden" name="members[${idx}][tupoksi]" value="${safeTupoksi}">`;
-                html += `<input type="hidden" name="members[${idx}][existing_photo]" value="${safePhoto}">`;
+                if (co.key === 'head') {
+                    const lurahTa = document.getElementById('textarea_lurah_tupoksi');
+                    if (lurahTa) lurahTa.value = co.tupoksi || '';
+                }
             });
-            container.innerHTML = html;
-        }
-    },
-    saveModal() {
-        if (!this.modalForm.name || !this.modalForm.name.trim()) {
-            alert('Silakan masukkan nama lengkap pejabat / anggota.');
-            return;
-        }
 
-        if (!this.modalForm.position || !this.modalForm.position.trim()) {
-            alert('Silakan masukkan jabatan / posisi.');
-            return;
-        }
+            const container = document.getElementById('dynamic_members_inputs_container');
+            if (container) {
+                container.innerHTML = '';
+                this.members.forEach((m, idx) => {
+                    const addInput = (name, val) => {
+                        const inp = document.createElement('input');
+                        inp.type = 'hidden';
+                        inp.name = name;
+                        inp.value = val || '';
+                        container.appendChild(inp);
+                    };
+                    addInput('members[' + idx + '][name]', m.name);
+                    addInput('members[' + idx + '][nip]', m.nip);
+                    addInput('members[' + idx + '][position]', m.position);
+                    addInput('members[' + idx + '][tupoksi]', m.tupoksi);
+                    addInput('members[' + idx + '][existing_photo]', m.photo);
+                });
+            }
+        },
+        saveModal() {
+            if (!this.modalForm.name || !this.modalForm.name.trim()) {
+                alert('Silakan masukkan nama lengkap pejabat / anggota.');
+                return;
+            }
 
-        this.hasChanges = true;
+            if (!this.modalForm.position || !this.modalForm.position.trim()) {
+                alert('Silakan masukkan jabatan / posisi.');
+                return;
+            }
 
-        if (this.modalType === 'core') {
-            const co = this.coreOfficers[this.modalIndex];
-            co.name = this.modalForm.name.trim();
-            co.nip = (this.modalForm.nip || '').trim();
-            co.role_label = this.modalForm.position.trim();
-            co.tupoksi = (this.modalForm.tupoksi || '').trim();
-            if (this.modalForm.file) {
-                co.file = this.modalForm.file;
-                co.previewPhoto = this.modalForm.previewPhoto;
-                this.$nextTick(() => {
+            this.hasChanges = true;
+
+            if (this.modalType === 'core') {
+                const co = this.coreOfficers[this.modalIndex];
+                co.name = this.modalForm.name.trim();
+                co.nip = (this.modalForm.nip || '').trim();
+                co.role_label = this.modalForm.position.trim();
+                co.tupoksi = (this.modalForm.tupoksi || '').trim();
+                if (this.modalForm.file) {
+                    co.file = this.modalForm.file;
+                    co.previewPhoto = this.modalForm.previewPhoto;
+                    this.$nextTick(() => {
+                        const fi = document.getElementById('hidden_file_' + co.key);
+                        if (fi && co.file) {
+                            const dt = new DataTransfer();
+                            dt.items.add(co.file);
+                            fi.files = dt.files;
+                        }
+                    });
+                }
+                this.syncDomInputs();
+                this.showModal = false;
+                return;
+            }
+
+            if (this.modalIndex === null) {
+                const newIndex = this.members.length;
+                const newMember = {
+                    name: this.modalForm.name.trim(),
+                    nip: (this.modalForm.nip || '').trim(),
+                    position: this.modalForm.position.trim(),
+                    tupoksi: (this.modalForm.tupoksi || '').trim(),
+                    photo: '',
+                    previewPhoto: this.modalForm.previewPhoto,
+                    file: this.modalForm.file
+                };
+                this.members.push(newMember);
+
+                if (this.modalForm.file) {
+                    this.$nextTick(() => {
+                        const fi = document.getElementById('hidden_member_file_' + newIndex);
+                        if (fi && newMember.file) {
+                            const dt = new DataTransfer();
+                            dt.items.add(newMember.file);
+                            fi.files = dt.files;
+                        }
+                    });
+                }
+            } else {
+                const target = this.members[this.modalIndex];
+                target.name = this.modalForm.name.trim();
+                target.nip = (this.modalForm.nip || '').trim();
+                target.position = this.modalForm.position.trim();
+                target.tupoksi = (this.modalForm.tupoksi || '').trim();
+                if (this.modalForm.file) {
+                    target.file = this.modalForm.file;
+                    target.previewPhoto = this.modalForm.previewPhoto;
+                    this.$nextTick(() => {
+                        const fi = document.getElementById('hidden_member_file_' + this.modalIndex);
+                        if (fi && target.file) {
+                            const dt = new DataTransfer();
+                            dt.items.add(target.file);
+                            fi.files = dt.files;
+                        }
+                    });
+                } else if (!this.modalForm.previewPhoto && !this.modalForm.photo) {
+                    target.file = null;
+                    target.previewPhoto = null;
+                    target.photo = '';
+                }
+            }
+
+            this.syncDomInputs();
+            this.showModal = false;
+        },
+        removeMember(index) {
+            const m = this.members[index];
+            if (confirm('Hapus ' + (m.name || 'anggota ini') + ' dari daftar SOTK?')) {
+                this.members.splice(index, 1);
+                this.hasChanges = true;
+                this.syncDomInputs();
+            }
+        },
+        prepareSubmit(e) {
+            this.syncDomInputs();
+
+            this.coreOfficers.forEach(co => {
+                if (co.file) {
                     const fi = document.getElementById('hidden_file_' + co.key);
-                    if (fi && co.file) {
+                    if (fi && fi.files.length === 0) {
                         const dt = new DataTransfer();
                         dt.items.add(co.file);
                         fi.files = dt.files;
                     }
-                });
-            }
-            this.syncDomInputs();
-            this.showModal = false;
-            return;
-        }
+                }
+            });
 
-        // Modal member tambahan
-        if (this.modalIndex === null) {
-            const newIndex = this.members.length;
-            const newMember = {
-                name: this.modalForm.name.trim(),
-                nip: (this.modalForm.nip || '').trim(),
-                position: this.modalForm.position.trim(),
-                tupoksi: (this.modalForm.tupoksi || '').trim(),
-                photo: '',
-                previewPhoto: this.modalForm.previewPhoto,
-                file: this.modalForm.file
-            };
-            this.members.push(newMember);
-
-            if (this.modalForm.file) {
-                this.$nextTick(() => {
-                    const fi = document.getElementById('hidden_member_file_' + newIndex);
-                    if (fi && newMember.file) {
+            this.members.forEach((m, idx) => {
+                if (m.file) {
+                    const fi = document.getElementById('hidden_member_file_' + idx);
+                    if (fi && fi.files.length === 0) {
                         const dt = new DataTransfer();
-                        dt.items.add(newMember.file);
+                        dt.items.add(m.file);
                         fi.files = dt.files;
                     }
-                });
-            }
-        } else {
-            const target = this.members[this.modalIndex];
-            target.name = this.modalForm.name.trim();
-            target.nip = (this.modalForm.nip || '').trim();
-            target.position = this.modalForm.position.trim();
-            target.tupoksi = (this.modalForm.tupoksi || '').trim();
-            if (this.modalForm.file) {
-                target.file = this.modalForm.file;
-                target.previewPhoto = this.modalForm.previewPhoto;
-                this.$nextTick(() => {
-                    const fi = document.getElementById('hidden_member_file_' + this.modalIndex);
-                    if (fi && target.file) {
-                        const dt = new DataTransfer();
-                        dt.items.add(target.file);
-                        fi.files = dt.files;
-                    }
-                });
-            } else if (!this.modalForm.previewPhoto && !this.modalForm.photo) {
-                target.file = null;
-                target.previewPhoto = null;
-                target.photo = '';
-            }
-        }
-
-        this.syncDomInputs();
-        this.showModal = false;
-    },
-    removeMember(index) {
-        const m = this.members[index];
-        if (confirm('Hapus ' + (m.name || 'anggota ini') + ' dari daftar SOTK?')) {
-            this.members.splice(index, 1);
-            this.hasChanges = true;
-            this.syncDomInputs();
-        }
-    },
-    prepareSubmit(e) {
-        // Sinkronisasi data DOM terbaru
-        this.syncDomInputs();
-
-        // Hubungkan file pejabat inti jika diubah
-        this.coreOfficers.forEach(co => {
-            if (co.file) {
-                const fi = document.getElementById('hidden_file_' + co.key);
-                if (fi && fi.files.length === 0) {
-                    const dt = new DataTransfer();
-                    dt.items.add(co.file);
-                    fi.files = dt.files;
                 }
-            }
-        });
+            });
+        }
+    };
+}
+</script>
 
-        // Hubungkan file anggota staf tambahan jika diubah
-        this.members.forEach((m, idx) => {
-            if (m.file) {
-                const fi = document.getElementById('hidden_member_file_' + idx);
-                if (fi && fi.files.length === 0) {
-                    const dt = new DataTransfer();
-                    dt.items.add(m.file);
-                    fi.files = dt.files;
-                }
-            }
-        });
-    }
-}">
+<div class="space-y-6" x-data="sotkManager()">
 
     <form action="{{ route('admin.beranda.update') }}" method="POST" enctype="multipart/form-data" @submit="prepareSubmit($event)" class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
         @csrf
