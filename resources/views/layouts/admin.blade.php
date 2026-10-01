@@ -479,7 +479,7 @@
                     </div>
 
                     <!-- GRUP 1: PROFIL & DATA WILAYAH -->
-                    <div class="space-y-1" x-data="{ open: {{ request()->routeIs('admin.beranda.identitas_sambutan') || request()->routeIs('admin.beranda.visi_misi_sejarah') || request()->routeIs('admin.beranda.sotk') || request()->routeIs('admin.beranda.sejarah') || request()->routeIs('admin.beranda.lokasi') || request()->routeIs('admin.beranda.transparansi') || request()->routeIs('admin.beranda.statistik') || request()->routeIs('admin.beranda.statistik_wilayah') || request()->routeIs('admin.kelembagaan.*') || request()->routeIs('admin.beranda.kemitraan') ? 'true' : 'false' }} }">
+                    <div class="space-y-1" x-data="{ open: {{ request()->routeIs('admin.beranda.identitas_sambutan') || request()->routeIs('admin.beranda.visi_misi_sejarah') || request()->routeIs('admin.beranda.sotk') || request()->routeIs('admin.beranda.sejarah') || request()->routeIs('admin.beranda.transparansi') || request()->routeIs('admin.beranda.statistik') || request()->routeIs('admin.beranda.statistik_wilayah') || request()->routeIs('admin.kelembagaan.*') || request()->routeIs('admin.beranda.kemitraan') ? 'true' : 'false' }} }">
                         <button @click="open = !open" type="button" 
                                 class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition">
                             <span class="flex items-center gap-2">
@@ -511,12 +511,6 @@
                                class="flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium text-xs transition {{ request()->routeIs('admin.beranda.sejarah') ? 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200/60' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
                                 <i class="fas fa-scroll text-[11px] {{ request()->routeIs('admin.beranda.sejarah') ? 'text-emerald-600' : 'text-slate-400' }} w-4 text-center"></i>
                                 <span>Sejarah & Asal Usul</span>
-                            </a>
-
-                            <a href="{{ route('admin.beranda.lokasi') }}" 
-                               class="flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium text-xs transition {{ request()->routeIs('admin.beranda.lokasi') ? 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200/60' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
-                                <i class="fas fa-map-location-dot text-[11px] {{ request()->routeIs('admin.beranda.lokasi') ? 'text-emerald-600' : 'text-slate-400' }} w-4 text-center"></i>
-                                <span>Wilayah & Peta Geografis</span>
                             </a>
 
                             <a href="{{ route('admin.kelembagaan.index') }}" 
