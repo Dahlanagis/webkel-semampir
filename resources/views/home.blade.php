@@ -1210,7 +1210,6 @@ class="relative overflow-x-hidden w-full max-w-full">
         <div class="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 space-y-4">
             <div class="text-center space-y-1">
                 <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
-                    <i class="fas fa-link text-emerald-600 text-[9px]"></i>
                     <span>Sinergi & Link Terkait</span>
                 </div>
                 <h3 class="text-base sm:text-xl font-black text-slate-900 tracking-tight">Link Terkait</h3>
@@ -1294,11 +1293,12 @@ class="relative overflow-x-hidden w-full max-w-full">
                                 @if(!empty($linkLogoUrl))
                                     <img src="{{ $linkLogoUrl }}" 
                                          alt="{{ $link['name'] ?? 'Link Terkait' }}" 
-                                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+                                         onerror="this.onerror=null; this.src='{{ asset('images/logo.png') }}';"
                                          class="max-h-full max-w-full object-contain filter group-hover:scale-105 transition-transform duration-200">
-                                    <i class="fas fa-link text-emerald-600 text-xs hidden"></i>
                                 @else
-                                    <i class="fas fa-link text-emerald-600 text-xs"></i>
+                                    <img src="{{ asset('images/logo.png') }}" 
+                                         alt="{{ $link['name'] ?? 'Link Terkait' }}" 
+                                         class="max-h-full max-w-full object-contain filter group-hover:scale-105 transition-transform duration-200">
                                 @endif
                             </div>
                             <div class="flex-1 min-w-0 pr-1">
@@ -1312,7 +1312,6 @@ class="relative overflow-x-hidden w-full max-w-full">
                         </a>
                     @empty
                         <div class="w-full py-6 text-center text-slate-400">
-                            <i class="fas fa-link text-2xl mb-1 text-slate-300"></i>
                             <p class="text-xs font-semibold">Belum ada daftar link terkait yang dikonfigurasi.</p>
                         </div>
                     @endforelse

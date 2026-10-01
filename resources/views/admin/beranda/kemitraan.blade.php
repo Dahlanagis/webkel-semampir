@@ -86,11 +86,11 @@
                                 @endphp
                                 @if(!empty($pLogoUrl))
                                     <div class="w-16 h-12 bg-white border border-slate-200 rounded-lg p-1.5 flex items-center justify-center shadow-sm">
-                                        <img src="{{ $pLogoUrl }}" alt="{{ $partner['name'] }}" onerror="this.parentElement.innerHTML='<i class=\'fas fa-link text-slate-400\'></i>';" class="max-w-full max-h-full object-contain">
+                                        <img src="{{ $pLogoUrl }}" alt="{{ $partner['name'] }}" onerror="this.src='{{ asset('images/logo.png') }}';" class="max-w-full max-h-full object-contain">
                                     </div>
                                 @else
-                                    <div class="w-16 h-12 bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-center text-slate-400">
-                                        <i class="fas fa-link"></i>
+                                    <div class="w-16 h-12 bg-white border border-slate-200 rounded-lg p-1.5 flex items-center justify-center shadow-sm">
+                                        <img src="{{ asset('images/logo.png') }}" alt="{{ $partner['name'] }}" class="max-w-full max-h-full object-contain opacity-50">
                                     </div>
                                 @endif
                             </td>
