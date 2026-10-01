@@ -80,7 +80,7 @@
                                          class="w-full h-full object-cover rounded-full">
                                 </div>
                                 <h3 class="font-bold text-xs text-slate-900 leading-snug">
-                                    {{ $villageProfile['head_name'] ?? 'H. Ahmad Fauzi, S.STP, M.Si' }}
+                                    {{ $villageProfile['head_name'] ?? 'Latif Hasan Asyari, SH.' }}
                                 </h3>
                                 <div class="mt-2">
                                     <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-3 py-1 rounded-full tracking-wider inline-block shadow-2xs">

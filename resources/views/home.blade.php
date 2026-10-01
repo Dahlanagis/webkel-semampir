@@ -179,7 +179,7 @@ class="relative overflow-x-hidden w-full max-w-full">
 
                         <!-- Floating Name Badge -->
                         <div class="absolute -bottom-6 inset-x-4 sm:inset-x-6 bg-white py-4 px-3 sm:py-5 sm:px-4 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] text-center">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 leading-tight">{{ $villageProfile['head_name'] ?? 'Drs. H. Ahmad Sudirman, M.Si' }}</h3>
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 leading-tight">{{ $villageProfile['head_name'] ?? 'Latif Hasan Asyari, SH.' }}</h3>
                             <p class="text-[9px] sm:text-[10px] text-slate-600 font-bold uppercase tracking-wider mt-1 sm:mt-2">Kepala {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}</p>
                         </div>
                     </div>
@@ -1532,7 +1532,7 @@ class="relative overflow-x-hidden w-full max-w-full">
                                     </div>
                                     <div class="text-left sm:text-right">
                                         <span class="text-[11px] font-semibold text-slate-600">
-                                            Ditetapkan oleh: <strong class="text-slate-900">{{ $villageProfile['head_name'] ?? 'H. Ahmad Fauzi, S.STP, M.Si' }}</strong>
+                                            Ditetapkan oleh: <strong class="text-slate-900">{{ $villageProfile['head_name'] ?? 'Latif Hasan Asyari, SH.' }}</strong>
                                         </span>
                                         <span class="block text-[10px] text-slate-400">Kepala {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}</span>
                                     </div>
@@ -1587,10 +1587,10 @@ class="relative overflow-x-hidden w-full max-w-full">
                                     <div class="text-[11px] text-slate-500 font-medium">Kraksaan, {{ date('Y') }}</div>
                                     <div class="text-xs font-bold text-slate-700 mt-0.5">Kepala {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}</div>
                                     <div class="text-sm font-black text-slate-900 mt-4 underline underline-offset-4 decoration-amber-500 decoration-2">
-                                        {{ $villageProfile['head_name'] ?? 'H. Ahmad Fauzi, S.STP, M.Si' }}
+                                        {{ $villageProfile['head_name'] ?? 'Latif Hasan Asyari, SH.' }}
                                     </div>
                                     <div class="text-[10px] font-mono text-slate-500 mt-0.5">
-                                        NIP. {{ $villageProfile['head_nip'] ?? '19800512 200501 1 004' }}
+                                        NIP. {{ $villageProfile['head_nip'] ?? '19750612 201001 1 004' }}
                                     </div>
                                 </div>
                             </div>

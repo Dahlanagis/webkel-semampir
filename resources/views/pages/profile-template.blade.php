@@ -67,7 +67,7 @@
                                     </div>
                                     
                                     <h3 class="font-bold text-xs text-slate-900 leading-snug">
-                                        {{ $villageProfile['head_name'] ?? 'Drs. H. Ahmad Sudirman, M.Si' }}
+                                        {{ $villageProfile['head_name'] ?? 'Latif Hasan Asyari, SH.' }}
                                     </h3>
                                     
                                     <div class="mt-1.5">
