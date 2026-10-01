@@ -73,7 +73,7 @@ class MaklumatPelayananController extends Controller
             $existingData['maklumat_updated_at'] = now()->format('d M Y, H:i');
         }
 
-        File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        \App\Http\Controllers\Admin\VillageProfileController::saveProfileData($existingData);
 
         ActivityLog::record('UPDATE', 'Memperbarui data dan piagam Maklumat Pelayanan publik.');
 

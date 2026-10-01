@@ -36,24 +36,7 @@ class KemitraanMaklumatController extends Controller
      */
     protected function saveProfileData(array $data): void
     {
-        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        $paths = [
-            $this->configPath,
-            storage_path('app/village_profile.json'),
-            base_path('storage/app/village_profile.json'),
-        ];
-
-        foreach (array_unique($paths) as $path) {
-            try {
-                $dir = dirname($path);
-                if (!File::isDirectory($dir)) {
-                    @File::makeDirectory($dir, 0755, true);
-                }
-                @File::put($path, $json);
-            } catch (\Throwable $e) {
-                // Ignore write failures on read-only locations
-            }
-        }
+        \App\Http\Controllers\Admin\VillageProfileController::saveProfileData($data);
     }
 
     /**

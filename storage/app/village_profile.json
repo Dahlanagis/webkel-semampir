@@ -179,7 +179,7 @@
     "kasi_pem_photo": "profile/kasi_pem.png",
     "kasi_kesra_photo": "profile/kasi_kesra.png",
     "kasi_ekbang_photo": "profile/kasi_ekbang.png",
-    "lurah_tupoksi": "Penyelenggara utama urusan pemerintahan, ketertiban umum, pelayanan publik, dan pembinaan wilayah semampir.",
+    "lurah_tupoksi": "Menyelenggarakan urusan pemerintahan, ketertiban umum, pemberdayaan masyarakat, serta pelayanan publik di tingkat kelurahan.",
     "sekel_tupoksi": "Pengelola administrasi umum, perencanaan operasional, keuangan, dan pelayanan surat-menyurat kelurahan.",
     "kasi_pem_tupoksi": "Pelayanan KTP/KK, pengawasan ketertiban lingkungan, dan pengelolaan data pertanahan & PBB.",
     "kasi_kesra_tupoksi": "Penerbitan SKTM, koordinasi bantuan sosial kementerian, kesehatan posyandu, dan keagamaan",
@@ -203,33 +203,38 @@
     "footer_description": "<p>Website Resmi Kelurahan Semampir, Kecamatan Kraksaan, Kabupaten Probolinggo - Portal Informasi Publik, Pelayanan Administrasi Kependudukan, Surat Keterangan Online, Berita, dan Pembangunan Kemasyarakatan.</p>",
     "kemitraan": [
         {
+            "id": 1,
             "name": "Pemerintah Kabupaten Probolinggo",
             "url": "https://probolinggokab.go.id",
             "desc": "Portal Resmi Pemerintah Kabupaten Probolinggo",
             "logo": "kemitraan/8PqDzUpiMV2pJtnw6RRkzE7QRH0Gthhdlmhs6pnT.png"
         },
         {
+            "id": 2,
             "name": "Diskominfo Kab. Probolinggo",
             "url": "https://diskominfo.probolinggokab.go.id",
             "desc": "Dinas Komunikasi, Informatika, Statistik dan Persandian",
             "logo": "kemitraan/AbNfqxBWSvM48OtGgXF1V2CO23Od9R2LrykyuiNz.png"
         },
         {
+            "id": 3,
             "name": "Dispendukcapil Kab. Probolinggo",
             "url": "https://dispendukcapil.probolinggokab.go.id",
             "desc": "Dinas Kependudukan dan Pencatatan Sipil",
             "logo": "kemitraan/luNE2cYyAC8gM25HlmZAhkCnCcWPobkB5hS0401V.png"
         },
         {
+            "id": 4,
             "name": "Bapenda Kab. Probolinggo",
             "url": "https://bapenda.probolinggokab.go.id",
             "desc": "Badan Pendapatan Daerah (PBB-P2 & Pajak Daerah)",
             "logo": "kemitraan/RzhffVYrMgLzU8yDjtOmVnb7LYzVABR5azsqxHL0.png"
         },
         {
-            "name": "Dispendukcapil Kab. Probolinggo",
+            "id": 5,
+            "name": "DLH Kab. Probolinggo",
             "url": "https://dlh.probolinggokab.go.id/",
-            "desc": "Badan Pendapatan Daerah (PBB-P2 & Pajak Daerah)",
+            "desc": "Dinas Lingkungan Hidup Kabupaten Probolinggo",
             "logo": "kemitraan/TNtVrVuH16HN5lgd3Qe2jQfUhPM70BPOV2985dmN.png"
         }
     ]

@@ -22,14 +22,31 @@ class VillageProfileController extends Controller
      */
     public static function getProfileData(): array
     {
-        $path = storage_path('app/village_profile.json');
-        if (!File::exists($path)) {
-            $path = base_path('storage/app/village_profile.json');
-        }
-
         $data = null;
-        if (File::exists($path)) {
-            $data = json_decode(File::get($path), true);
+
+        // 1. Baca dari database (tabel settings) agar persisten di Vercel / serverless
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+                $settingVal = \App\Models\Setting::get('village_profile');
+                if (!empty($settingVal)) {
+                    $decoded = json_decode($settingVal, true);
+                    if (is_array($decoded)) {
+                        $data = $decoded;
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+
+        // 2. Fallback baca dari file JSON lokal
+        if (!is_array($data)) {
+            $path = storage_path('app/village_profile.json');
+            if (!File::exists($path)) {
+                $path = base_path('storage/app/village_profile.json');
+            }
+
+            if (File::exists($path)) {
+                $data = json_decode(File::get($path), true);
+            }
         }
 
         if (!is_array($data)) {
@@ -507,13 +524,10 @@ class VillageProfileController extends Controller
             if ($request->has('head_nip')) {
                 $existingData['head_nip'] = $request->input('head_nip', '');
             }
-            // TUPOKSI Lurah: cek apakah dikirim via head_tupoksi (modal) atau lurah_tupoksi (textarea)
-            $headTupoksi = $request->input('head_tupoksi');
-            $lurahTupoksi = $request->input('lurah_tupoksi');
-            if ($headTupoksi !== null && trim((string)$headTupoksi) !== '') {
-                $existingData['lurah_tupoksi'] = html_entity_decode(trim((string)$headTupoksi), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-            } elseif ($lurahTupoksi !== null) {
-                $existingData['lurah_tupoksi'] = html_entity_decode(trim((string)$lurahTupoksi), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            // TUPOKSI Lurah: periksa apakah dikirim via lurah_tupoksi atau head_tupoksi
+            if ($request->has('lurah_tupoksi') || $request->has('head_tupoksi')) {
+                $rawLurahTup = $request->input('lurah_tupoksi', $request->input('head_tupoksi', ''));
+                $existingData['lurah_tupoksi'] = html_entity_decode(trim((string)$rawLurahTup), ENT_QUOTES | ENT_HTML5, 'UTF-8');
             }
 
             $existingData['sekel_name'] = trim((string) $request->input('sekel_name', ''));
@@ -924,9 +938,29 @@ class VillageProfileController extends Controller
             $statusMsg = 'Transparansi APBD berhasil diperbarui.';
         }
 
-        $json = json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        self::saveProfileData($existingData);
+
+        ActivityLog::record('UPDATE', $statusMsg);
+
+        return back()->with('status', $statusMsg)->with('success', $statusMsg);
+    }
+
+    /**
+     * Simpan data konfigurasi profil kelurahan ke database (tabel settings) dan file lokal.
+     */
+    public static function saveProfileData(array $data): void
+    {
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
+        // 1. Simpan ke tabel settings di database agar persisten di Vercel / serverless
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+                \App\Models\Setting::set('village_profile', $json);
+            }
+        } catch (\Throwable $e) {}
+
+        // 2. Simpan ke file lokal untuk lingkungan dev dan tracking repositori
         $savePaths = array_unique([
-            $this->configPath,
             storage_path('app/village_profile.json'),
             base_path('storage/app/village_profile.json'),
         ]);
@@ -939,10 +973,6 @@ class VillageProfileController extends Controller
                 @File::put($savePath, $json);
             } catch (\Throwable $e) {}
         }
-
-        ActivityLog::record('UPDATE', $statusMsg);
-
-        return back()->with('status', $statusMsg)->with('success', $statusMsg);
     }
 
     public function storeApbd(Request $request)

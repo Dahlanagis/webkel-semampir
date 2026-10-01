@@ -22,6 +22,18 @@ class SettingController extends Controller
      */
     public static function getSettings(): array
     {
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+                $val = \App\Models\Setting::get('system_settings');
+                if (!empty($val)) {
+                    $decoded = json_decode($val, true);
+                    if (is_array($decoded)) {
+                        return $decoded;
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+
         $path = storage_path('app/system_settings.json');
         if (File::exists($path)) {
             $data = json_decode(File::get($path), true);
@@ -82,7 +94,27 @@ class SettingController extends Controller
             $settings['app_logo'] = $request->file('app_logo')->store('settings', 'public');
         }
 
-        File::put($this->configPath, json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $json = json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+                \App\Models\Setting::set('system_settings', $json);
+            }
+        } catch (\Throwable $e) {}
+
+        $savePaths = array_unique([
+            $this->configPath,
+            storage_path('app/system_settings.json'),
+            base_path('storage/app/system_settings.json'),
+        ]);
+        foreach ($savePaths as $savePath) {
+            try {
+                $dir = dirname($savePath);
+                if (!File::isDirectory($dir)) {
+                    @File::makeDirectory($dir, 0755, true);
+                }
+                @File::put($savePath, $json);
+            } catch (\Throwable $e) {}
+        }
 
         ActivityLog::record('UPDATE', 'Memperbarui konfigurasi & pengaturan sistem aplikasi.');
 

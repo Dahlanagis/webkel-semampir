@@ -136,12 +136,15 @@ function sotkManager() {
                 if (elNip) elNip.value = co.nip || '';
                 const elRole = document.getElementById('input_' + co.key + '_role');
                 if (elRole) elRole.value = co.role_label || '';
-                const elTupoksi = document.getElementById('input_' + co.key + '_tupoksi');
-                if (elTupoksi) elTupoksi.value = co.tupoksi || '';
 
                 if (co.key === 'head') {
                     const lurahTa = document.getElementById('textarea_lurah_tupoksi');
-                    if (lurahTa) lurahTa.value = co.tupoksi || '';
+                    if (lurahTa && lurahTa.value !== co.tupoksi) {
+                        lurahTa.value = co.tupoksi || '';
+                    }
+                } else {
+                    const elTupoksi = document.getElementById('input_' + co.key + '_tupoksi');
+                    if (elTupoksi) elTupoksi.value = co.tupoksi || '';
                 }
             });
 
@@ -259,6 +262,10 @@ function sotkManager() {
             }
         },
         prepareSubmit(e) {
+            const lurahTa = document.getElementById('textarea_lurah_tupoksi');
+            if (lurahTa && this.coreOfficers && this.coreOfficers[0]) {
+                this.coreOfficers[0].tupoksi = lurahTa.value;
+            }
             this.syncDomInputs();
 
             this.coreOfficers.forEach(co => {
@@ -282,6 +289,15 @@ function sotkManager() {
                     }
                 }
             });
+        },
+        saveModalAndSubmit() {
+            this.saveModal();
+            this.$nextTick(() => {
+                const form = document.querySelector('form[action="{{ route('admin.beranda.update') }}"]');
+                if (form) {
+                    form.requestSubmit();
+                }
+            });
         }
     };
 }
@@ -297,7 +313,7 @@ function sotkManager() {
         <div id="core_officers_hidden_inputs">
             @php
                 $coreDefs = [
-                    ['key' => 'head', 'name' => 'head_name', 'nip' => 'head_nip', 'role' => 'head_role', 'tupoksi' => 'head_tupoksi', 'def_role' => 'Lurah', 'val_tupoksi' => $profile['lurah_tupoksi'] ?? ''],
+                    ['key' => 'head', 'name' => 'head_name', 'nip' => 'head_nip', 'role' => 'head_role', 'def_role' => 'Lurah'],
                     ['key' => 'sekel', 'name' => 'sekel_name', 'nip' => 'sekel_nip', 'role' => 'sekel_role', 'tupoksi' => 'sekel_tupoksi', 'def_role' => 'Sekretaris Kelurahan', 'val_tupoksi' => $profile['sekel_tupoksi'] ?? ''],
                     ['key' => 'kasi_pem', 'name' => 'kasi_pem_name', 'nip' => 'kasi_pem_nip', 'role' => 'kasi_pem_role', 'tupoksi' => 'kasi_pem_tupoksi', 'def_role' => 'Kasi Pemerintahan & Trantib', 'val_tupoksi' => $profile['kasi_pem_tupoksi'] ?? ''],
                     ['key' => 'kasi_kesra', 'name' => 'kasi_kesra_name', 'nip' => 'kasi_kesra_nip', 'role' => 'kasi_kesra_role', 'tupoksi' => 'kasi_kesra_tupoksi', 'def_role' => 'Kasi Pelayanan & Kesra', 'val_tupoksi' => $profile['kasi_kesra_tupoksi'] ?? ''],
@@ -308,7 +324,9 @@ function sotkManager() {
                 <input type="hidden" name="{{ $cDef['name'] }}" id="input_{{ $cDef['key'] }}_name" value="{{ $profile[$cDef['name']] ?? '' }}">
                 <input type="hidden" name="{{ $cDef['nip'] }}" id="input_{{ $cDef['key'] }}_nip" value="{{ $profile[$cDef['nip']] ?? '' }}">
                 <input type="hidden" name="{{ $cDef['role'] }}" id="input_{{ $cDef['key'] }}_role" value="{{ $profile[$cDef['role']] ?? $cDef['def_role'] }}">
-                <input type="hidden" name="{{ $cDef['tupoksi'] }}" id="input_{{ $cDef['key'] }}_tupoksi" value="{{ $cDef['val_tupoksi'] }}">
+                @if(isset($cDef['tupoksi']))
+                    <input type="hidden" name="{{ $cDef['tupoksi'] }}" id="input_{{ $cDef['key'] }}_tupoksi" value="{{ $cDef['val_tupoksi'] }}">
+                @endif
                 <input type="file" name="{{ $cDef['key'] }}_photo" id="hidden_file_{{ $cDef['key'] }}" class="hidden">
             @endforeach
         </div>
@@ -539,10 +557,11 @@ function sotkManager() {
             <div class="mt-3">
                 <textarea name="lurah_tupoksi" 
                           id="textarea_lurah_tupoksi"
-                          @input="if(coreOfficers && coreOfficers[0]) { coreOfficers[0].tupoksi = $event.target.value; } const inp = document.getElementById('input_head_tupoksi'); if(inp) { inp.value = $event.target.value; } hasChanges = true;"
+                          x-model="coreOfficers[0].tupoksi"
+                          @input="hasChanges = true"
                           rows="3" 
                           class="w-full p-3.5 text-xs text-slate-700 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition leading-relaxed resize-y placeholder:text-slate-400 shadow-2xs" 
-                          placeholder="Tuliskan uraian tugas pokok dan fungsi Kepala Kelurahan (Lurah)...">{{ old('lurah_tupoksi', $profile['lurah_tupoksi'] ?? '') }}</textarea>
+                          placeholder="Tuliskan uraian tugas pokok dan fungsi Kepala Kelurahan (Lurah)..."></textarea>
                 <div class="text-[10px] text-slate-400 flex items-center justify-between pt-1">
                     <span><i class="fas fa-check-circle text-emerald-500 mr-1"></i>Tampil pada rincian TUPOKSI pimpinan di halaman struktur organisasi</span>
                 </div>
@@ -683,16 +702,25 @@ function sotkManager() {
             </div>
 
             <!-- Footer Modal -->
-            <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+            <div class="flex items-center justify-between gap-2.5 pt-3 border-t border-slate-100">
                 <button type="button" @click="showModal = false" 
                         class="px-4 py-2 border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-xs rounded-xl transition cursor-pointer">
                     Batal
                 </button>
-                <button type="button" @click="saveModal()" 
-                        class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1.5">
-                    <i class="fas fa-check"></i>
-                    <span x-text="modalType === 'core' ? 'Simpan Pejabat' : (modalIndex === null ? 'Simpan ke Daftar' : 'Simpan Perubahan')"></span>
-                </button>
+                <div class="flex items-center gap-2">
+                    <button type="button" @click="saveModal()" 
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1.5"
+                            title="Simpan perubahan ke daftar di halaman ini">
+                        <i class="fas fa-check"></i>
+                        <span x-text="modalType === 'core' ? 'Simpan Pejabat' : (modalIndex === null ? 'Simpan ke Daftar' : 'Simpan Perubahan')"></span>
+                    </button>
+                    <button type="button" @click="saveModalAndSubmit()" 
+                            class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1.5"
+                            title="Simpan langsung ke server website">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Simpan ke Website</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
