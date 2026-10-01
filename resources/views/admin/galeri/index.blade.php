@@ -287,7 +287,7 @@
                         <div x-data="{ isManualCat: false, manualCatVal: '' }">
                             <div class="flex items-center justify-between mb-1">
                                 <label class="block font-bold text-slate-700 uppercase tracking-wider">Kategori Kegiatan *</label>
-                                <button type="button" @click="isManualCat = !isManualCat; if(!isManualCat) manualCatVal = ''" class="text-[11px] font-bold text-slate-700 hover:text-slate-900 transition flex items-center gap-1">
+                                <button type="button" @click="isManualCat = !isManualCat; if(!isManualCat) manualCatVal = ''" class="text-[11px] font-bold text-emerald-600 hover:text-emerald-700 transition flex items-center gap-1">
                                     <span x-text="isManualCat ? '← Pilih Kategori' : '+ Ketik Manual'"></span>
                                 </button>
                             </div>
@@ -300,17 +300,17 @@
                                     @foreach($categories as $cat)
                                         <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                     @endforeach
-                                    <option value="manual" class="font-bold text-slate-800">+ Ketik Kategori Baru (Manual)...</option>
+                                    <option value="manual" class="font-bold text-emerald-600">+ Ketik Kategori Baru (Manual)...</option>
                                 </select>
                             </div>
                             <div x-show="isManualCat" x-cloak>
                                 <div class="relative">
-                                    <input type="text" name="custom_category" x-model="manualCatVal" :required="isManualCat" placeholder="Ketik nama kategori baru (cth: Kerja Bakti)..." class="w-full p-2.5 pr-8 border border-slate-400 bg-slate-50/50 rounded-xl focus:ring-2 focus:ring-slate-600 shadow-sm font-semibold text-slate-800 text-xs">
+                                    <input type="text" name="custom_category" x-model="manualCatVal" :required="isManualCat" placeholder="Ketik nama kategori baru..." class="w-full p-2.5 pr-8 border border-emerald-400 bg-emerald-50/40 rounded-xl focus:ring-2 focus:ring-emerald-500 shadow-sm font-semibold text-slate-800 text-xs">
                                     <button type="button" @click="isManualCat = false; manualCatVal = ''" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs" title="Batal input manual">
                                         ✕
                                     </button>
                                 </div>
-                                <p class="text-[10px] text-slate-600 mt-1 font-medium">✨ Kategori baru akan otomatis dibuat dan tersimpan.</p>
+                                <p class="text-[10px] text-emerald-600 mt-1 font-medium">✨ Kategori baru akan otomatis dibuat dan tersimpan.</p>
                             </div>
                         </div>
 
@@ -466,7 +466,7 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-1">
                                         <label class="block font-bold text-slate-700 uppercase tracking-wider">Kategori Kegiatan *</label>
-                                        <button type="button" @click="isManualCatEdit = !isManualCatEdit; if(!isManualCatEdit) manualCatEditVal = ''" class="text-[11px] font-bold text-sky-600 hover:text-sky-700 transition flex items-center gap-1">
+                                        <button type="button" @click="isManualCatEdit = !isManualCatEdit; if(!isManualCatEdit) manualCatEditVal = ''" class="text-[11px] font-bold text-emerald-600 hover:text-emerald-700 transition flex items-center gap-1">
                                             <span x-text="isManualCatEdit ? '← Pilih Kategori' : '+ Ketik Manual'"></span>
                                         </button>
                                     </div>
@@ -475,22 +475,22 @@
                                                 x-model="selectedItem.category_id" 
                                                 :required="!isManualCatEdit"
                                                 @change="if($event.target.value === 'manual'){ isManualCatEdit = true; }" 
-                                                class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-600 font-medium bg-white text-slate-900">
+                                                class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-600 font-medium bg-white text-slate-900">
                                             <option value="">-- Pilih Kategori --</option>
                                             @foreach($categories as $cat)
                                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                             @endforeach
-                                            <option value="manual" class="font-bold text-sky-600">+ Ketik Kategori Baru (Manual)...</option>
+                                            <option value="manual" class="font-bold text-emerald-600">+ Ketik Kategori Baru (Manual)...</option>
                                         </select>
                                     </div>
                                     <div x-show="isManualCatEdit" x-cloak>
                                         <div class="relative">
-                                            <input type="text" name="custom_category" x-model="manualCatEditVal" :required="isManualCatEdit" placeholder="Ketik nama kategori baru..." class="w-full p-2.5 pr-8 border border-sky-400 bg-sky-50/40 rounded-xl focus:ring-2 focus:ring-sky-500 shadow-sm font-semibold text-slate-800 text-xs">
+                                            <input type="text" name="custom_category" x-model="manualCatEditVal" :required="isManualCatEdit" placeholder="Ketik nama kategori baru..." class="w-full p-2.5 pr-8 border border-emerald-400 bg-emerald-50/40 rounded-xl focus:ring-2 focus:ring-emerald-500 shadow-sm font-semibold text-slate-800 text-xs">
                                             <button type="button" @click="isManualCatEdit = false; manualCatEditVal = ''" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs" title="Batal input manual">
                                                 ✕
                                             </button>
                                         </div>
-                                        <p class="text-[10px] text-sky-600 mt-1 font-medium">✨ Kategori baru akan otomatis dibuat dan tersimpan.</p>
+                                        <p class="text-[10px] text-emerald-600 mt-1 font-medium">✨ Kategori baru akan otomatis dibuat dan tersimpan.</p>
                                     </div>
                                 </div>
                             </div>
