@@ -186,7 +186,7 @@ class="relative overflow-x-hidden w-full max-w-full">
                 </div>
 
                 <!-- Right: Sambutan Resmi -->
-                <div class="w-full lg:col-span-2 space-y-5 text-center lg:text-left min-w-0 mt-8 lg:mt-0">
+                <div class="w-full lg:col-span-2 space-y-5 text-center min-w-0 mt-8 lg:mt-0">
                     <h4 class="text-slate-600 text-xs sm:text-sm font-bold uppercase tracking-wide">
                         SAMBUTAN KEPALA KELURAHAN
                     </h4>
@@ -195,11 +195,11 @@ class="relative overflow-x-hidden w-full max-w-full">
                         {{ $villageProfile['welcome_title'] ?? 'Komitmen Pelayanan Publik yang Transparan, Cepat, & Responsif' }}
                     </h2>
 
-                    <div class="text-slate-500 text-sm sm:text-base leading-relaxed space-y-4 max-w-3xl mx-auto lg:mx-0 pt-2 prose prose-slate max-w-none prose-p:text-slate-500 prose-p:leading-relaxed">
+                    <div class="text-slate-500 text-sm sm:text-base leading-relaxed space-y-4 max-w-3xl mx-auto pt-2 prose prose-slate max-w-none prose-p:text-slate-500 prose-p:leading-relaxed text-center">
                         {!! $villageProfile['welcome_text'] ?? '<p>Melalui sistem portal terpadu ini, Pemerintah Kelurahan Semampir berkomitmen penuh dalam mewujudkan pelayanan publik modern yang berbasis transparansi, kemudahan akses dokumen mandiri, dan akuntabilitas pengelolaan anggaran.</p><p>Kami terus berinovasi untuk memberikan pelayanan terbaik bagi warga Kraksaan tanpa kerumitan administrasi, ramah, akuntabel, dan 100% bebas dari segala bentuk pungutan liar.</p>' !!}
                     </div>
 
-                    <div class="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                    <div class="pt-4 flex flex-wrap items-center justify-start gap-4">
                         <a href="{{ route('visi-misi') }}" 
                            class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-colors shadow-sm"
                            style="background-color: #334155 !important; color: #ffffff !important;"
