@@ -154,15 +154,8 @@ function sotkManager() {
                 const elRole = document.getElementById('input_' + co.key + '_role');
                 if (elRole) elRole.value = co.role_label || '';
 
-                if (co.key === 'head') {
-                    const lurahTa = document.getElementById('textarea_lurah_tupoksi');
-                    if (lurahTa && lurahTa.value !== co.tupoksi) {
-                        lurahTa.value = co.tupoksi || '';
-                    }
-                } else {
-                    const elTupoksi = document.getElementById('input_' + co.key + '_tupoksi');
-                    if (elTupoksi) elTupoksi.value = co.tupoksi || '';
-                }
+                const elTupoksi = document.getElementById('input_' + co.key + '_tupoksi');
+                if (elTupoksi) elTupoksi.value = co.tupoksi || '';
             });
 
             const container = document.getElementById('dynamic_members_inputs_container');
@@ -296,10 +289,6 @@ function sotkManager() {
             }
         },
         prepareSubmit(e) {
-            const lurahTa = document.getElementById('textarea_lurah_tupoksi');
-            if (lurahTa && this.coreOfficers && this.coreOfficers[0]) {
-                this.coreOfficers[0].tupoksi = lurahTa.value;
-            }
             this.syncDomInputs();
 
             this.coreOfficers.forEach(co => {
@@ -347,7 +336,7 @@ function sotkManager() {
         <div id="core_officers_hidden_inputs">
             @php
                 $coreDefs = [
-                    ['key' => 'head', 'name' => 'head_name', 'nip' => 'head_nip', 'role' => 'head_role', 'def_role' => 'Lurah'],
+                    ['key' => 'head', 'name' => 'head_name', 'nip' => 'head_nip', 'role' => 'head_role', 'tupoksi' => 'lurah_tupoksi', 'def_role' => 'Lurah', 'val_tupoksi' => $profile['lurah_tupoksi'] ?? ''],
                     ['key' => 'sekel', 'name' => 'sekel_name', 'nip' => 'sekel_nip', 'role' => 'sekel_role', 'tupoksi' => 'sekel_tupoksi', 'def_role' => 'Sekretaris Kelurahan', 'val_tupoksi' => $profile['sekel_tupoksi'] ?? ''],
                     ['key' => 'kasi_pem', 'name' => 'kasi_pem_name', 'nip' => 'kasi_pem_nip', 'role' => 'kasi_pem_role', 'tupoksi' => 'kasi_pem_tupoksi', 'def_role' => 'Kasi Pemerintahan & Trantib', 'val_tupoksi' => $profile['kasi_pem_tupoksi'] ?? ''],
                     ['key' => 'kasi_kesra', 'name' => 'kasi_kesra_name', 'nip' => 'kasi_kesra_nip', 'role' => 'kasi_kesra_role', 'tupoksi' => 'kasi_kesra_tupoksi', 'def_role' => 'Kasi Pelayanan & Kesra', 'val_tupoksi' => $profile['kasi_kesra_tupoksi'] ?? ''],
@@ -572,37 +561,7 @@ function sotkManager() {
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- TUPOKSI PIMPINAN: KEPALA KELURAHAN (LURAH) -->
-        <!-- ========================================== -->
-        <div class="border-t border-slate-100 pt-6">
-            <div class="flex items-center justify-between gap-2 pb-2">
-                <div class="flex items-center gap-2.5">
-                    <span class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                        <i class="fas fa-crown"></i>
-                    </span>
-                    <div>
-                        <h4 class="font-bold text-slate-900 text-sm">TUPOKSI Pimpinan: Kepala Kelurahan (Lurah)</h4>
-                        <p class="text-[11px] text-slate-500">Tugas pokok dan fungsi Lurah yang ditampilkan pada bagan struktur organisasi di website.</p>
-                    </div>
-                </div>
-                <span class="px-2.5 py-1 text-[10px] font-bold uppercase rounded-md bg-amber-50 text-amber-700 border border-amber-200/60">
-                    Pimpinan Kelurahan
-                </span>
-            </div>
-            <div class="mt-3">
-                <textarea name="lurah_tupoksi" 
-                          id="textarea_lurah_tupoksi"
-                          x-model="coreOfficers[0].tupoksi"
-                          @input="hasChanges = true"
-                          rows="3" 
-                          class="w-full p-3.5 text-xs text-slate-700 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition leading-relaxed resize-y placeholder:text-slate-400 shadow-2xs" 
-                          placeholder="Tuliskan uraian tugas pokok dan fungsi Kepala Kelurahan (Lurah)..."></textarea>
-                <div class="text-[10px] text-slate-400 flex items-center justify-between pt-1">
-                    <span><i class="fas fa-check-circle text-emerald-500 mr-1"></i>Tampil pada rincian TUPOKSI pimpinan di halaman struktur organisasi</span>
-                </div>
-            </div>
-        </div>
+
 
         <!-- Tombol Submit Form -->
         <div class="pt-5 border-t border-slate-100 flex justify-end">
