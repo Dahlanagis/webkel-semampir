@@ -67,6 +67,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('layouts.app', function ($view) {
             try {
                 if (\Illuminate\Support\Facades\Schema::hasTable('navigation_menus')) {
+                    if (\App\Models\NavigationMenu::count() === 0) {
+                        \App\Http\Controllers\Admin\NavigationMenuController::seedDefaultMenus();
+                    }
                     $menus = \App\Models\NavigationMenu::where('is_active', true)
                         ->orderBy('order')
                         ->get()
