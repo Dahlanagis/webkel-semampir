@@ -56,9 +56,34 @@ $localAppStorage = __DIR__ . '/../storage/app';
 if (is_dir($localAppStorage)) {
     @mkdir($storagePath . '/app', 0755, true);
     foreach (['village_profile.json', 'system_settings.json'] as $file) {
-        if (file_exists($localAppStorage . '/' . $file) && !file_exists($storagePath . '/app/' . $file)) {
-            @copy($localAppStorage . '/' . $file, $storagePath . '/app/' . $file);
+        $srcFile = $localAppStorage . '/' . $file;
+        $dstFile = $storagePath . '/app/' . $file;
+        if (file_exists($srcFile) && (!file_exists($dstFile) || filemtime($srcFile) > filemtime($dstFile))) {
+            @copy($srcFile, $dstFile);
+            @touch($dstFile, filemtime($srcFile));
         }
+    }
+
+    // Salin seluruh isi storage/app/public (profile, kemitraan, settings, gallery) ke /tmp/storage/app/public
+    $localPublicStorage = $localAppStorage . '/public';
+    if (is_dir($localPublicStorage)) {
+        $copyPublicRecursive = function ($src, $dst) use (&$copyPublicRecursive) {
+            if (!is_dir($src)) return;
+            @mkdir($dst, 0755, true);
+            $items = @scandir($src);
+            if ($items === false) return;
+            foreach ($items as $item) {
+                if ($item === '.' || $item === '..') continue;
+                $srcItem = $src . '/' . $item;
+                $dstItem = $dst . '/' . $item;
+                if (is_dir($srcItem)) {
+                    $copyPublicRecursive($srcItem, $dstItem);
+                } elseif (!file_exists($dstItem) || (filemtime($srcItem) > filemtime($dstItem))) {
+                    @copy($srcItem, $dstItem);
+                }
+            }
+        };
+        $copyPublicRecursive($localPublicStorage, $storagePath . '/app/public');
     }
 }
 

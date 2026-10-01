@@ -887,7 +887,21 @@ class VillageProfileController extends Controller
             $statusMsg = 'Transparansi APBD berhasil diperbarui.';
         }
 
-        File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $json = json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $savePaths = array_unique([
+            $this->configPath,
+            storage_path('app/village_profile.json'),
+            base_path('storage/app/village_profile.json'),
+        ]);
+        foreach ($savePaths as $savePath) {
+            try {
+                $dir = dirname($savePath);
+                if (!File::isDirectory($dir)) {
+                    @File::makeDirectory($dir, 0755, true);
+                }
+                @File::put($savePath, $json);
+            } catch (\Throwable $e) {}
+        }
 
         return back()->with('status', $statusMsg)->with('success', $statusMsg);
     }

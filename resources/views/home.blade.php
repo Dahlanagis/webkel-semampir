@@ -171,9 +171,9 @@ class="relative overflow-x-hidden w-full max-w-full">
                 
                 <!-- Left: Foto Lurah / Pimpinan -->
                 <div class="w-full lg:col-span-1 flex justify-center">
-                    <div class="relative w-56 sm:w-64 lg:w-72">
-                        <img src="{{ !empty($villageProfile['head_photo']) ? asset('storage/' . $villageProfile['head_photo']) : asset('images/sotk/lurah.png') }}"
+                        <img src="{{ !empty($villageProfile['head_photo']) ? (str_starts_with($villageProfile['head_photo'], 'http') || str_starts_with($villageProfile['head_photo'], 'data:image') ? $villageProfile['head_photo'] : asset('storage/' . ltrim($villageProfile['head_photo'], '/'))) : asset('images/sotk/lurah.png') }}"
                              alt="Foto Kepala {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}"
+                             onerror="this.onerror=null; this.src='{{ asset('images/sotk/lurah.png') }}';"
                              class="w-full aspect-[4/5] object-cover rounded-3xl shadow-sm bg-slate-100">
 
                         <!-- Floating Name Badge -->

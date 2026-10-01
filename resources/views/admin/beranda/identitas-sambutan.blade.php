@@ -29,14 +29,15 @@
                 <label class="block font-bold text-slate-700 mb-1.5">NIP Lurah</label>
                 <input type="text" name="head_nip" value="{{ old('head_nip', $profile['head_nip'] ?? '') }}" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-600">
             </div>
-            <div>
+            <div x-data="{
+                photoPreview: '{{ !empty($profile['head_photo']) ? (str_starts_with($profile['head_photo'], 'http') || str_starts_with($profile['head_photo'], 'data:image') ? $profile['head_photo'] : asset('storage/' . ltrim($profile['head_photo'], '/'))) : asset('images/sotk/lurah.png') }}'
+            }">
                 <label class="block font-bold text-slate-700 mb-1.5">Foto Lurah (JPG/PNG)</label>
-                <input type="file" name="head_photo" accept="image/jpeg, image/png, image/webp" @change="const file = $event.target.files[0]; if(file) { $dispatch('open-cropper', { file: file, aspectRatio: 3/4, onCrop: (blob, url) => { let dt = new DataTransfer(); dt.items.add(new File([blob], file.name, {type: file.type})); $event.target.files = dt.files; } }) }" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white">
-                @if(!empty($profile['head_photo']))
-                    <div class="mt-2">
-                        <img src="{{ asset('storage/' . $profile['head_photo']) }}" class="h-24 w-auto object-cover rounded-lg border border-slate-200 shadow-sm" alt="Foto Lurah Saat Ini">
-                    </div>
-                @endif
+                <input type="file" name="head_photo" accept="image/jpeg, image/png, image/webp" @change="const file = $event.target.files[0]; if(file) { photoPreview = URL.createObjectURL(file); $dispatch('open-cropper', { file: file, aspectRatio: 3/4, onCrop: (blob, url) => { let dt = new DataTransfer(); dt.items.add(new File([blob], file.name, {type: file.type})); $event.target.files = dt.files; photoPreview = url; } }) }" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white">
+                <div class="mt-2.5 flex items-center gap-3">
+                    <img :src="photoPreview" class="h-28 w-22 object-cover rounded-xl border border-slate-200 shadow-sm bg-slate-50" alt="Foto Lurah Saat Ini" onerror="this.onerror=null; this.src='{{ asset('images/sotk/lurah.png') }}';">
+                    <span class="text-[11px] text-slate-500 font-medium leading-relaxed">Pratinjau foto pimpinan. Format yang didukung: JPG, PNG, WEBP (rasio 3:4).</span>
+                </div>
             </div>
         </div>
 

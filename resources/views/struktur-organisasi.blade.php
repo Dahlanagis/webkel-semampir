@@ -74,8 +74,9 @@
                         <div class="flex flex-col items-center z-10 relative">
                             <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs hover:border-slate-400 hover:shadow-sm flex flex-col items-center text-center w-60 transition-all duration-200 group">
                                 <div class="w-20 h-20 rounded-full border-2 border-slate-900 p-0.5 mb-2.5 bg-slate-50 shrink-0 shadow-2xs group-hover:scale-105 transition-transform duration-200">
-                                    <img src="{{ !empty($villageProfile['head_photo']) ? asset('storage/' . $villageProfile['head_photo']) : asset('images/sotk/lurah.png') }}" 
+                                    <img src="{{ !empty($villageProfile['head_photo']) ? (str_starts_with($villageProfile['head_photo'], 'http') || str_starts_with($villageProfile['head_photo'], 'data:image') ? $villageProfile['head_photo'] : asset('storage/' . ltrim($villageProfile['head_photo'], '/'))) : asset('images/sotk/lurah.png') }}" 
                                          alt="Lurah Semampir" 
+                                         onerror="this.onerror=null; this.src='{{ asset('images/sotk/lurah.png') }}';"
                                          class="w-full h-full object-cover rounded-full">
                                 </div>
                                 <h3 class="font-bold text-xs text-slate-900 leading-snug">
@@ -250,7 +251,9 @@
                     {{-- 1. Lurah --}}
                     <div class="p-4 bg-slate-50/70 hover:bg-white rounded-2xl border border-slate-200 hover:border-slate-300 flex items-start gap-3.5 transition shadow-2xs">
                         <div class="w-14 h-14 rounded-full border-2 border-slate-900 overflow-hidden bg-white shrink-0">
-                            <img src="{{ !empty($villageProfile['head_photo']) ? asset('storage/' . $villageProfile['head_photo']) : asset('images/sotk/lurah.png') }}" class="w-full h-full object-cover">
+                            <img src="{{ !empty($villageProfile['head_photo']) ? (str_starts_with($villageProfile['head_photo'], 'http') || str_starts_with($villageProfile['head_photo'], 'data:image') ? $villageProfile['head_photo'] : asset('storage/' . ltrim($villageProfile['head_photo'], '/'))) : asset('images/sotk/lurah.png') }}" 
+                                 onerror="this.onerror=null; this.src='{{ asset('images/sotk/lurah.png') }}';"
+                                 class="w-full h-full object-cover">
                         </div>
                         <div class="flex-1 min-w-0">
                             <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-slate-200 text-slate-800">Pimpinan</span>
