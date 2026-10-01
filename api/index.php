@@ -27,12 +27,15 @@ foreach ($dirs as $dir) {
 
 // Siapkan database SQLite di /tmp agar writable
 $sqliteDestination = '/tmp/database.sqlite';
-if (!file_exists($sqliteDestination)) {
-    $sqliteSource = __DIR__ . '/../database/database.sqlite';
-    if (file_exists($sqliteSource)) {
+$sqliteSource = __DIR__ . '/../database/database.sqlite';
+if (!file_exists($sqliteSource) && file_exists(__DIR__ . '/../webkel_patokan')) {
+    $sqliteSource = __DIR__ . '/../webkel_patokan';
+}
+
+if (file_exists($sqliteSource)) {
+    if (!file_exists($sqliteDestination) || (filemtime($sqliteSource) > filemtime($sqliteDestination))) {
         @copy($sqliteSource, $sqliteDestination);
-    } elseif (file_exists(__DIR__ . '/../webkel_patokan')) {
-        @copy(__DIR__ . '/../webkel_patokan', $sqliteDestination);
+        @touch($sqliteDestination, filemtime($sqliteSource));
     }
 }
 

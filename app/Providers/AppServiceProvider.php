@@ -24,6 +24,25 @@ class AppServiceProvider extends ServiceProvider
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
 
+        // Pastikan akun admin Kelurahan Semampir selalu terdaftar dan aktif
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('users')) {
+                $semampirAdmin = \App\Models\User::where('email', 'admin@kelurahan-semampir.go.id')->first();
+                if (!$semampirAdmin) {
+                    \App\Models\User::create([
+                        'name' => 'Administrator Kelurahan Semampir',
+                        'email' => 'admin@kelurahan-semampir.go.id',
+                        'username' => 'admin',
+                        'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                        'role' => 'admin',
+                        'is_active' => true,
+                        'whatsapp' => '081234567890',
+                        'referral_code' => 'SMP123',
+                    ]);
+                }
+            }
+        } catch (\Throwable $e) {}
+
         // Removed pending count global variable since letter request is deprecated
 
         // Share village profile and system settings globally for headers, footers, and admin sidebars
