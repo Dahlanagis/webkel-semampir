@@ -61,7 +61,7 @@
                                 <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col items-center text-center w-56 hover:border-slate-300 transition">
                                     {{-- Foto Lingkaran Lurah --}}
                                     <div class="w-24 h-24 rounded-full border-2 border-slate-800 p-0.5 mb-2.5 bg-slate-50 shrink-0 shadow-sm">
-                                        <img src="{{ !empty($villageProfile['head_photo']) ? asset('storage/' . $villageProfile['head_photo']) : asset('images/sotk/lurah.png') }}" 
+                                        <img src="{{ !empty($villageProfile['head_photo']) ? asset('storage/' . $villageProfile['head_photo']) . '?v=' . time() : asset('images/sotk/lurah.png') }}" 
                                             alt="Lurah Semampir" 
                                             class="w-full h-full object-cover rounded-full">
                                     </div>
