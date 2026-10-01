@@ -678,18 +678,14 @@ function sotkManager() {
                                     <span x-text="modalForm.previewPhoto ? 'Ganti Foto' : 'Pilih Foto'"></span>
                                 </button>
                                 <button type="button" 
-                                        x-show="modalForm.previewPhoto"
                                         @click="removeModalPhoto()" 
-                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 hover:text-rose-700 rounded-lg text-xs font-semibold shadow-2xs cursor-pointer transition"
+                                        :disabled="!modalForm.previewPhoto && !modalForm.file && !modalForm.photo"
+                                        :class="(!modalForm.previewPhoto && !modalForm.file && !modalForm.photo) 
+                                            ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed opacity-60' 
+                                            : 'bg-rose-50 border-rose-200 text-rose-600 hover:bg-rose-100 hover:text-rose-700 cursor-pointer'"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 border rounded-lg text-xs font-semibold shadow-2xs transition"
                                         title="Hapus foto profil ini">
-                                    <i class="fas fa-trash-alt text-rose-500 text-[10px]"></i>
-                                    <span>Hapus Foto</span>
-                                </button>
-                                <button type="button" 
-                                        x-show="!modalForm.previewPhoto"
-                                        disabled
-                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 border border-slate-200 text-slate-400 rounded-lg text-xs font-semibold cursor-not-allowed opacity-60">
-                                    <i class="fas fa-trash-alt text-slate-400 text-[10px]"></i>
+                                    <i class="fas fa-trash-alt text-[10px]" :class="(!modalForm.previewPhoto && !modalForm.file && !modalForm.photo) ? 'text-slate-400' : 'text-rose-500'"></i>
                                     <span>Hapus Foto</span>
                                 </button>
                             </div>
