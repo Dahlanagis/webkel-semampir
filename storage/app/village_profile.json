@@ -1,0 +1,231 @@
+{
+    "village_name": "Kelurahan Semampir",
+    "subdistrict": "Kecamatan Kraksaan",
+    "regency": "Kabupaten Probolinggo",
+    "head_name": "LATIF HASAN ASYARI, SH.",
+    "head_nip": "19750612 201001 1 004",
+    "head_photo": "profile/4m6E9sghGiHXlF05MTHZZqzEa9pXhFM4fCjWDjxH.jpg",
+    "welcome_title": "Komitmen Pelayanan Publik yang Transparan, Cepat, & Responsif",
+    "welcome_text": "<p>Melalui sistem portal terpadu ini, Pemerintah Kelurahan Semampir berkomitmen penuh dalam mewujudkan pelayanan publik modern yang berbasis transparansi, kemudahan akses dokumen mandiri, dan akuntabilitas pengelolaan anggaran.</p>\r\n<p>Kami terus berinovasi untuk memberikan pelayanan terbaik bagi warga Kraksaan tanpa kerumitan administrasi, ramah, akuntabel, dan 100% bebas dari segala bentuk pungutan liar.</p><p><br></p>",
+    "vision": "<p>Terwujudnya Pelayanan Publik Kelurahan Semampir yang Transparan, Akuntabel, Berbasis Digital, dan Berkelanjutan Demi Kesejahteraan Masyarakat.</p>",
+    "mission": "<ol>\r\n<li>Meningkatkan kualitas pelayanan administrasi kependudukan secara cepat dan tepat sasaran.</li>\r\n<li>Mendorong transparansi pengelolaan informasi dan dana pembangunan kelurahan.</li>\r\n<li>Mengembangkan pemberdayaan ekonomi warga berbasis kemitraan daerah.</li>\r\n</ol>",
+    "history_text": "<p>Nama <strong>\"Semampir\"</strong> memiliki latar belakang sejarah etimologi yang berakar dari kata dasar <em>\"Patok\"</em>, yang berarti titik acuan penanda atau tiang pembatas wilayah.</p>\r\n<p>Pada masa era kadipaten abad ke-18 dan masa pemerintahan kolonial di pesisir utara Probolinggo, wilayah ini difungsikan sebagai titik ukur nol dan acuan batas administrasi tanah wilayah Kraksaan. Di lokasi ini ditanam sebuah <strong>patok batu hitam besar</strong> yang menjadi semampir para musafir, pedagang, dan petugas karesidenan saat mengukur jarak jalur pos (De Grote Postweg).</p>\r\n<p>Lambat laun, pemukiman di sekitar pilar patok penanda tersebut berkembang pesat dan akrab disapa warga dengan sebutan <strong>Dusun Semampir</strong>. Berkat letaknya yang sangat strategis di persimpangan jalan utama dan dekat dengan pusat perniagaan, wilayah ini terus bertumbuh menjadi desa pusat kegiatan masyarakat Kraksaan.</p>",
+    "office_hours_mon_thu": "08.00 - 15.30 WIB",
+    "office_hours_fri": "08.00 - 14.30 WIB",
+    "phone": "(0335) 841-209",
+    "whatsapp": "0812-3456-7890",
+    "whatsapp_service_text": "Pemerintah Kelurahan Semampir menyediakan layanan WhatsApp untuk mempermudah Anda dalam mendapatkan informasi, menyampaikan pengaduan, atau menanyakan seputar pelayanan publik tanpa harus datang ke kantor kelurahan.",
+    "email": "kelurahansemampir@probolinggokab.go.id",
+    "address": "Jl. Pahlawan No. 01, Kelurahan Semampir, Kecamatan Kraksaan, Kabupaten Probolinggo, Jawa Timur 67282",
+    "map_embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15822.464673673551!2d113.40748130833777!3d-7.756187513813955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd70068a4d4bf59%3A0x67a3f0196c810!2sSemampir%2C%20Kec.%20Kraksaan%2C%20Kabupaten%20Probolinggo%2C%20Jawa%20Timur!5e0!3m2!1sid!2sid!4v1708412000000!5m2!1sid!2sid",
+    "social_facebook": "https://facebook.com/kelurahansemampir",
+    "social_instagram": "https://instagram.com/kelurahansemampir",
+    "social_youtube": "https://youtube.com/@kelurahansemampir",
+    "social_tiktok": "https://tiktok.com/@kelurahansemampir",
+    "social_whatsapp": "0812-3456-7890",
+    "qr_code_image": "settings/qrcode.png",
+    "sekel_photo": "profile/sekel.png",
+    "stats": {
+        "penduduk": "5.000",
+        "kk": "2.640",
+        "rt_rw": "32 / 08",
+        "luas": "3,82 km\u00b2"
+    },
+    "demographics": {
+        "total": "5.000",
+        "male": "4.180",
+        "female": "4.245",
+        "productive_count": "5.610",
+        "productive_pct": "66.6",
+        "child_count": "1.825",
+        "child_pct": "21.7",
+        "elderly_count": "990",
+        "elderly_pct": "11.8",
+        "density": "1.308,9",
+        "avg_family_size": "1,89",
+        "occupations": [
+            {
+                "name": "Karyawan Swasta & Pabrik Industri",
+                "sector": "Swasta",
+                "count": "1.280",
+                "pct": "25,6"
+            },
+            {
+                "name": "Pedagang Pasar & Pelaku UMKM Mikro",
+                "sector": "Perdagangan",
+                "count": "1.150",
+                "pct": "23,0"
+            },
+            {
+                "name": "Penyedia Jasa Logistik & Transportasi",
+                "sector": "Jasa",
+                "count": "720",
+                "pct": "14,4"
+            },
+            {
+                "name": "Petani Tanaman Pangan & Hortikultura",
+                "sector": "Pertanian",
+                "count": "620",
+                "pct": "12,4"
+            },
+            {
+                "name": "Aparatur Sipil Negara (ASN / TNI / POLRI)",
+                "sector": "PNS/TNI/Polri",
+                "count": "450",
+                "pct": "9,0"
+            },
+            {
+                "name": "Wiraswasta Mandiri & Freelance",
+                "sector": "Lainnya",
+                "count": "400",
+                "pct": "8,0"
+            },
+            {
+                "name": "Pembudidaya & Nelayan Tambak Pesisir",
+                "sector": "Perikanan",
+                "count": "380",
+                "pct": "7,6"
+            }
+        ],
+        "educations": [
+            {
+                "name": "Tamat SMA / SMK / Sederajat",
+                "count": "1.920",
+                "pct": "38,4"
+            },
+            {
+                "name": "Diploma / Sarjana (D3, S1, S2)",
+                "count": "1.120",
+                "pct": "22,4"
+            },
+            {
+                "name": "Tamat SMP / MTs / Sederajat",
+                "count": "960",
+                "pct": "19,2"
+            },
+            {
+                "name": "Tamat SD / MI / Sederajat",
+                "count": "720",
+                "pct": "14,4"
+            },
+            {
+                "name": "Belum / Tidak Bersekolah",
+                "count": "280",
+                "pct": "5,6"
+            }
+        ]
+    },
+    "apbd": {
+        "year": "2026",
+        "total_budget": "1.450.000.000",
+        "realized_budget": "985.400.000",
+        "realized_pct": "67.9",
+        "allocations": [
+            {
+                "id": 1,
+                "tahun": 2026,
+                "kode_rekening": "5.1.01",
+                "name": "Pembangunan Infrastruktur, Fisik, & Perbaikan Sanitasi Lingkungan",
+                "amount": "652.500.000",
+                "pct": "45",
+                "desc": "Pavingisasi jalan gang, normalisasi selokan RW 02-05, dan lampu penerangan jalan umum (PJU)."
+            },
+            {
+                "id": 2,
+                "tahun": 2026,
+                "kode_rekening": "5.2.02",
+                "name": "Pemberdayaan Masyarakat, Kesejahteraan Sosial, & UMKM",
+                "amount": "435.000.000",
+                "pct": "30",
+                "desc": "Pelatihan digital marketing wirausaha muda, subsidi posyandu balita & lansia, serta bantuan bibit pekarangan."
+            },
+            {
+                "id": 3,
+                "tahun": 2026,
+                "kode_rekening": "5.3.01",
+                "name": "Operasional Penyelenggaraan Pelayanan & Administrasi Kantor",
+                "amount": "362.500.000",
+                "pct": "25",
+                "desc": "Infrastruktur server pelayanan mandiri digital, alat tulis kantor, pemeliharaan gedung, dan honor kebersihan."
+            }
+        ]
+    },
+    "territory": {
+        "north": "Desa Kalibuntu",
+        "east": "Kelurahan Kraksaan Wetan",
+        "south": "Desa Alassumur Kulon",
+        "west": "Desa Sidomukti",
+        "schools": "7",
+        "mosques": "12",
+        "health": "8",
+        "markets": "2",
+        "rw": "08",
+        "rt": "32"
+    },
+    "service_metrics": {
+        "avg_time": "< 15 Menit",
+        "ikm_score": "98.4%"
+    },
+    "hero_image": "profile/mWYDaqI6d6EpcghP2lQUlOfe4DXx8ZfmNIdI1G7q.jpg",
+    "history_hero_image": "profile/history_hero.png",
+    "sekel_name": "Ahmad halimi s.krim",
+    "kasi_pem_name": "ahmad matlub s.yam",
+    "kasi_kesra_name": "ahmad dahlan s,lom",
+    "kasi_ekbang_name": "m badri.m.yam",
+    "kasi_pem_photo": "profile/kasi_pem.png",
+    "kasi_kesra_photo": "profile/kasi_kesra.png",
+    "kasi_ekbang_photo": "profile/kasi_ekbang.png",
+    "lurah_tupoksi": "Penyelenggara utama urusan pemerintahan, ketertiban umum, pelayanan publik, dan pembinaan wilayah semampir.",
+    "sekel_tupoksi": "Pengelola administrasi umum, perencanaan operasional, keuangan, dan pelayanan surat-menyurat kelurahan.",
+    "kasi_pem_tupoksi": "Pelayanan KTP/KK, pengawasan ketertiban lingkungan, dan pengelolaan data pertanahan &amp; PBB.",
+    "kasi_kesra_tupoksi": "Penerbitan SKTM, koordinasi bantuan sosial kementerian, kesehatan posyandu, dan keagamaan",
+    "kasi_ekbang_tupoksi": "Pemberdayaan masyarakat, pembinaan UMKM, fasilitasi pembangunan infrastruktur kelurahan, dan kebersihan lingkungan.",
+    "sotk_members": [
+        {
+            "name": "dahlan",
+            "position": "usaha",
+            "photo": "profile/vBJ79jbU74yXY49aYSd7fOVdcxZhg3SkeiGRHXdl.jpg",
+            "tupoksi": "usaha dinas"
+        }
+    ],
+    "maklumat_text": "Dengan ini, kami seluruh ASN dan Pegawai Pemerintah Kelurahan Semampir menyatakan sanggup menyelenggarakan pelayanan sesuai standar pelayanan yang telah ditetapkan dan siap menerima sanksi sesuai ketentuan perundang-undangan yang berlaku apabila pelayanan tidak sesuai janji.",
+    "maklumat_nomor_sk": "188.45/04/426.411.01/2026",
+    "maklumat_caption": "Dokumen Piagam Penetapan Standar Maklumat Pelayanan Publik Kelurahan Semampir Tahun 2026",
+    "maklumat_file": "maklumat/kZohagBzyaSk2KIpXqe5bJZDXEySod4Xyjn5QVeG.jpg",
+    "maklumat_file_type": "image",
+    "maklumat_file_name": "maklumat pelayanan.jpg",
+    "maklumat_file_size": "30.9 KB",
+    "footer_description": "<p>Website Resmi Kelurahan Semampir, Kecamatan Kraksaan, Kabupaten Probolinggo - Portal Informasi Publik, Pelayanan Administrasi Kependudukan, Surat Keterangan Online, Berita, dan Pembangunan Kemasyarakatan.</p>",
+    "kemitraan": [
+        {
+            "name": "Pemerintah Kabupaten Probolinggo",
+            "url": "https://probolinggokab.go.id",
+            "desc": "Portal Resmi Pemerintah Kabupaten Probolinggo",
+            "logo": "kemitraan/8PqDzUpiMV2pJtnw6RRkzE7QRH0Gthhdlmhs6pnT.png"
+        },
+        {
+            "name": "Diskominfo Kab. Probolinggo",
+            "url": "https://diskominfo.probolinggokab.go.id",
+            "desc": "Dinas Komunikasi, Informatika, Statistik dan Persandian",
+            "logo": "kemitraan/AbNfqxBWSvM48OtGgXF1V2CO23Od9R2LrykyuiNz.png"
+        },
+        {
+            "name": "Dispendukcapil Kab. Probolinggo",
+            "url": "https://dispendukcapil.probolinggokab.go.id",
+            "desc": "Dinas Kependudukan dan Pencatatan Sipil",
+            "logo": "kemitraan/luNE2cYyAC8gM25HlmZAhkCnCcWPobkB5hS0401V.png"
+        },
+        {
+            "name": "Bapenda Kab. Probolinggo",
+            "url": "https://bapenda.probolinggokab.go.id",
+            "desc": "Badan Pendapatan Daerah (PBB-P2 & Pajak Daerah)",
+            "logo": "kemitraan/RzhffVYrMgLzU8yDjtOmVnb7LYzVABR5azsqxHL0.png"
+        },
+        {
+            "name": "Dispendukcapil Kab. Probolinggo",
+            "url": "https://dlh.probolinggokab.go.id/",
+            "desc": "Badan Pendapatan Daerah (PBB-P2 & Pajak Daerah)",
+            "logo": "kemitraan/TNtVrVuH16HN5lgd3Qe2jQfUhPM70BPOV2985dmN.png"
+        }
+    ]
+}

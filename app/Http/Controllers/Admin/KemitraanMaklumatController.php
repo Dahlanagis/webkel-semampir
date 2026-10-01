@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\RelatedLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
 class KemitraanMaklumatController extends Controller
@@ -26,6 +28,55 @@ class KemitraanMaklumatController extends Controller
     {
         $profile = \App\Http\Controllers\Admin\VillageProfileController::getProfileData();
         return view('admin.beranda.kemitraan', compact('profile'));
+    }
+
+    /**
+     * Helper untuk menyimpan file JSON konfigurasi ke beberapa path writable.
+     */
+    protected function saveProfileData(array $data): void
+    {
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $paths = [
+            $this->configPath,
+            storage_path('app/village_profile.json'),
+            base_path('storage/app/village_profile.json'),
+        ];
+
+        foreach (array_unique($paths) as $path) {
+            try {
+                $dir = dirname($path);
+                if (!File::isDirectory($dir)) {
+                    @File::makeDirectory($dir, 0755, true);
+                }
+                @File::put($path, $json);
+            } catch (\Throwable $e) {
+                // Ignore write failures on read-only locations
+            }
+        }
+    }
+
+    /**
+     * Sinkronisasi data kemitraan ke tabel database related_links.
+     */
+    protected function syncRelatedLinksToDb(array $partners): void
+    {
+        try {
+            if (Schema::hasTable('related_links')) {
+                RelatedLink::truncate();
+                foreach ($partners as $i => $partner) {
+                    RelatedLink::create([
+                        'name' => $partner['name'] ?? '',
+                        'url' => $partner['url'] ?? '#',
+                        'desc' => $partner['desc'] ?? '',
+                        'logo' => $partner['logo'] ?? '',
+                        'order' => $i + 1,
+                        'is_active' => true,
+                    ]);
+                }
+            }
+        } catch (\Throwable $e) {
+            // Silently ignore if DB fails
+        }
     }
 
     /**
@@ -81,10 +132,11 @@ class KemitraanMaklumatController extends Controller
             }
 
             $existingData['kemitraan'] = $partners;
+            $this->syncRelatedLinksToDb($partners);
             $statusMsg = 'Daftar Link Terkait berhasil diperbarui.';
         }
 
-        File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $this->saveProfileData($existingData);
 
         return back()->with('status', $statusMsg)->with('success', $statusMsg);
     }
@@ -99,15 +151,31 @@ class KemitraanMaklumatController extends Controller
             $logoPath = $request->file('partner_logo')->store('kemitraan', 'public');
         }
 
-        $kemitraan[] = [
+        $newPartner = [
             'name' => $request->input('partner_name'),
             'url' => $request->input('partner_url', '#'),
             'desc' => $request->input('partner_desc', ''),
             'logo' => $logoPath
         ];
 
+        $kemitraan[] = $newPartner;
         $existingData['kemitraan'] = $kemitraan;
-        File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+        // Simpan ke database
+        try {
+            if (Schema::hasTable('related_links')) {
+                RelatedLink::create([
+                    'name' => $newPartner['name'],
+                    'url' => $newPartner['url'],
+                    'desc' => $newPartner['desc'],
+                    'logo' => $newPartner['logo'],
+                    'order' => count($kemitraan),
+                    'is_active' => true,
+                ]);
+            }
+        } catch (\Throwable $e) {}
+
+        $this->saveProfileData($existingData);
 
         return back()->with('status', 'Link terkait baru berhasil ditambahkan.')->with('success', 'Link terkait baru berhasil ditambahkan.');
     }
@@ -127,15 +195,19 @@ class KemitraanMaklumatController extends Controller
                 $logoPath = $request->file('partner_logo')->store('kemitraan', 'public');
             }
 
-            $kemitraan[$index] = [
+            $updatedPartner = [
                 'name' => $request->input('partner_name'),
                 'url' => $request->input('partner_url', '#'),
                 'desc' => $request->input('partner_desc', ''),
                 'logo' => $logoPath
             ];
 
+            $kemitraan[$index] = $updatedPartner;
             $existingData['kemitraan'] = $kemitraan;
-            File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+            // Sinkronkan ke database
+            $this->syncRelatedLinksToDb($kemitraan);
+            $this->saveProfileData($existingData);
 
             return back()->with('status', 'Data link terkait berhasil diperbarui.')->with('success', 'Data link terkait berhasil diperbarui.');
         }
@@ -156,7 +228,10 @@ class KemitraanMaklumatController extends Controller
             
             array_splice($kemitraan, $index, 1);
             $existingData['kemitraan'] = $kemitraan;
-            File::put($this->configPath, json_encode($existingData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+            // Sinkronkan ke database
+            $this->syncRelatedLinksToDb($kemitraan);
+            $this->saveProfileData($existingData);
 
             return back()->with('status', 'Link terkait berhasil dihapus.')->with('success', 'Link terkait berhasil dihapus.');
         }

@@ -55,16 +55,37 @@ class HomeController extends Controller
         $latestPosts = $featuredPosts->merge($fallbackPosts);
 
         $galleries = Gallery::where('is_active', true)->where('show_on_homepage', true)->latest()->get();
+        if ($galleries->isEmpty()) {
+            $galleries = Gallery::where('is_active', true)->latest()->take(6)->get();
+        }
+
         $photoGalleries = Gallery::where('is_active', true)->where('show_on_homepage', true)
             ->where(function ($q) {
                 $q->where('type', 'foto')->orWhereNull('type');
             })
             ->latest()
             ->get();
+        if ($photoGalleries->isEmpty()) {
+            $photoGalleries = Gallery::where('is_active', true)
+                ->where(function ($q) {
+                    $q->where('type', 'foto')->orWhereNull('type');
+                })
+                ->latest()
+                ->take(6)
+                ->get();
+        }
+
         $videoGalleries = Gallery::where('show_on_homepage', true)
             ->where('type', 'video')
             ->latest()
             ->get();
+        if ($videoGalleries->isEmpty()) {
+            $videoGalleries = Gallery::where('is_active', true)
+                ->where('type', 'video')
+                ->latest()
+                ->take(6)
+                ->get();
+        }
 
         $villageProfile = \App\Http\Controllers\Admin\VillageProfileController::getProfileData();
         $stats = $villageProfile['stats'] ?? [
@@ -83,6 +104,28 @@ class HomeController extends Controller
 
         $maklumatText = $villageProfile['maklumat_text'] ?? "Dengan ini, kami seluruh ASN dan Pegawai Pemerintah Kelurahan Semampir menyatakan sanggup menyelenggarakan pelayanan sesuai standar pelayanan yang telah ditetapkan dan siap menerima sanksi sesuai ketentuan perundang-undangan yang berlaku apabila pelayanan tidak sesuai janji.";
         $relatedLinks = $villageProfile['kemitraan'] ?? [];
+        if (empty($relatedLinks)) {
+            try {
+                if (\Illuminate\Support\Facades\Schema::hasTable('related_links')) {
+                    $relatedLinks = \App\Models\RelatedLink::where('is_active', true)
+                        ->orderBy('order', 'asc')
+                        ->orderBy('id', 'asc')
+                        ->get()
+                        ->map(fn($item) => [
+                            'id' => $item->id,
+                            'name' => $item->name,
+                            'url' => $item->url,
+                            'desc' => $item->desc ?? '',
+                            'logo' => $item->logo ?? '',
+                        ])
+                        ->toArray();
+                }
+            } catch (\Throwable $e) {}
+        }
+        if (empty($relatedLinks)) {
+            $relatedLinks = \App\Http\Controllers\Admin\VillageProfileController::getDefaultKemitraan();
+        }
+
         $regStat = \App\Models\RegionalStatistic::getActive();
 
         return view('home', compact(
@@ -195,7 +238,16 @@ class HomeController extends Controller
     public function galeri(Request $request)
     {
         $type = $request->query('type', 'foto');
-        $query = Gallery::with(['images', 'categoryModel'])->where('is_active', true)->where('type', $type)->latest();
+        $query = Gallery::with(['images', 'categoryModel'])
+            ->where('is_active', true)
+            ->where(function ($q) use ($type) {
+                if ($type === 'foto') {
+                    $q->where('type', 'foto')->orWhereNull('type');
+                } else {
+                    $q->where('type', $type);
+                }
+            })
+            ->latest();
 
         if ($request->filled('kategori')) {
             $query->where(function ($q) use ($request) {
@@ -208,7 +260,13 @@ class HomeController extends Controller
 
         $categories = \App\Models\Category::where('type', 'galeri')
             ->withCount(['galleries' => function($q) use ($type) {
-                $q->where('is_active', true)->where('type', $type);
+                $q->where('is_active', true)->where(function ($sub) use ($type) {
+                    if ($type === 'foto') {
+                        $sub->where('type', 'foto')->orWhereNull('type');
+                    } else {
+                        $sub->where('type', $type);
+                    }
+                });
             }])
             ->having('galleries_count', '>', 0)
             ->get()
@@ -218,12 +276,24 @@ class HomeController extends Controller
             $categories = Gallery::select('category', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
                 ->where('is_active', true)
                 ->whereNotNull('category')
-                ->where('type', $type)
+                ->where(function ($q) use ($type) {
+                    if ($type === 'foto') {
+                        $q->where('type', 'foto')->orWhereNull('type');
+                    } else {
+                        $q->where('type', $type);
+                    }
+                })
                 ->groupBy('category')
                 ->get();
         }
 
-        $totalPhotos = Gallery::where('is_active', true)->where('type', $type)->count();
+        $totalPhotos = Gallery::where('is_active', true)->where(function ($q) use ($type) {
+            if ($type === 'foto') {
+                $q->where('type', 'foto')->orWhereNull('type');
+            } else {
+                $q->where('type', $type);
+            }
+        })->count();
         $villageProfile = \App\Http\Controllers\Admin\VillageProfileController::getProfileData();
 
         return view('galeri', compact('galleries', 'categories', 'totalPhotos', 'villageProfile', 'type'));

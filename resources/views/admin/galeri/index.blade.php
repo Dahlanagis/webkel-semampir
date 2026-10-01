@@ -413,7 +413,7 @@
 
                         <div>
                             <label class="flex items-center gap-2 cursor-pointer mt-1 bg-slate-50/50 p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition">
-                                <input type="checkbox" name="show_on_homepage" value="1" class="w-5 h-5 text-slate-600 border-slate-300 rounded focus:ring-slate-600">
+                                <input type="checkbox" name="show_on_homepage" value="1" checked class="w-5 h-5 text-slate-600 border-slate-300 rounded focus:ring-slate-600">
                                 <span class="text-xs font-bold text-slate-800">Tampilkan Album/Video ini di Halaman Beranda Utama</span>
                             </label>
                         </div>

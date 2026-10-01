@@ -2,3 +2,5 @@
 !private/
 !public/
 !.gitignore
+!village_profile.json
+!system_settings.json

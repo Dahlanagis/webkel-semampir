@@ -1279,10 +1279,23 @@ class="relative overflow-x-hidden w-full max-w-full">
                         <a href="{{ $link['url'] ?? '#' }}" target="_blank" rel="noopener noreferrer"
                            class="snap-start shrink-0 w-[240px] sm:w-[260px] group relative flex items-center gap-3 p-2.5 sm:p-3 bg-white hover:bg-emerald-50/40 border border-slate-200 hover:border-emerald-400 rounded-xl transition-all duration-200 shadow-2xs hover:shadow-sm hover:-translate-y-0.5">
                             <div class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center p-1 group-hover:bg-white group-hover:border-emerald-200 transition-colors">
-                                @if(!empty($link['logo']))
-                                    <img src="{{ str_starts_with($link['logo'], 'http') ? $link['logo'] : asset('storage/' . $link['logo']) }}" 
+                                @php
+                                    $linkLogo = $link['logo'] ?? null;
+                                    $linkLogoUrl = null;
+                                    if (!empty($linkLogo)) {
+                                        if (str_starts_with($linkLogo, 'http://') || str_starts_with($linkLogo, 'https://') || str_starts_with($linkLogo, 'data:image')) {
+                                            $linkLogoUrl = $linkLogo;
+                                        } else {
+                                            $linkLogoUrl = asset('storage/' . ltrim($linkLogo, '/'));
+                                        }
+                                    }
+                                @endphp
+                                @if(!empty($linkLogoUrl))
+                                    <img src="{{ $linkLogoUrl }}" 
                                          alt="{{ $link['name'] ?? 'Link Terkait' }}" 
+                                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
                                          class="max-h-full max-w-full object-contain filter group-hover:scale-105 transition-transform duration-200">
+                                    <i class="fas fa-link text-emerald-600 text-xs hidden"></i>
                                 @else
                                     <i class="fas fa-link text-emerald-600 text-xs"></i>
                                 @endif

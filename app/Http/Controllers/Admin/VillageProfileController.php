@@ -22,82 +22,122 @@ class VillageProfileController extends Controller
     public static function getProfileData(): array
     {
         $path = storage_path('app/village_profile.json');
+        if (!File::exists($path)) {
+            $path = base_path('storage/app/village_profile.json');
+        }
+
+        $data = null;
         if (File::exists($path)) {
             $data = json_decode(File::get($path), true);
-            if (is_array($data)) {
-                if (!isset($data['stats'])) {
-                    $data['stats'] = self::getDefaultStats();
-                }
-                if (!isset($data['demographics'])) {
-                    $data['demographics'] = self::getDefaultDemographics();
-                }
-                if (!isset($data['apbd'])) {
-                    $data['apbd'] = self::getDefaultApbd();
-                }
-                if (!isset($data['territory'])) {
-                    $data['territory'] = self::getDefaultTerritory();
-                }
-                if (!isset($data['service_metrics'])) {
-                    $data['service_metrics'] = self::getDefaultServiceMetrics();
-                }
+        }
 
-                // Sinkronisasi data alokasi APBD dari tabel apbdes jika tabel tersedia
-                try {
-                    if (\Illuminate\Support\Facades\Schema::hasTable('apbdes')) {
-                        $year = (int) ($data['apbd']['year'] ?? date('Y'));
-                        $dbAllocations = \App\Models\Apbdes::where('tahun', $year)->orderBy('id', 'asc')->get();
-                        if ($dbAllocations->isEmpty()) {
-                            $latestYear = \App\Models\Apbdes::max('tahun');
-                            if ($latestYear) {
-                                $dbAllocations = \App\Models\Apbdes::where('tahun', $latestYear)->orderBy('id', 'asc')->get();
-                            }
-                        }
-                        if ($dbAllocations->isNotEmpty()) {
-                            $data['apbd']['allocations'] = $dbAllocations->map(function ($item) {
-                                return [
-                                    'id' => $item->id,
-                                    'tahun' => $item->tahun,
-                                    'kode_rekening' => $item->kode_rekening,
-                                    'name' => $item->nama_bidang,
-                                    'amount' => number_format((float)$item->anggaran, 0, ',', '.'),
-                                    'pct' => rtrim(rtrim(number_format((float)$item->persentase, 2, ',', '.'), '0'), ','),
-                                    'desc' => $item->deskripsi ?? '',
-                                ];
-                            })->toArray();
-                        }
-                    }
-
-                    // Sinkronisasi data statistik wilayah dari model RegionalStatistic
-                    if (\Illuminate\Support\Facades\Schema::hasTable('regional_statistics')) {
-                        $regStat = \App\Models\RegionalStatistic::getActive();
-                        if ($regStat) {
-                            $data['stats']['penduduk'] = number_format($regStat->total_penduduk, 0, ',', '.');
-                            $data['stats']['kk'] = number_format($regStat->jumlah_kk, 0, ',', '.');
-                            $data['stats']['rt_rw'] = sprintf('%02d / %02d', $regStat->jumlah_rt, $regStat->jumlah_rw);
-                            $data['stats']['luas'] = rtrim(rtrim(number_format($regStat->luas_wilayah, 2, ',', '.'), '0'), ',') . ' km²';
-
-                            $data['demographics']['total'] = number_format($regStat->total_penduduk, 0, ',', '.');
-                            $data['demographics']['male'] = number_format($regStat->jumlah_laki_laki, 0, ',', '.');
-                            $data['demographics']['female'] = number_format($regStat->jumlah_perempuan, 0, ',', '.');
-                            $data['demographics']['productive_count'] = number_format($regStat->usia_produktif, 0, ',', '.');
-                            $data['demographics']['productive_pct'] = (string) $regStat->persentase_usia_produktif;
-                            $data['demographics']['child_count'] = number_format($regStat->usia_anak, 0, ',', '.');
-                            $data['demographics']['child_pct'] = (string) $regStat->persentase_usia_anak;
-                            $data['demographics']['elderly_count'] = number_format($regStat->usia_lansia, 0, ',', '.');
-                            $data['demographics']['elderly_pct'] = (string) $regStat->persentase_usia_lansia;
-                            $data['demographics']['avg_family_size'] = number_format($regStat->rata_rata_jiwa_per_kk, 2, ',', '.');
-                            $data['demographics']['density'] = number_format($regStat->kepadatan_penduduk, 1, ',', '.');
-                        }
-                    }
-                } catch (\Throwable $e) {
-                    // Fallback to json configuration
-                }
-
-                return $data;
+        if (!is_array($data)) {
+            $data = self::getDefaultProfileFallback();
+        } else {
+            if (!isset($data['stats'])) {
+                $data['stats'] = self::getDefaultStats();
+            }
+            if (!isset($data['demographics'])) {
+                $data['demographics'] = self::getDefaultDemographics();
+            }
+            if (!isset($data['apbd'])) {
+                $data['apbd'] = self::getDefaultApbd();
+            }
+            if (!isset($data['territory'])) {
+                $data['territory'] = self::getDefaultTerritory();
+            }
+            if (!isset($data['service_metrics'])) {
+                $data['service_metrics'] = self::getDefaultServiceMetrics();
             }
         }
 
-        // Default Fallback
+        // Sinkronisasi data kemitraan / link terkait dari tabel related_links jika ada
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('related_links')) {
+                $dbLinks = \App\Models\RelatedLink::where('is_active', true)
+                    ->orderBy('order', 'asc')
+                    ->orderBy('id', 'asc')
+                    ->get();
+                if ($dbLinks->isNotEmpty()) {
+                    $data['kemitraan'] = $dbLinks->map(function ($item) {
+                        return [
+                            'id' => $item->id,
+                            'name' => $item->name,
+                            'url' => $item->url,
+                            'desc' => $item->desc ?? '',
+                            'logo' => $item->logo ?? '',
+                        ];
+                    })->toArray();
+                }
+            }
+        } catch (\Throwable $e) {
+            // Fallback to json configuration
+        }
+
+        if (empty($data['kemitraan'])) {
+            $data['kemitraan'] = self::getDefaultKemitraan();
+        }
+
+        // Sinkronisasi data alokasi APBD dari tabel apbdes jika tabel tersedia
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('apbdes')) {
+                $year = (int) ($data['apbd']['year'] ?? date('Y'));
+                $dbAllocations = \App\Models\Apbdes::where('tahun', $year)->orderBy('id', 'asc')->get();
+                if ($dbAllocations->isEmpty()) {
+                    $latestYear = \App\Models\Apbdes::max('tahun');
+                    if ($latestYear) {
+                        $dbAllocations = \App\Models\Apbdes::where('tahun', $latestYear)->orderBy('id', 'asc')->get();
+                    }
+                }
+                if ($dbAllocations->isNotEmpty()) {
+                    $data['apbd']['allocations'] = $dbAllocations->map(function ($item) {
+                        return [
+                            'id' => $item->id,
+                            'tahun' => $item->tahun,
+                            'kode_rekening' => $item->kode_rekening,
+                            'name' => $item->nama_bidang,
+                            'amount' => number_format((float)$item->anggaran, 0, ',', '.'),
+                            'pct' => rtrim(rtrim(number_format((float)$item->persentase, 2, ',', '.'), '0'), ','),
+                            'desc' => $item->deskripsi ?? '',
+                        ];
+                    })->toArray();
+                }
+            }
+
+            // Sinkronisasi data statistik wilayah dari model RegionalStatistic
+            if (\Illuminate\Support\Facades\Schema::hasTable('regional_statistics')) {
+                $regStat = \App\Models\RegionalStatistic::getActive();
+                if ($regStat) {
+                    $data['stats']['penduduk'] = number_format($regStat->total_penduduk, 0, ',', '.');
+                    $data['stats']['kk'] = number_format($regStat->jumlah_kk, 0, ',', '.');
+                    $data['stats']['rt_rw'] = sprintf('%02d / %02d', $regStat->jumlah_rt, $regStat->jumlah_rw);
+                    $data['stats']['luas'] = rtrim(rtrim(number_format($regStat->luas_wilayah, 2, ',', '.'), '0'), ',') . ' km²';
+
+                    $data['demographics']['total'] = number_format($regStat->total_penduduk, 0, ',', '.');
+                    $data['demographics']['male'] = number_format($regStat->jumlah_laki_laki, 0, ',', '.');
+                    $data['demographics']['female'] = number_format($regStat->jumlah_perempuan, 0, ',', '.');
+                    $data['demographics']['productive_count'] = number_format($regStat->usia_produktif, 0, ',', '.');
+                    $data['demographics']['productive_pct'] = (string) $regStat->persentase_usia_produktif;
+                    $data['demographics']['child_count'] = number_format($regStat->usia_anak, 0, ',', '.');
+                    $data['demographics']['child_pct'] = (string) $regStat->persentase_usia_anak;
+                    $data['demographics']['elderly_count'] = number_format($regStat->usia_lansia, 0, ',', '.');
+                    $data['demographics']['elderly_pct'] = (string) $regStat->persentase_usia_lansia;
+                    $data['demographics']['avg_family_size'] = number_format($regStat->rata_rata_jiwa_per_kk, 2, ',', '.');
+                    $data['demographics']['density'] = number_format($regStat->kepadatan_penduduk, 1, ',', '.');
+                }
+            }
+        } catch (\Throwable $e) {
+            // Fallback to json configuration
+        }
+
+        return $data;
+    }
+
+    /**
+     * Default fallback profil jika file JSON belum tersedia.
+     */
+    public static function getDefaultProfileFallback(): array
+    {
         return [
             'village_name' => 'Kelurahan Semampir',
             'subdistrict' => 'Kecamatan Kraksaan',
@@ -143,6 +183,46 @@ class VillageProfileController extends Controller
             'maklumat_file_type' => null,
             'maklumat_file_name' => null,
             'maklumat_file_size' => null,
+            'kemitraan' => self::getDefaultKemitraan(),
+        ];
+    }
+
+    /**
+     * Default list instansi kemitraan / link terkait.
+     */
+    public static function getDefaultKemitraan(): array
+    {
+        return [
+            [
+                'name' => 'Pemerintah Kabupaten Probolinggo',
+                'url' => 'https://probolinggokab.go.id',
+                'desc' => 'Portal Resmi Pemerintah Kabupaten Probolinggo',
+                'logo' => 'kemitraan/8PqDzUpiMV2pJtnw6RRkzE7QRH0Gthhdlmhs6pnT.png',
+            ],
+            [
+                'name' => 'Diskominfo Kab. Probolinggo',
+                'url' => 'https://diskominfo.probolinggokab.go.id',
+                'desc' => 'Dinas Komunikasi, Informatika, Statistik dan Persandian',
+                'logo' => 'kemitraan/AbNfqxBWSvM48OtGgXF1V2CO23Od9R2LrykyuiNz.png',
+            ],
+            [
+                'name' => 'Dispendukcapil Kab. Probolinggo',
+                'url' => 'https://dispendukcapil.probolinggokab.go.id',
+                'desc' => 'Dinas Kependudukan dan Pencatatan Sipil',
+                'logo' => 'kemitraan/luNE2cYyAC8gM25HlmZAhkCnCcWPobkB5hS0401V.png',
+            ],
+            [
+                'name' => 'Bapenda Kab. Probolinggo',
+                'url' => 'https://bapenda.probolinggokab.go.id',
+                'desc' => 'Badan Pendapatan Daerah (PBB-P2 & Pajak Daerah)',
+                'logo' => 'kemitraan/RzhffVYrMgLzU8yDjtOmVnb7LYzVABR5azsqxHL0.png',
+            ],
+            [
+                'name' => 'DLH Kab. Probolinggo',
+                'url' => 'https://dlh.probolinggokab.go.id/',
+                'desc' => 'Dinas Lingkungan Hidup Kabupaten Probolinggo',
+                'logo' => 'kemitraan/TNtVrVuH16HN5lgd3Qe2jQfUhPM70BPOV2985dmN.png',
+            ],
         ];
     }
 

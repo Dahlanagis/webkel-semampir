@@ -1,2 +1,12 @@
 *
 !.gitignore
+!kemitraan/
+!kemitraan/**
+!profile/
+!profile/**
+!settings/
+!settings/**
+!maklumat/
+!maklumat/**
+!gallery/
+!gallery/**

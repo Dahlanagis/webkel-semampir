@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" width="240" height="70">
+  <defs>
+    <linearGradient id="saeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0284c7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0369a1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Background badge -->
+  <rect x="4" y="6" width="58" height="58" rx="16" fill="url(#saeGrad)" />
+  <!-- Chat speech icon -->
+  <path d="M22 23h22c2.2 0 4 1.8 4 4v14c0 2.2-1.8 4-4 4h-6l-7 6v-6h-9c-2.2 0-4-1.8-4-4V27c0-2.2 1.8-4 4-4z" fill="#ffffff" />
+  <circle cx="28" cy="34" r="2.2" fill="#0284c7" />
+  <circle cx="33" cy="34" r="2.2" fill="#0284c7" />
+  <circle cx="38" cy="34" r="2.2" fill="#0284c7" />
+  <!-- Brand text -->
+  <text x="72" y="34" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="22" font-weight="900" fill="#0f172a" letter-spacing="0.5">HALLO <tspan fill="#0284c7">SAE</tspan></text>
+  <text x="72" y="51" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" fill="#64748b" letter-spacing="1">KABUPATEN PROBOLINGGO</text>
+</svg>

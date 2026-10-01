@@ -71,6 +71,26 @@ Route::get('/tts-google', function (\Illuminate\Http\Request $request) {
     ]);
 })->name('tts.google');
 
+// File server fallback for storage when symlink is not available (e.g. Vercel / serverless)
+Route::get('/storage/{path}', function (string $path) {
+    $cleanPath = str_replace(['..', "\0"], '', $path);
+    $candidates = [
+        public_path('storage/' . $cleanPath),
+        storage_path('app/public/' . $cleanPath),
+        base_path('storage/app/public/' . $cleanPath),
+    ];
+    foreach ($candidates as $candidate) {
+        if (file_exists($candidate) && is_file($candidate)) {
+            $mime = @mime_content_type($candidate) ?: 'application/octet-stream';
+            return response()->file($candidate, [
+                'Content-Type' => $mime,
+                'Cache-Control' => 'public, max-age=86400',
+            ]);
+        }
+    }
+    abort(404);
+})->where('path', '.*')->name('storage.fallback');
+
 // ==========================================
 // GUEST ONLY AUTHENTICATION ROUTES
 // ==========================================
