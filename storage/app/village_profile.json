@@ -24,12 +24,12 @@
     "social_tiktok": "https://tiktok.com/@kelurahansemampir",
     "social_whatsapp": "0812-3456-7890",
     "qr_code_image": "settings/qrcode.png",
-    "sekel_photo": "profile/sekel.png",
+    "sekel_photo": "",
     "stats": {
         "penduduk": "5.000",
         "kk": "2.640",
         "rt_rw": "32 / 08",
-        "luas": "3,82 km\u00b2"
+        "luas": "3,82 km²"
     },
     "demographics": {
         "total": "5.000",
@@ -176,14 +176,14 @@
     "kasi_kesra_nip": "19741001 200801 1 013",
     "kasi_ekbang_name": "Sabar, S.Sos",
     "kasi_ekbang_nip": "19690206 199103 1 004",
-    "kasi_pem_photo": "profile/kasi_pem.png",
-    "kasi_kesra_photo": "profile/kasi_kesra.png",
-    "kasi_ekbang_photo": "profile/kasi_ekbang.png",
-    "lurah_tupoksi": "Memimpin penyelenggaraan pemerintahan di Kelurahan Semampir.\nMengkoordinasikan seluruh kegiatan perangkat kelurahan.\nMelaksanakan pelayanan kepada masyarakat.\nMengkoordinasikan pemberdayaan masyarakat dan pembangunan.\nMembina serta mengawasi pelaksanaan tugas perangkat kelurahan.\nMenjaga ketenteraman dan ketertiban wilayah.\nMelaporkan pelaksanaan pemerintahan kepada Camat.",
-    "sekel_tupoksi": "Membantu Lurah dalam pelaksanaan administrasi pemerintahan.\nMengkoordinasikan kegiatan administrasi kelurahan.\nMengelola administrasi surat-menyurat dan kearsipan.\nMengkoordinasikan urusan keuangan, perencanaan, umum dan kepegawaian.\nMenyiapkan bahan laporan kegiatan kelurahan.\nMelaksanakan tugas lain yang diberikan oleh Lurah.",
-    "kasi_pem_tupoksi": "Membantu Lurah dalam bidang pemerintahan.\nMelaksanakan pelayanan administrasi pemerintahan kepada masyarakat.\nMengelola dan menghimpun data kependudukan serta data masyarakat.\nMelaksanakan kegiatan bidang kesejahteraan rakyat.\nMembantu kegiatan sosial dan kemasyarakatan.\nMelaksanakan koordinasi dalam pelayanan masyarakat.\nMelaksanakan tugas lain sesuai arahan Lurah.",
-    "kasi_kesra_tupoksi": "Membantu Lurah dalam bidang ketenteraman dan ketertiban.\nMenjaga ketenteraman dan ketertiban lingkungan kelurahan.\nMelakukan koordinasi terkait keamanan dan ketertiban masyarakat.\nMembantu menangani gangguan ketenteraman dan ketertiban.\nMelaksanakan pembinaan kepada masyarakat mengenai ketertiban lingkungan.\nBerkoordinasi dengan pihak terkait dalam menjaga keamanan wilayah.",
-    "kasi_ekbang_tupoksi": "Membantu Lurah dalam bidang ekonomi dan pembangunan.\nMengkoordinasikan kegiatan pembangunan di wilayah kelurahan.\nMenghimpun data potensi ekonomi masyarakat.\nMembantu pembinaan dan pemberdayaan ekonomi masyarakat.\nMelakukan monitoring kegiatan pembangunan.\nMembantu penyusunan program pembangunan kelurahan.\nMelaksanakan evaluasi kegiatan pembangunan.",
+    "kasi_pem_photo": "",
+    "kasi_kesra_photo": "",
+    "kasi_ekbang_photo": "",
+    "lurah_tupoksi": "Memimpin penyelenggaraan pemerintahan di Kelurahan Semampir.\r\nMengkoordinasikan seluruh kegiatan perangkat kelurahan.\r\nMelaksanakan pelayanan kepada masyarakat.\r\nMengkoordinasikan pemberdayaan masyarakat dan pembangunan.\r\nMembina serta mengawasi pelaksanaan tugas perangkat kelurahan.\r\nMenjaga ketenteraman dan ketertiban wilayah.\r\nMelaporkan pelaksanaan pemerintahan kepada Camat.",
+    "sekel_tupoksi": "Membantu Lurah dalam pelaksanaan administrasi pemerintahan.\r\nMengkoordinasikan kegiatan administrasi kelurahan.\r\nMengelola administrasi surat-menyurat dan kearsipan.\r\nMengkoordinasikan urusan keuangan, perencanaan, umum dan kepegawaian.\r\nMenyiapkan bahan laporan kegiatan kelurahan.\r\nMelaksanakan tugas lain yang diberikan oleh Lurah.",
+    "kasi_pem_tupoksi": "Membantu Lurah dalam bidang pemerintahan.\r\nMelaksanakan pelayanan administrasi pemerintahan kepada masyarakat.\r\nMengelola dan menghimpun data kependudukan serta data masyarakat.\r\nMelaksanakan kegiatan bidang kesejahteraan rakyat.\r\nMembantu kegiatan sosial dan kemasyarakatan.\r\nMelaksanakan koordinasi dalam pelayanan masyarakat.\r\nMelaksanakan tugas lain sesuai arahan Lurah.",
+    "kasi_kesra_tupoksi": "Membantu Lurah dalam bidang ketenteraman dan ketertiban.\r\nMenjaga ketenteraman dan ketertiban lingkungan kelurahan.\r\nMelakukan koordinasi terkait keamanan dan ketertiban masyarakat.\r\nMembantu menangani gangguan ketenteraman dan ketertiban.\r\nMelaksanakan pembinaan kepada masyarakat mengenai ketertiban lingkungan.\r\nBerkoordinasi dengan pihak terkait dalam menjaga keamanan wilayah.",
+    "kasi_ekbang_tupoksi": "Membantu Lurah dalam bidang ekonomi dan pembangunan.\r\nMengkoordinasikan kegiatan pembangunan di wilayah kelurahan.\r\nMenghimpun data potensi ekonomi masyarakat.\r\nMembantu pembinaan dan pemberdayaan ekonomi masyarakat.\r\nMelakukan monitoring kegiatan pembangunan.\r\nMembantu penyusunan program pembangunan kelurahan.\r\nMelaksanakan evaluasi kegiatan pembangunan.",
     "sotk_members": [
         {
             "name": "Imam Mashari, S.Sos",
@@ -191,7 +191,7 @@
             "position": "Subag Keuangan",
             "parent_key": "sekel",
             "photo": "",
-            "tupoksi": "Melaksanakan administrasi keuangan kelurahan.\nMencatat penerimaan dan pengeluaran keuangan.\nMenyiapkan dokumen administrasi keuangan.\nMembantu penyusunan laporan pertanggungjawaban keuangan.\nMengelola dan menata dokumen keuangan.\nMelaksanakan tugas lain sesuai arahan atasan."
+            "tupoksi": "Melaksanakan administrasi keuangan kelurahan.\r\nMencatat penerimaan dan pengeluaran keuangan.\r\nMenyiapkan dokumen administrasi keuangan.\r\nMembantu penyusunan laporan pertanggungjawaban keuangan.\r\nMengelola dan menata dokumen keuangan.\r\nMelaksanakan tugas lain sesuai arahan atasan."
         },
         {
             "name": "Seniri Erhamsah, S.H",
@@ -199,7 +199,7 @@
             "position": "Subag Perencanaan",
             "parent_key": "sekel",
             "photo": "",
-            "tupoksi": "Menyiapkan bahan perencanaan program dan kegiatan kelurahan.\nMenghimpun data untuk kebutuhan perencanaan.\nMembantu menyusun rencana kerja kelurahan.\nMelakukan monitoring dan evaluasi kegiatan.\nMenyiapkan bahan laporan pelaksanaan program.\nMelaksanakan tugas lain yang diberikan oleh atasan."
+            "tupoksi": "Menyiapkan bahan perencanaan program dan kegiatan kelurahan.\r\nMenghimpun data untuk kebutuhan perencanaan.\r\nMembantu menyusun rencana kerja kelurahan.\r\nMelakukan monitoring dan evaluasi kegiatan.\r\nMenyiapkan bahan laporan pelaksanaan program.\r\nMelaksanakan tugas lain yang diberikan oleh atasan."
         },
         {
             "name": "Ferdi Nur Arifin, S.T",
@@ -207,7 +207,7 @@
             "position": "Staf Pelaksana",
             "parent_key": "kasi_pem",
             "photo": "",
-            "tupoksi": "Membantu pelaksanaan administrasi kelurahan.\nMembantu pelayanan kepada masyarakat.\nMembantu pengelolaan dan penyusunan dokumen.\nMembantu pelaksanaan tugas Kasi Pemerintahan & Kesra.\nMelaksanakan kegiatan operasional sesuai penugasan.\nMelaksanakan tugas lain yang diberikan oleh atasan."
+            "tupoksi": "Membantu pelaksanaan administrasi kelurahan.\r\nMembantu pelayanan kepada masyarakat.\r\nMembantu pengelolaan dan penyusunan dokumen.\r\nMembantu pelaksanaan tugas Kasi Pemerintahan & Kesra.\r\nMelaksanakan kegiatan operasional sesuai penugasan.\r\nMelaksanakan tugas lain yang diberikan oleh atasan."
         },
         {
             "name": "Abdullah",
@@ -215,7 +215,7 @@
             "position": "Staf Pelaksana (THL)",
             "parent_key": "kasi_kesra",
             "photo": "",
-            "tupoksi": "Membantu pelaksanaan kegiatan operasional kelurahan.\nMembantu tugas pada bidang ketenteraman dan ketertiban.\nMembantu kegiatan lapangan sesuai penugasan.\nMembantu pekerjaan administrasi sesuai kebutuhan.\nMelaksanakan tugas lain yang diberikan oleh atasan."
+            "tupoksi": "Membantu pelaksanaan kegiatan operasional kelurahan.\r\nMembantu tugas pada bidang ketenteraman dan ketertiban.\r\nMembantu kegiatan lapangan sesuai penugasan.\r\nMembantu pekerjaan administrasi sesuai kebutuhan.\r\nMelaksanakan tugas lain yang diberikan oleh atasan."
         },
         {
             "name": "Fenny Yunita Sari, S.E",
@@ -223,7 +223,7 @@
             "position": "Staf Pelaksana",
             "parent_key": "kasi_ekbang",
             "photo": "",
-            "tupoksi": "Membantu pelaksanaan administrasi kelurahan.\nMembantu pelayanan kepada masyarakat.\nMembantu pengumpulan dan pengolahan data.\nMembantu pelaksanaan program ekonomi dan pembangunan.\nMembantu menyiapkan dokumen kegiatan.\nMelaksanakan tugas lain sesuai arahan atasan."
+            "tupoksi": "Membantu pelaksanaan administrasi kelurahan.\r\nMembantu pelayanan kepada masyarakat.\r\nMembantu pengumpulan dan pengolahan data.\r\nMembantu pelaksanaan program ekonomi dan pembangunan.\r\nMembantu menyiapkan dokumen kegiatan.\r\nMelaksanakan tugas lain sesuai arahan atasan."
         }
     ],
     "maklumat_text": "Dengan ini, kami seluruh ASN dan Pegawai Pemerintah Kelurahan Semampir menyatakan sanggup menyelenggarakan pelayanan sesuai standar pelayanan yang telah ditetapkan dan siap menerima sanksi sesuai ketentuan perundang-undangan yang berlaku apabila pelayanan tidak sesuai janji.",
