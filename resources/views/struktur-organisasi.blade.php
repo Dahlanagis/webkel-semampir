@@ -8,11 +8,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 @php
-    $headPhotoUrl = !empty($villageProfile['head_photo']) ? (str_starts_with($villageProfile['head_photo'], 'http') || str_starts_with($villageProfile['head_photo'], 'data:image') ? $villageProfile['head_photo'] : asset('storage/' . ltrim($villageProfile['head_photo'], '/')) . '?v=' . time()) : asset('images/sotk/lurah.png');
-    $sekelPhotoUrl = !empty($villageProfile['sekel_photo']) ? asset('storage/' . $villageProfile['sekel_photo']) : asset('images/sotk/sekel.png');
-    $kasiPemPhotoUrl = !empty($villageProfile['kasi_pem_photo']) ? asset('storage/' . $villageProfile['kasi_pem_photo']) : asset('images/sotk/kasi_pem.png');
-    $kasiKesraPhotoUrl = !empty($villageProfile['kasi_kesra_photo']) ? asset('storage/' . $villageProfile['kasi_kesra_photo']) : asset('images/sotk/kasi_kesra.png');
-    $kasiEkbangPhotoUrl = !empty($villageProfile['kasi_ekbang_photo']) ? asset('storage/' . $villageProfile['kasi_ekbang_photo']) : asset('images/sotk/kasi_ekbang.png');
+    $headPhotoUrl = !empty($villageProfile['head_photo']) ? (str_starts_with($villageProfile['head_photo'], 'http') || str_starts_with($villageProfile['head_photo'], 'data:image') ? $villageProfile['head_photo'] : asset('storage/' . ltrim($villageProfile['head_photo'], '/')) . '?v=' . time()) : null;
+    $sekelPhotoUrl = !empty($villageProfile['sekel_photo']) ? asset('storage/' . $villageProfile['sekel_photo']) : null;
+    $kasiPemPhotoUrl = !empty($villageProfile['kasi_pem_photo']) ? asset('storage/' . $villageProfile['kasi_pem_photo']) : null;
+    $kasiKesraPhotoUrl = !empty($villageProfile['kasi_kesra_photo']) ? asset('storage/' . $villageProfile['kasi_kesra_photo']) : null;
+    $kasiEkbangPhotoUrl = !empty($villageProfile['kasi_ekbang_photo']) ? asset('storage/' . $villageProfile['kasi_ekbang_photo']) : null;
 
     // Filter aparatur dan staf berdasarkan hierarki induk (parent_key)
     $allMembers = $villageProfile['sotk_members'] ?? [];
@@ -154,11 +154,18 @@
                                 </div>
 
                                 {{-- Avatar Frame --}}
-                                <div class="w-20 h-20 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 shadow-2xs overflow-hidden group-hover:scale-105 transition-transform duration-200">
-                                    <img src="{{ $headPhotoUrl }}" 
-                                         alt="Lurah Semampir" 
-                                         onerror="this.onerror=null; this.src='{{ asset('images/sotk/lurah.png') }}';"
-                                         class="w-full h-full object-cover rounded-full">
+                                <div class="w-20 h-20 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 shadow-2xs overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                    @if(!empty($headPhotoUrl))
+                                        <img src="{{ $headPhotoUrl }}" 
+                                             alt="Lurah Semampir" 
+                                             class="w-full h-full object-cover rounded-full">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 rounded-full">
+                                            <svg class="w-full h-full text-slate-300 pt-1" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                            </svg>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-blue-900 transition-colors">
@@ -212,10 +219,18 @@
                                          })"
                                          class="bg-white rounded-xl p-3.5 border-2 border-slate-300 hover:border-blue-900 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[245px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                         
-                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200">
-                                            <img src="{{ $sekelPhotoUrl }}" 
-                                                 alt="Sekretaris Kelurahan" 
-                                                 class="w-full h-full object-cover rounded-full">
+                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                            @if(!empty($sekelPhotoUrl))
+                                                <img src="{{ $sekelPhotoUrl }}" 
+                                                     alt="Sekretaris Kelurahan" 
+                                                     class="w-full h-full object-cover rounded-full">
+                                            @else
+                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 rounded-full">
+                                                    <svg class="w-full h-full text-slate-300 pt-1" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                    </svg>
+                                                </div>
+                                            @endif
                                         </div>
 
                                         <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
@@ -275,8 +290,10 @@
                                                                 @if(!empty($mPhoto))
                                                                     <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                                                 @else
-                                                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-bold text-xs uppercase">
-                                                                        {{ $mInitial }}
+                                                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                                                        <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                                        </svg>
                                                                     </div>
                                                                 @endif
                                                             </div>
@@ -332,10 +349,18 @@
                                          })"
                                          class="bg-white rounded-xl p-3.5 border-2 border-slate-300 hover:border-blue-900 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[245px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                         
-                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200">
-                                            <img src="{{ $kasiPemPhotoUrl }}" 
-                                                 alt="Kasi Pemerintahan" 
-                                                 class="w-full h-full object-cover rounded-full">
+                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                            @if(!empty($kasiPemPhotoUrl))
+                                                <img src="{{ $kasiPemPhotoUrl }}" 
+                                                     alt="Kasi Pemerintahan" 
+                                                     class="w-full h-full object-cover rounded-full">
+                                            @else
+                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 rounded-full">
+                                                    <svg class="w-full h-full text-slate-300 pt-1" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                    </svg>
+                                                </div>
+                                            @endif
                                         </div>
 
                                         <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
@@ -384,8 +409,10 @@
                                                     @if(!empty($mPhoto))
                                                         <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                                     @else
-                                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-bold text-xs uppercase">
-                                                            {{ $mInitial }}
+                                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                            </svg>
                                                         </div>
                                                     @endif
                                                 </div>
@@ -440,10 +467,18 @@
                                          })"
                                          class="bg-white rounded-xl p-3.5 border-2 border-slate-300 hover:border-blue-900 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[245px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                         
-                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200">
-                                            <img src="{{ $kasiKesraPhotoUrl }}" 
-                                                 alt="Kasi Kesra" 
-                                                 class="w-full h-full object-cover rounded-full">
+                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                            @if(!empty($kasiKesraPhotoUrl))
+                                                <img src="{{ $kasiKesraPhotoUrl }}" 
+                                                     alt="Kasi Kesra" 
+                                                     class="w-full h-full object-cover rounded-full">
+                                            @else
+                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 rounded-full">
+                                                    <svg class="w-full h-full text-slate-300 pt-1" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                    </svg>
+                                                </div>
+                                            @endif
                                         </div>
 
                                         <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
@@ -492,8 +527,10 @@
                                                     @if(!empty($mPhoto))
                                                         <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                                     @else
-                                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-bold text-xs uppercase">
-                                                            {{ $mInitial }}
+                                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                            </svg>
                                                         </div>
                                                     @endif
                                                 </div>
@@ -550,10 +587,18 @@
                                          })"
                                          class="bg-white rounded-xl p-3.5 border-2 border-slate-300 hover:border-blue-900 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[245px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
                                         
-                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200">
-                                            <img src="{{ $kasiEkbangPhotoUrl }}" 
-                                                 alt="Kasi Ekbang" 
-                                                 class="w-full h-full object-cover rounded-full">
+                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                            @if(!empty($kasiEkbangPhotoUrl))
+                                                <img src="{{ $kasiEkbangPhotoUrl }}" 
+                                                     alt="Kasi Ekbang" 
+                                                     class="w-full h-full object-cover rounded-full">
+                                            @else
+                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 rounded-full">
+                                                    <svg class="w-full h-full text-slate-300 pt-1" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                    </svg>
+                                                </div>
+                                            @endif
                                         </div>
 
                                         <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
@@ -602,8 +647,10 @@
                                                     @if(!empty($mPhoto))
                                                         <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                                     @else
-                                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-bold text-xs uppercase">
-                                                            {{ $mInitial }}
+                                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                            </svg>
                                                         </div>
                                                     @endif
                                                 </div>
@@ -667,7 +714,11 @@
                                                     @if(!empty($mPhoto))
                                                         <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                                     @else
-                                                        <span class="font-extrabold text-xs text-slate-700">{{ $mInitial }}</span>
+                                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                            </svg>
+                                                        </div>
                                                     @endif
                                                 </div>
                                                 <h6 class="font-bold text-xs text-slate-900 leading-tight capitalize">{{ $m['name'] }}</h6>
@@ -715,10 +766,16 @@
                                 tupoksi: {{ json_encode($villageProfile['lurah_tupoksi'] ?? 'Penyelenggara utama urusan pemerintahan, ketertiban umum, pelayanan publik, dan pembinaan wilayah.') }}
                              })"
                              class="p-4 bg-slate-50/80 hover:bg-white rounded-2xl border border-slate-200 hover:border-blue-500 flex items-start gap-3.5 transition shadow-2xs hover:shadow-md cursor-pointer group">
-                            <div class="w-14 h-14 rounded-full border-2 border-slate-900 overflow-hidden bg-white shrink-0 group-hover:scale-105 transition-transform duration-200">
-                                <img src="{{ $headPhotoUrl }}" 
-                                     onerror="this.onerror=null; this.src='{{ asset('images/sotk/lurah.png') }}';"
-                                     class="w-full h-full object-cover">
+                            <div class="w-14 h-14 rounded-full border-2 border-slate-900 overflow-hidden bg-white shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                @if(!empty($headPhotoUrl))
+                                    <img src="{{ $headPhotoUrl }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                        <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    </div>
+                                @endif
                             </div>
                             <div class="flex-1 min-w-0">
                                 <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-slate-900 text-white">Lurah</span>
@@ -755,8 +812,16 @@
                                 tupoksi: {{ json_encode($villageProfile['sekel_tupoksi'] ?? '') }}
                              })"
                              class="p-4 bg-slate-50/80 hover:bg-white rounded-2xl border border-slate-200 hover:border-blue-500 flex items-start gap-3.5 transition shadow-2xs hover:shadow-md cursor-pointer group">
-                            <div class="w-14 h-14 rounded-full border-2 border-slate-800 overflow-hidden bg-white shrink-0 group-hover:scale-105 transition-transform duration-200">
-                                <img src="{{ $sekelPhotoUrl }}" class="w-full h-full object-cover">
+                            <div class="w-14 h-14 rounded-full border-2 border-slate-800 overflow-hidden bg-white shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                @if(!empty($sekelPhotoUrl))
+                                    <img src="{{ $sekelPhotoUrl }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                        <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    </div>
+                                @endif
                             </div>
                             <div class="flex-1 min-w-0">
                                 <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-extrabold">Sekretaris</span>
@@ -793,8 +858,10 @@
                                     @if(!empty($mPhoto))
                                         <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                     @else
-                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-extrabold text-sm uppercase">
-                                            {{ $mInitial }}
+                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                            </svg>
                                         </div>
                                     @endif
                                 </div>
@@ -834,8 +901,16 @@
                                 tupoksi: {{ json_encode($villageProfile['kasi_pem_tupoksi'] ?? '') }}
                              })"
                              class="p-4 bg-slate-50/80 hover:bg-white rounded-2xl border border-slate-200 hover:border-blue-500 flex items-start gap-3.5 transition shadow-2xs hover:shadow-md cursor-pointer group">
-                            <div class="w-14 h-14 rounded-full border-2 border-slate-800 overflow-hidden bg-white shrink-0 group-hover:scale-105 transition-transform duration-200">
-                                <img src="{{ $kasiPemPhotoUrl }}" class="w-full h-full object-cover">
+                            <div class="w-14 h-14 rounded-full border-2 border-slate-800 overflow-hidden bg-white shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                @if(!empty($kasiPemPhotoUrl))
+                                    <img src="{{ $kasiPemPhotoUrl }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                        <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    </div>
+                                @endif
                             </div>
                             <div class="flex-1 min-w-0">
                                 <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">Kepala Seksi</span>
@@ -872,8 +947,10 @@
                                     @if(!empty($mPhoto))
                                         <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                     @else
-                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-extrabold text-sm uppercase">
-                                            {{ $mInitial }}
+                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                            </svg>
                                         </div>
                                     @endif
                                 </div>
@@ -913,8 +990,16 @@
                                 tupoksi: {{ json_encode($villageProfile['kasi_kesra_tupoksi'] ?? '') }}
                              })"
                              class="p-4 bg-slate-50/80 hover:bg-white rounded-2xl border border-slate-200 hover:border-blue-500 flex items-start gap-3.5 transition shadow-2xs hover:shadow-md cursor-pointer group">
-                            <div class="w-14 h-14 rounded-full border-2 border-slate-800 overflow-hidden bg-white shrink-0 group-hover:scale-105 transition-transform duration-200">
-                                <img src="{{ $kasiKesraPhotoUrl }}" class="w-full h-full object-cover">
+                            <div class="w-14 h-14 rounded-full border-2 border-slate-800 overflow-hidden bg-white shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                @if(!empty($kasiKesraPhotoUrl))
+                                    <img src="{{ $kasiKesraPhotoUrl }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                        <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    </div>
+                                @endif
                             </div>
                             <div class="flex-1 min-w-0">
                                 <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-extrabold">Kepala Seksi</span>
@@ -951,8 +1036,10 @@
                                     @if(!empty($mPhoto))
                                         <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                     @else
-                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-extrabold text-sm uppercase">
-                                            {{ $mInitial }}
+                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                            </svg>
                                         </div>
                                     @endif
                                 </div>
@@ -994,8 +1081,16 @@
                                 tupoksi: {{ json_encode($villageProfile['kasi_ekbang_tupoksi'] ?? '') }}
                              })"
                              class="p-4 bg-slate-50/80 hover:bg-white rounded-2xl border border-slate-200 hover:border-blue-500 flex items-start gap-3.5 transition shadow-2xs hover:shadow-md cursor-pointer group">
-                            <div class="w-14 h-14 rounded-full border-2 border-slate-800 overflow-hidden bg-white shrink-0 group-hover:scale-105 transition-transform duration-200">
-                                <img src="{{ $kasiEkbangPhotoUrl }}" class="w-full h-full object-cover">
+                            <div class="w-14 h-14 rounded-full border-2 border-slate-800 overflow-hidden bg-white shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                @if(!empty($kasiEkbangPhotoUrl))
+                                    <img src="{{ $kasiEkbangPhotoUrl }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                        <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    </div>
+                                @endif
                             </div>
                             <div class="flex-1 min-w-0">
                                 <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-extrabold">Kepala Seksi</span>
@@ -1032,8 +1127,10 @@
                                     @if(!empty($mPhoto))
                                         <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                     @else
-                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-extrabold text-sm uppercase">
-                                            {{ $mInitial }}
+                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                            </svg>
                                         </div>
                                     @endif
                                 </div>
@@ -1082,8 +1179,10 @@
                                         @if(!empty($mPhoto))
                                             <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                         @else
-                                            <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-700 font-extrabold text-sm uppercase">
-                                                {{ $mInitial }}
+                                            <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                                <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                </svg>
                                             </div>
                                         @endif
                                     </div>
@@ -1139,7 +1238,11 @@
                             <img :src="selectedOfficer.photo" :alt="selectedOfficer.name" class="w-full h-full object-cover">
                         </template>
                         <template x-if="!selectedOfficer.photo">
-                            <div class="w-full h-full flex items-center justify-center bg-slate-800 text-white font-extrabold text-lg uppercase" x-text="selectedOfficer.initial || 'ST'"></div>
+                            <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                <svg class="w-full h-full text-slate-300 pt-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                            </div>
                         </template>
                     </div>
                     <div class="space-y-0.5">
