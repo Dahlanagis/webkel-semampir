@@ -126,35 +126,25 @@
                     </div>
                 </div>
 
-                {{-- Org Chart Canvas (Format Standar Resmi Pemerintahan Bersih & Rapi) --}}
+                {{-- Org Chart Canvas (overflow-x-auto for responsiveness) --}}
                 <div class="overflow-x-auto pb-8 custom-scrollbar">
-                    <div class="min-w-[1220px] max-w-[1360px] mx-auto py-6 px-4 rounded-2xl bg-slate-50/50 border border-slate-200 relative">
-                        
-                        {{-- ==================================================== --}}
-                        {{-- TIER 1: LURAH SEMAMPIR (PIMPINAN TERTINGGI)          --}}
-                        {{-- ==================================================== --}}
-                        <div class="flex flex-col items-center z-30 relative">
+                    <div class="min-w-[920px] flex flex-col items-center py-6">
+
+                        {{-- 1. TOP NODE (Chief / Lurah) --}}
+                        <div class="flex flex-col items-center z-10 relative">
                             <div @click="openTupoksiModal({
-                                    name: {{ json_encode($villageProfile['head_name'] ?? 'Latif Hasan Asyari, S.H') }},
-                                    nip: {{ json_encode($villageProfile['head_nip'] ?? '19750612 201001 1 004') }},
+                                    name: {{ json_encode($villageProfile['head_name'] ?? 'Latif Hasan Asyari, SH.') }},
+                                    nip: {{ json_encode($villageProfile['head_nip'] ?? '') }},
                                     role: 'LURAH SEMAMPIR',
                                     unit: 'Kepala Pemerintahan Kelurahan',
                                     photo: {{ json_encode($headPhotoUrl) }},
                                     initial: 'LH',
-                                    tupoksi: {{ json_encode($villageProfile['lurah_tupoksi'] ?? 'Memimpin penyelenggaraan pemerintahan di Kelurahan Semampir.') }}
+                                    tupoksi: {{ json_encode($villageProfile['lurah_tupoksi'] ?? 'Penyelenggara urusan pemerintahan, ketenteraman dan ketertiban umum, pemberdayaan masyarakat, pelayanan publik, dan pemeliharaan prasarana fasilitas umum.') }}
                                  })"
-                                 class="bg-white rounded-xl p-4 border-2 border-blue-900 shadow-sm hover:shadow-md flex flex-col items-center text-center w-72 transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
+                                 class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-60 sm:w-64 transition-all duration-200 group cursor-pointer">
                                 
-                                {{-- Badge Jabatan Pimpinan --}}
-                                <div class="mb-2">
-                                    <span class="inline-flex items-center gap-1.5 bg-blue-900 text-white font-bold text-[9.5px] uppercase px-3.5 py-1 rounded-full tracking-wider shadow-2xs">
-                                        <i class="fas fa-landmark text-[9px] text-amber-300"></i>
-                                        <span>LURAH SEMAMPIR</span>
-                                    </span>
-                                </div>
-
-                                {{-- Avatar Frame --}}
-                                <div class="w-20 h-20 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 shadow-2xs overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                {{-- Foto Lingkaran Lurah --}}
+                                <div class="w-20 h-20 rounded-full border-2 border-slate-800 p-0.5 mb-2.5 bg-slate-50 shrink-0 shadow-2xs overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
                                     @if(!empty($headPhotoUrl))
                                         <img src="{{ $headPhotoUrl }}" 
                                              alt="Lurah Semampir" 
@@ -168,534 +158,227 @@
                                     @endif
                                 </div>
 
-                                <h3 class="font-bold text-sm text-slate-900 leading-snug group-hover:text-blue-900 transition-colors">
-                                    {{ $villageProfile['head_name'] ?? 'Latif Hasan Asyari, S.H' }}
+                                <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug">
+                                    {{ $villageProfile['head_name'] ?? 'Latif Hasan Asyari, SH.' }}
                                 </h3>
-
                                 @if(!empty($villageProfile['head_nip']))
                                     <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['head_nip'] }}</p>
                                 @endif
-
-                                <p class="text-[10.5px] text-slate-600 mt-1 font-medium">Kepala Pemerintahan Kelurahan</p>
-
-                                <span class="mt-2.5 inline-flex items-center gap-1.5 px-3.5 py-1 bg-blue-50 group-hover:bg-blue-900 group-hover:text-white text-blue-900 text-[10px] font-bold rounded-lg border border-blue-200 transition-colors shadow-2xs">
+                                <div class="mt-2">
+                                    <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-3 py-1 rounded-full tracking-wider inline-block shadow-2xs">
+                                        LURAH SEMAMPIR
+                                    </span>
+                                </div>
+                                <p class="text-[10px] text-slate-500 mt-1 font-medium">Kepala Pemerintahan Kelurahan</p>
+                                <span class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white text-blue-700 text-[10px] font-bold rounded-lg border border-blue-200/70 transition shadow-2xs">
                                     <i class="fas fa-clipboard-list text-[9px]"></i>
                                     <span>Lihat TUPOKSI</span>
                                 </span>
                             </div>
 
-                            {{-- Garis Lurus Turun dari Lurah --}}
-                            <div style="width: 2.5px; height: 32px; background-color: #1e3a8a;"></div>
+                            {{-- Vertical connector down --}}
+                            <div class="w-0.5 h-7 bg-slate-300"></div>
                         </div>
 
-                        {{-- ==================================================== --}}
-                        {{-- TIER 2 & 3: 4 PILAR DEPARTEMEN DENGAN STAF MASING-MASING --}}
-                        {{-- ==================================================== --}}
-                        <div class="w-full relative mt-0">
-                            
-                            {{-- Rel Garis Horizontal Standar Struktur Organisasi (Dari Pusat Kolom 1 ke Kolom 4) --}}
-                            <div class="absolute top-0 z-10" style="left: 15.5%; right: 11.5%; height: 2.5px; background-color: #1e3a8a;"></div>
+                        {{-- 2. BOTTOM NODES (4 Columns: Sekel + 3 Kasis) --}}
+                        <div class="w-full max-w-4xl relative">
+                            {{-- Horizontal Branch Line --}}
+                            <div class="w-full h-0.5 bg-slate-300 absolute top-0 left-0 right-0"></div>
 
-                            {{-- 4 Pilar Utama Sejajar --}}
-                            <div class="w-full flex items-start">
+                            {{-- 4 Columns Grid --}}
+                            <div class="grid grid-cols-4 gap-4 sm:gap-5 pt-6">
 
-                                {{-- ================================================ --}}
-                                {{-- KOLOM 1: SEKRETARIAT KELURAHAN (SEKEL + 2 SUBAG) --}}
-                                {{-- ================================================ --}}
-                                <div class="w-[31%] px-2.5 flex flex-col items-center relative">
-                                    
-                                    {{-- Garis Drop Vertikal Masuk ke Sekel --}}
-                                    <div style="width: 2.5px; height: 28px; background-color: #1e3a8a;"></div>
-
-                                    {{-- Kartu: Sekretaris Kelurahan --}}
+                                {{-- Node 1: Sekel --}}
+                                <div class="flex flex-col items-center relative">
+                                    <div class="w-0.5 h-6 bg-slate-300 absolute -top-6 left-1/2 -translate-x-1/2"></div>
                                     <div @click="openTupoksiModal({
                                             name: {{ json_encode($villageProfile['sekel_name'] ?? 'Sidiq, SH. MM.') }},
-                                            nip: {{ json_encode($villageProfile['sekel_nip'] ?? '19710312 200906 1 001') }},
+                                            nip: {{ json_encode($villageProfile['sekel_nip'] ?? '') }},
                                             role: {{ json_encode(strtoupper($villageProfile['sekel_role'] ?? 'SEKRETARIS KELURAHAN')) }},
                                             unit: 'Sekretariat Kelurahan',
                                             photo: {{ json_encode($sekelPhotoUrl) }},
                                             initial: 'SK',
                                             tupoksi: {{ json_encode($villageProfile['sekel_tupoksi'] ?? '') }}
                                          })"
-                                         class="bg-white rounded-xl p-3.5 border-2 border-slate-300 hover:border-blue-900 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[245px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
-                                        
-                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                         class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer">
+                                        <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-2xs mb-2 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
                                             @if(!empty($sekelPhotoUrl))
                                                 <img src="{{ $sekelPhotoUrl }}" 
                                                      alt="Sekretaris Kelurahan" 
-                                                     class="w-full h-full object-cover rounded-full">
+                                                     class="w-full h-full object-cover">
                                             @else
-                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 rounded-full">
-                                                    <svg class="w-full h-full text-slate-300 pt-1" fill="currentColor" viewBox="0 0 24 24">
+                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                                    <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
                                                         <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                                                     </svg>
                                                 </div>
                                             @endif
                                         </div>
-
-                                        <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
+                                        <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
                                             {{ $villageProfile['sekel_name'] ?? 'Sidiq, SH. MM.' }}
                                         </h5>
-
                                         @if(!empty($villageProfile['sekel_nip']))
-                                            <p class="text-[9.5px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['sekel_nip'] }}</p>
+                                            <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['sekel_nip'] }}</p>
                                         @endif
-
-                                        <div class="mt-1.5">
-                                            <span class="bg-blue-900 text-white font-bold text-[8.5px] uppercase px-2.5 py-0.5 rounded-full tracking-wider inline-block">
+                                        <div class="mt-2">
+                                            <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
                                                 {{ strtoupper($villageProfile['sekel_role'] ?? 'SEKRETARIS KELURAHAN') }}
                                             </span>
                                         </div>
-                                        <span class="text-[9.5px] text-slate-500 mt-1 font-medium">Sekretariat Kelurahan</span>
-
-                                        <span class="mt-2.5 inline-flex items-center gap-1 px-2.5 py-1 bg-slate-50 group-hover:bg-blue-900 group-hover:text-white text-slate-700 text-[9px] font-bold rounded-lg border border-slate-200 transition-colors shadow-2xs">
-                                            <i class="fas fa-clipboard-list text-[8.5px]"></i>
+                                        <span class="text-[10px] text-slate-500 mt-1 font-medium">Sekretariat Kelurahan</span>
+                                        <span class="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white text-blue-700 text-[10px] font-bold rounded-lg border border-blue-200/70 transition shadow-2xs">
+                                            <i class="fas fa-clipboard-list text-[9px]"></i>
                                             <span>Lihat TUPOKSI</span>
                                         </span>
                                     </div>
-
-                                    {{-- Cabang Hierarki Langsung ke 2 Subag di Bawah Sekel --}}
-                                    <div class="w-full flex flex-col items-center relative mt-0">
-                                        
-                                        {{-- Garis Tegak Turun dari Sekel --}}
-                                        <div style="width: 2px; height: 22px; background-color: #475569;"></div>
-
-                                        {{-- Garis Cabang Horizontal Menghubungkan 2 Subag --}}
-                                        <div class="w-full relative">
-                                            <div class="grid grid-cols-2 gap-3 w-full relative">
-                                                {{-- Garis Rel Horizontal Cabang (dari tengah kolom kiri 25% ke tengah kolom kanan 75%) --}}
-                                                <div class="absolute top-0" style="left: 25%; right: 25%; height: 2px; background-color: #475569;"></div>
-
-                                                @forelse($sekelMembers as $m)
-                                                    @php
-                                                        $mPhoto = !empty($m['photo']) ? asset('storage/' . $m['photo']) : null;
-                                                        $mInitial = strtoupper(substr($m['name'] ?? 'S', 0, 2));
-                                                    @endphp
-                                                    <div class="flex flex-col items-center relative">
-                                                        {{-- Garis Turun ke Kartu Subag --}}
-                                                        <div style="width: 2px; height: 16px; background-color: #475569;"></div>
-
-                                                        <div @click="openTupoksiModal({
-                                                                name: {{ json_encode($m['name'] ?? 'Subag') }},
-                                                                nip: {{ json_encode($m['nip'] ?? '') }},
-                                                                role: {{ json_encode(strtoupper($m['position'] ?? 'SUBAG')) }},
-                                                                unit: 'Sekretariat Kelurahan',
-                                                                photo: {{ json_encode($mPhoto) }},
-                                                                initial: {{ json_encode($mInitial) }},
-                                                                tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
-                                                             })"
-                                                             class="bg-slate-50/70 hover:bg-white rounded-xl p-3 border border-slate-300 hover:border-slate-400 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
-                                                            
-                                                            <div class="w-12 h-12 rounded-full border border-slate-300 overflow-hidden shadow-2xs mb-1.5 bg-white shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
-                                                                @if(!empty($mPhoto))
-                                                                    <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
-                                                                @else
-                                                                    <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
-                                                                        <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
-                                                                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                                                                        </svg>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-
-                                                            <h6 class="font-bold text-[11px] text-slate-900 leading-tight capitalize truncate w-full group-hover:text-blue-900 transition-colors">
-                                                                {{ $m['name'] }}
-                                                            </h6>
-
-                                                            @if(!empty($m['nip']))
-                                                                <p class="text-[8.5px] text-slate-500 font-mono mt-0.5 font-medium leading-none">NIP. {{ $m['nip'] }}</p>
-                                                            @endif
-
-                                                            <div class="mt-1">
-                                                                <span class="bg-slate-700 text-white font-bold text-[8px] uppercase px-2 py-0.5 rounded-full tracking-wider inline-block">
-                                                                    {{ $m['position'] ?? 'SUBAG' }}
-                                                                </span>
-                                                            </div>
-
-                                                            <span class="mt-2 inline-flex items-center gap-1 text-[8.5px] font-bold text-blue-700 group-hover:text-blue-900">
-                                                                <span>TUPOKSI</span>
-                                                                <i class="fas fa-arrow-right text-[7px] group-hover:translate-x-0.5 transition-transform"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                @empty
-                                                    <div class="col-span-2 text-center text-xs text-slate-400 py-3 italic">
-                                                        Belum ada sub-bagian
-                                                    </div>
-                                                @endforelse
-                                            </div>
-                                        </div>
-
-                                    </div>
                                 </div>
 
-                                {{-- ================================================ --}}
-                                {{-- KOLOM 2: SEKSI PEMERINTAHAN (KASI PEM + FERDI)   --}}
-                                {{-- ================================================ --}}
-                                <div class="w-[23%] px-2.5 flex flex-col items-center relative">
-                                    
-                                    {{-- Garis Drop Vertikal Masuk ke Kasi Pem --}}
-                                    <div style="width: 2.5px; height: 28px; background-color: #1e3a8a;"></div>
-
-                                    {{-- Kartu: Kasi Pemerintahan --}}
+                                {{-- Node 2: Kasi Pem --}}
+                                <div class="flex flex-col items-center relative">
+                                    <div class="w-0.5 h-6 bg-slate-300 absolute -top-6 left-1/2 -translate-x-1/2"></div>
                                     <div @click="openTupoksiModal({
                                             name: {{ json_encode($villageProfile['kasi_pem_name'] ?? 'Margareta, S.E') }},
-                                            nip: {{ json_encode($villageProfile['kasi_pem_nip'] ?? '19600330 201101 2 006') }},
+                                            nip: {{ json_encode($villageProfile['kasi_pem_nip'] ?? '') }},
                                             role: {{ json_encode(strtoupper($villageProfile['kasi_pem_role'] ?? 'KASI PEMERINTAHAN & TRANTIB')) }},
                                             unit: 'Seksi Pemerintahan',
                                             photo: {{ json_encode($kasiPemPhotoUrl) }},
                                             initial: 'KP',
                                             tupoksi: {{ json_encode($villageProfile['kasi_pem_tupoksi'] ?? '') }}
                                          })"
-                                         class="bg-white rounded-xl p-3.5 border-2 border-slate-300 hover:border-blue-900 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[245px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
-                                        
-                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                         class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer">
+                                        <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-2xs mb-2 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
                                             @if(!empty($kasiPemPhotoUrl))
                                                 <img src="{{ $kasiPemPhotoUrl }}" 
                                                      alt="Kasi Pemerintahan" 
-                                                     class="w-full h-full object-cover rounded-full">
+                                                     class="w-full h-full object-cover">
                                             @else
-                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 rounded-full">
-                                                    <svg class="w-full h-full text-slate-300 pt-1" fill="currentColor" viewBox="0 0 24 24">
+                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                                    <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
                                                         <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                                                     </svg>
                                                 </div>
                                             @endif
                                         </div>
-
-                                        <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
+                                        <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
                                             {{ $villageProfile['kasi_pem_name'] ?? 'Margareta, S.E' }}
                                         </h5>
-
                                         @if(!empty($villageProfile['kasi_pem_nip']))
-                                            <p class="text-[9.5px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['kasi_pem_nip'] }}</p>
+                                            <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['kasi_pem_nip'] }}</p>
                                         @endif
-
-                                        <div class="mt-1.5">
-                                            <span class="bg-blue-900 text-white font-bold text-[8.5px] uppercase px-2.5 py-0.5 rounded-full tracking-wider inline-block">
+                                        <div class="mt-2">
+                                            <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
                                                 {{ strtoupper($villageProfile['kasi_pem_role'] ?? 'KASI PEMERINTAHAN & TRANTIB') }}
                                             </span>
                                         </div>
-                                        <span class="text-[9.5px] text-slate-500 mt-1 font-medium">Seksi Pemerintahan</span>
-
-                                        <span class="mt-2.5 inline-flex items-center gap-1 px-2.5 py-1 bg-slate-50 group-hover:bg-blue-900 group-hover:text-white text-slate-700 text-[9px] font-bold rounded-lg border border-slate-200 transition-colors shadow-2xs">
-                                            <i class="fas fa-clipboard-list text-[8.5px]"></i>
+                                        <span class="text-[10px] text-slate-500 mt-1 font-medium">Seksi Pemerintahan</span>
+                                        <span class="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white text-blue-700 text-[10px] font-bold rounded-lg border border-blue-200/70 transition shadow-2xs">
+                                            <i class="fas fa-clipboard-list text-[9px]"></i>
                                             <span>Lihat TUPOKSI</span>
                                         </span>
                                     </div>
-
-                                    {{-- Garis Sambungan Langsung Tegak ke Staf Pelaksana --}}
-                                    <div style="width: 2px; height: 24px; background-color: #475569;"></div>
-
-                                    {{-- Subordinate(s) di Bawah Kasi Pem --}}
-                                    <div class="w-full max-w-[245px]">
-                                        @forelse($kasiPemMembers as $m)
-                                            @php
-                                                $mPhoto = !empty($m['photo']) ? asset('storage/' . $m['photo']) : null;
-                                                $mInitial = strtoupper(substr($m['name'] ?? 'S', 0, 2));
-                                            @endphp
-                                            <div @click="openTupoksiModal({
-                                                    name: {{ json_encode($m['name'] ?? 'Staf Pelaksana') }},
-                                                    nip: {{ json_encode($m['nip'] ?? '') }},
-                                                    role: {{ json_encode(strtoupper($m['position'] ?? 'STAF PELAKSANA')) }},
-                                                    unit: 'Seksi Pemerintahan',
-                                                    photo: {{ json_encode($mPhoto) }},
-                                                    initial: {{ json_encode($mInitial) }},
-                                                    tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
-                                                 })"
-                                                 class="bg-slate-50/70 hover:bg-white rounded-xl p-3 border border-slate-300 hover:border-slate-400 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
-                                                
-                                                <div class="w-12 h-12 rounded-full border border-slate-300 overflow-hidden shadow-2xs mb-1.5 bg-white shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
-                                                    @if(!empty($mPhoto))
-                                                        <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
-                                                    @else
-                                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
-                                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
-                                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                                                            </svg>
-                                                        </div>
-                                                    @endif
-                                                </div>
-
-                                                <h6 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
-                                                    {{ $m['name'] }}
-                                                </h6>
-
-                                                @if(!empty($m['nip']))
-                                                    <p class="text-[9px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $m['nip'] }}</p>
-                                                @endif
-
-                                                <div class="mt-1">
-                                                    <span class="bg-slate-700 text-white font-bold text-[8px] uppercase px-2 py-0.5 rounded-full tracking-wider inline-block">
-                                                        {{ $m['position'] ?? 'STAF PELAKSANA' }}
-                                                    </span>
-                                                </div>
-
-                                                <span class="text-[9.5px] text-slate-500 mt-1 font-medium">Staf Pendukung</span>
-
-                                                <span class="mt-2 inline-flex items-center gap-1 text-[8.5px] font-bold text-blue-700 group-hover:text-blue-900">
-                                                    <span>Lihat TUPOKSI</span>
-                                                    <i class="fas fa-arrow-right text-[7px] group-hover:translate-x-0.5 transition-transform"></i>
-                                                </span>
-                                            </div>
-                                        @empty
-                                            <div class="text-center text-xs text-slate-400 py-3 italic bg-white rounded-xl border border-dashed border-slate-200">
-                                                Belum ada staf pelaksana
-                                            </div>
-                                        @endforelse
-                                    </div>
-
                                 </div>
 
-                                {{-- ================================================ --}}
-                                {{-- KOLOM 3: SEKSI KESRA (KASI KESRA + ABDULLAH)     --}}
-                                {{-- ================================================ --}}
-                                <div class="w-[23%] px-2.5 flex flex-col items-center relative">
-                                    
-                                    {{-- Garis Drop Vertikal Masuk ke Kasi Kesra --}}
-                                    <div style="width: 2.5px; height: 28px; background-color: #1e3a8a;"></div>
-
-                                    {{-- Kartu: Kasi Kesra --}}
+                                {{-- Node 3: Kasi Kesra --}}
+                                <div class="flex flex-col items-center relative">
+                                    <div class="w-0.5 h-6 bg-slate-300 absolute -top-6 left-1/2 -translate-x-1/2"></div>
                                     <div @click="openTupoksiModal({
                                             name: {{ json_encode($villageProfile['kasi_kesra_name'] ?? 'Herman, S.E') }},
-                                            nip: {{ json_encode($villageProfile['kasi_kesra_nip'] ?? '19741001 200801 1 013') }},
+                                            nip: {{ json_encode($villageProfile['kasi_kesra_nip'] ?? '') }},
                                             role: {{ json_encode(strtoupper($villageProfile['kasi_kesra_role'] ?? 'KASI PELAYANAN & KESRA')) }},
                                             unit: 'Seksi Sosial & Kesra',
                                             photo: {{ json_encode($kasiKesraPhotoUrl) }},
                                             initial: 'KK',
                                             tupoksi: {{ json_encode($villageProfile['kasi_kesra_tupoksi'] ?? '') }}
                                          })"
-                                         class="bg-white rounded-xl p-3.5 border-2 border-slate-300 hover:border-blue-900 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[245px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
-                                        
-                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                         class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer">
+                                        <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-2xs mb-2 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
                                             @if(!empty($kasiKesraPhotoUrl))
                                                 <img src="{{ $kasiKesraPhotoUrl }}" 
                                                      alt="Kasi Kesra" 
-                                                     class="w-full h-full object-cover rounded-full">
+                                                     class="w-full h-full object-cover">
                                             @else
-                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 rounded-full">
-                                                    <svg class="w-full h-full text-slate-300 pt-1" fill="currentColor" viewBox="0 0 24 24">
+                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                                    <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
                                                         <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                                                     </svg>
                                                 </div>
                                             @endif
                                         </div>
-
-                                        <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
+                                        <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
                                             {{ $villageProfile['kasi_kesra_name'] ?? 'Herman, S.E' }}
                                         </h5>
-
                                         @if(!empty($villageProfile['kasi_kesra_nip']))
-                                            <p class="text-[9.5px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['kasi_kesra_nip'] }}</p>
+                                            <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['kasi_kesra_nip'] }}</p>
                                         @endif
-
-                                        <div class="mt-1.5">
-                                            <span class="bg-blue-900 text-white font-bold text-[8.5px] uppercase px-2.5 py-0.5 rounded-full tracking-wider inline-block">
+                                        <div class="mt-2">
+                                            <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
                                                 {{ strtoupper($villageProfile['kasi_kesra_role'] ?? 'KASI PELAYANAN & KESRA') }}
                                             </span>
                                         </div>
-                                        <span class="text-[9.5px] text-slate-500 mt-1 font-medium">Seksi Sosial & Kesra</span>
-
-                                        <span class="mt-2.5 inline-flex items-center gap-1 px-2.5 py-1 bg-slate-50 group-hover:bg-blue-900 group-hover:text-white text-slate-700 text-[9px] font-bold rounded-lg border border-slate-200 transition-colors shadow-2xs">
-                                            <i class="fas fa-clipboard-list text-[8.5px]"></i>
+                                        <span class="text-[10px] text-slate-500 mt-1 font-medium">Seksi Sosial & Kesra</span>
+                                        <span class="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white text-blue-700 text-[10px] font-bold rounded-lg border border-blue-200/70 transition shadow-2xs">
+                                            <i class="fas fa-clipboard-list text-[9px]"></i>
                                             <span>Lihat TUPOKSI</span>
                                         </span>
                                     </div>
-
-                                    {{-- Garis Sambungan Langsung Tegak ke Abdullah --}}
-                                    <div style="width: 2px; height: 24px; background-color: #475569;"></div>
-
-                                    {{-- Subordinate(s) di Bawah Kasi Kesra --}}
-                                    <div class="w-full max-w-[245px]">
-                                        @forelse($kasiKesraMembers as $m)
-                                            @php
-                                                $mPhoto = !empty($m['photo']) ? asset('storage/' . $m['photo']) : null;
-                                                $mInitial = strtoupper(substr($m['name'] ?? 'S', 0, 2));
-                                            @endphp
-                                            <div @click="openTupoksiModal({
-                                                    name: {{ json_encode($m['name'] ?? 'Staf Pelaksana') }},
-                                                    nip: {{ json_encode($m['nip'] ?? '') }},
-                                                    role: {{ json_encode(strtoupper($m['position'] ?? 'STAF PELAKSANA (THL)')) }},
-                                                    unit: 'Seksi Sosial & Kesra',
-                                                    photo: {{ json_encode($mPhoto) }},
-                                                    initial: {{ json_encode($mInitial) }},
-                                                    tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
-                                                 })"
-                                                 class="bg-slate-50/70 hover:bg-white rounded-xl p-3 border border-slate-300 hover:border-slate-400 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
-                                                
-                                                <div class="w-12 h-12 rounded-full border border-slate-300 overflow-hidden shadow-2xs mb-1.5 bg-white shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
-                                                    @if(!empty($mPhoto))
-                                                        <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
-                                                    @else
-                                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
-                                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
-                                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                                                            </svg>
-                                                        </div>
-                                                    @endif
-                                                </div>
-
-                                                <h6 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
-                                                    {{ $m['name'] }}
-                                                </h6>
-
-                                                @if(!empty($m['nip']))
-                                                    <p class="text-[9px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $m['nip'] }}</p>
-                                                @else
-                                                    <p class="text-[9px] text-slate-400 italic mt-0.5">Tenaga Harian Lepas</p>
-                                                @endif
-
-                                                <div class="mt-1">
-                                                    <span class="bg-slate-700 text-white font-bold text-[8px] uppercase px-2 py-0.5 rounded-full tracking-wider inline-block">
-                                                        {{ $m['position'] ?? 'STAF PELAKSANA (THL)' }}
-                                                    </span>
-                                                </div>
-
-                                                <span class="text-[9.5px] text-slate-500 mt-1 font-medium">Staf Lapangan & Trantib</span>
-
-                                                <span class="mt-2 inline-flex items-center gap-1 text-[8.5px] font-bold text-blue-700 group-hover:text-blue-900">
-                                                    <span>Lihat TUPOKSI</span>
-                                                    <i class="fas fa-arrow-right text-[7px] group-hover:translate-x-0.5 transition-transform"></i>
-                                                </span>
-                                            </div>
-                                        @empty
-                                            <div class="text-center text-xs text-slate-400 py-3 italic bg-white rounded-xl border border-dashed border-slate-200">
-                                                Belum ada staf pelaksana
-                                            </div>
-                                        @endforelse
-                                    </div>
-
                                 </div>
 
-                                {{-- ================================================ --}}
-                                {{-- KOLOM 4: SEKSI EKBANG (KASI EKBANG + FENNY)       --}}
-                                {{-- ================================================ --}}
-                                <div class="w-[23%] px-2.5 flex flex-col items-center relative">
-                                    
-                                    {{-- Garis Drop Vertikal Masuk ke Kasi Ekbang --}}
-                                    <div style="width: 2.5px; height: 28px; background-color: #1e3a8a;"></div>
-
-                                    {{-- Kartu: Kasi Ekbang --}}
+                                {{-- Node 4: Kasi Ekbang --}}
+                                <div class="flex flex-col items-center relative">
+                                    <div class="w-0.5 h-6 bg-slate-300 absolute -top-6 left-1/2 -translate-x-1/2"></div>
                                     <div @click="openTupoksiModal({
                                             name: {{ json_encode($villageProfile['kasi_ekbang_name'] ?? 'Sabar, S.Sos') }},
-                                            nip: {{ json_encode($villageProfile['kasi_ekbang_nip'] ?? '19690206 199103 1 004') }},
+                                            nip: {{ json_encode($villageProfile['kasi_ekbang_nip'] ?? '') }},
                                             role: {{ json_encode(strtoupper($villageProfile['kasi_ekbang_role'] ?? 'KASI PEMBERDAYAAN & EKBANG')) }},
                                             unit: 'Seksi Perekonomian',
                                             photo: {{ json_encode($kasiEkbangPhotoUrl) }},
                                             initial: 'KE',
                                             tupoksi: {{ json_encode($villageProfile['kasi_ekbang_tupoksi'] ?? '') }}
                                          })"
-                                         class="bg-white rounded-xl p-3.5 border-2 border-slate-300 hover:border-blue-900 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full max-w-[245px] transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
-                                        
-                                        <div class="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 mb-2 bg-slate-50 shrink-0 overflow-hidden group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
+                                         class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer">
+                                        <div class="w-16 h-16 rounded-full border-2 border-slate-800 overflow-hidden shadow-2xs mb-2 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
                                             @if(!empty($kasiEkbangPhotoUrl))
                                                 <img src="{{ $kasiEkbangPhotoUrl }}" 
                                                      alt="Kasi Ekbang" 
-                                                     class="w-full h-full object-cover rounded-full">
+                                                     class="w-full h-full object-cover">
                                             @else
-                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 rounded-full">
-                                                    <svg class="w-full h-full text-slate-300 pt-1" fill="currentColor" viewBox="0 0 24 24">
+                                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
+                                                    <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
                                                         <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                                                     </svg>
                                                 </div>
                                             @endif
                                         </div>
-
-                                        <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
+                                        <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
                                             {{ $villageProfile['kasi_ekbang_name'] ?? 'Sabar, S.Sos' }}
                                         </h5>
-
                                         @if(!empty($villageProfile['kasi_ekbang_nip']))
-                                            <p class="text-[9.5px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['kasi_ekbang_nip'] }}</p>
+                                            <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $villageProfile['kasi_ekbang_nip'] }}</p>
                                         @endif
-
-                                        <div class="mt-1.5">
-                                            <span class="bg-blue-900 text-white font-bold text-[8.5px] uppercase px-2.5 py-0.5 rounded-full tracking-wider inline-block">
+                                        <div class="mt-2">
+                                            <span class="bg-slate-900 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-full tracking-wider inline-block shadow-2xs">
                                                 {{ strtoupper($villageProfile['kasi_ekbang_role'] ?? 'KASI PEMBERDAYAAN & EKBANG') }}
                                             </span>
                                         </div>
-                                        <span class="text-[9.5px] text-slate-500 mt-1 font-medium">Seksi Perekonomian</span>
-
-                                        <span class="mt-2.5 inline-flex items-center gap-1 px-2.5 py-1 bg-slate-50 group-hover:bg-blue-900 group-hover:text-white text-slate-700 text-[9px] font-bold rounded-lg border border-slate-200 transition-colors shadow-2xs">
-                                            <i class="fas fa-clipboard-list text-[8.5px]"></i>
+                                        <span class="text-[10px] text-slate-500 mt-1 font-medium">Seksi Perekonomian</span>
+                                        <span class="mt-2.5 inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white text-blue-700 text-[10px] font-bold rounded-lg border border-blue-200/70 transition shadow-2xs">
+                                            <i class="fas fa-clipboard-list text-[9px]"></i>
                                             <span>Lihat TUPOKSI</span>
                                         </span>
                                     </div>
-
-                                    {{-- Garis Sambungan Langsung Tegak ke Fenny --}}
-                                    <div style="width: 2px; height: 24px; background-color: #475569;"></div>
-
-                                    {{-- Subordinate(s) di Bawah Kasi Ekbang --}}
-                                    <div class="w-full max-w-[245px]">
-                                        @forelse($kasiEkbangMembers as $m)
-                                            @php
-                                                $mPhoto = !empty($m['photo']) ? asset('storage/' . $m['photo']) : null;
-                                                $mInitial = strtoupper(substr($m['name'] ?? 'S', 0, 2));
-                                            @endphp
-                                            <div @click="openTupoksiModal({
-                                                    name: {{ json_encode($m['name'] ?? 'Staf Pelaksana') }},
-                                                    nip: {{ json_encode($m['nip'] ?? '') }},
-                                                    role: {{ json_encode(strtoupper($m['position'] ?? 'STAF PELAKSANA')) }},
-                                                    unit: 'Seksi Perekonomian',
-                                                    photo: {{ json_encode($mPhoto) }},
-                                                    initial: {{ json_encode($mInitial) }},
-                                                    tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
-                                                 })"
-                                                 class="bg-slate-50/70 hover:bg-white rounded-xl p-3 border border-slate-300 hover:border-slate-400 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-full transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
-                                                
-                                                <div class="w-12 h-12 rounded-full border border-slate-300 overflow-hidden shadow-2xs mb-1.5 bg-white shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
-                                                    @if(!empty($mPhoto))
-                                                        <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
-                                                    @else
-                                                        <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300">
-                                                            <svg class="w-full h-full text-slate-300 pt-0.5" fill="currentColor" viewBox="0 0 24 24">
-                                                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                                                            </svg>
-                                                        </div>
-                                                    @endif
-                                                </div>
-
-                                                <h6 class="font-bold text-xs text-slate-900 leading-tight capitalize group-hover:text-blue-900 transition-colors">
-                                                    {{ $m['name'] }}
-                                                </h6>
-
-                                                @if(!empty($m['nip']))
-                                                    <p class="text-[9px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $m['nip'] }}</p>
-                                                @endif
-
-                                                <div class="mt-1">
-                                                    <span class="bg-slate-700 text-white font-bold text-[8px] uppercase px-2 py-0.5 rounded-full tracking-wider inline-block">
-                                                        {{ $m['position'] ?? 'STAF PELAKSANA' }}
-                                                    </span>
-                                                </div>
-
-                                                <span class="text-[9.5px] text-slate-500 mt-1 font-medium">Staf Pendukung</span>
-
-                                                <span class="mt-2 inline-flex items-center gap-1 text-[8.5px] font-bold text-blue-700 group-hover:text-blue-900">
-                                                    <span>Lihat TUPOKSI</span>
-                                                    <i class="fas fa-arrow-right text-[7px] group-hover:translate-x-0.5 transition-transform"></i>
-                                                </span>
-                                            </div>
-                                        @empty
-                                            <div class="text-center text-xs text-slate-400 py-3 italic bg-white rounded-xl border border-dashed border-slate-200">
-                                                Belum ada staf pelaksana
-                                            </div>
-                                        @endforelse
-                                    </div>
-
                                 </div>
 
                             </div>
 
-                            {{-- Anggota Tambahan Lainnya (jika ada yang belum terkategori) --}}
-                            @if(!empty($otherMembers) && count($otherMembers) > 0)
-                                <div class="pt-10 relative flex flex-col items-center">
-                                    <div style="width: 4px; height: 32px; background-color: #94a3b8; border-radius: 9999px;" class="mb-3"></div>
-                                    <span class="text-[10px] font-extrabold uppercase px-3 py-1 bg-slate-100 text-slate-600 rounded-full border border-slate-200 mb-4 tracking-wider">
-                                        Staf & Jabatan Fungsional Lainnya
-                                    </span>
-                                    <div class="flex flex-wrap justify-center gap-4">
-                                        @foreach($otherMembers as $m)
+                            {{-- 3. ADDITIONAL MEMBERS TIER (STAF & JABATAN FUNGSIONAL) --}}
+                            @if(!empty($villageProfile['sotk_members']) && count($villageProfile['sotk_members']) > 0)
+                                <div class="pt-7 relative">
+                                    {{-- Connector line --}}
+                                    <div class="w-0.5 h-7 bg-slate-300 absolute top-0 left-1/2 -translate-x-1/2"></div>
+                                    
+                                    {{-- Staff Cards Centered --}}
+                                    <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+                                        @foreach($villageProfile['sotk_members'] as $m)
                                             @php
                                                 $mPhoto = !empty($m['photo']) ? asset('storage/' . $m['photo']) : null;
                                                 $mInitial = strtoupper(substr($m['name'] ?? 'S', 0, 2));
@@ -704,13 +387,13 @@
                                                     name: {{ json_encode($m['name'] ?? 'Staf') }},
                                                     nip: {{ json_encode($m['nip'] ?? '') }},
                                                     role: {{ json_encode(strtoupper($m['position'] ?? 'STAF')) }},
-                                                    unit: 'Staf Kelurahan',
+                                                    unit: 'Staf Pelaksana Kelurahan',
                                                     photo: {{ json_encode($mPhoto) }},
                                                     initial: {{ json_encode($mInitial) }},
                                                     tupoksi: {{ json_encode($m['tupoksi'] ?? '') }}
                                                  })"
-                                                 class="bg-white rounded-2xl p-3.5 border-2 border-slate-200 hover:border-blue-600 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-48 transition-all duration-200 group cursor-pointer hover:-translate-y-0.5">
-                                                <div class="w-12 h-12 rounded-full border border-slate-700 overflow-hidden shadow-2xs mb-1.5 bg-slate-50 shrink-0 flex items-center justify-center">
+                                                 class="bg-white rounded-2xl p-4 border border-slate-200 hover:border-blue-500 shadow-2xs hover:shadow-md flex flex-col items-center text-center w-52 transition-all duration-200 group cursor-pointer">
+                                                <div class="w-16 h-16 rounded-full border-2 border-slate-700 overflow-hidden shadow-2xs mb-2 bg-slate-50 shrink-0 group-hover:scale-105 transition-transform duration-200 flex items-center justify-center">
                                                     @if(!empty($mPhoto))
                                                         <img src="{{ $mPhoto }}" alt="{{ $m['name'] }}" class="w-full h-full object-cover">
                                                     @else
@@ -721,11 +404,22 @@
                                                         </div>
                                                     @endif
                                                 </div>
-                                                <h6 class="font-bold text-xs text-slate-900 leading-tight capitalize">{{ $m['name'] }}</h6>
+                                                <h5 class="font-bold text-xs text-slate-900 leading-tight capitalize">
+                                                    {{ $m['name'] }}
+                                                </h5>
                                                 @if(!empty($m['nip']))
-                                                    <p class="text-[9px] text-slate-500 font-mono mt-0.5">NIP. {{ $m['nip'] }}</p>
+                                                    <p class="text-[10px] text-slate-500 font-mono mt-0.5 font-medium">NIP. {{ $m['nip'] }}</p>
                                                 @endif
-                                                <span class="bg-slate-800 text-white font-bold text-[8px] uppercase px-2 py-0.5 rounded-full mt-1.5">{{ $m['position'] ?? 'STAF' }}</span>
+                                                <div class="mt-1.5">
+                                                    <span class="bg-slate-900 text-white font-bold text-[9px] uppercase px-2.5 py-0.5 rounded-full tracking-wider inline-block">
+                                                        {{ $m['position'] ?? 'STAF' }}
+                                                    </span>
+                                                </div>
+                                                <span class="text-[10px] text-slate-500 mt-1 font-medium">Staf Pendukung</span>
+                                                <span class="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 group-hover:bg-blue-600 group-hover:text-white text-blue-700 text-[10px] font-bold rounded-lg border border-blue-200/70 transition shadow-2xs">
+                                                    <i class="fas fa-clipboard-list text-[9px]"></i>
+                                                    <span>Lihat TUPOKSI</span>
+                                                </span>
                                             </div>
                                         @endforeach
                                     </div>
