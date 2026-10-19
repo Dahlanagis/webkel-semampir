@@ -527,8 +527,8 @@
 
                             <a href="{{ route('admin.beranda.statistik') }}" 
                                class="flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium text-xs transition {{ request()->routeIs('admin.beranda.statistik') ? 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200/60' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
-                                <i class="fas fa-users text-[11px] {{ request()->routeIs('admin.beranda.statistik') ? 'text-emerald-600' : 'text-slate-400' }} w-4 text-center"></i>
-                                <span>Data Penduduk & Demografi</span>
+                                <i class="fas fa-chart-column text-[11px] {{ request()->routeIs('admin.beranda.statistik') ? 'text-emerald-600' : 'text-slate-400' }} w-4 text-center"></i>
+                                <span>Statistik & Demografi</span>
                             </a>
 
                             <a href="{{ route('admin.beranda.kemitraan') }}" 

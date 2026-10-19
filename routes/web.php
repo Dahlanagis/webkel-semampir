@@ -213,6 +213,11 @@ Route::middleware('auth')->group(function () {
             Route::put('apbd/{index}', [\App\Http\Controllers\Admin\VillageProfileController::class, 'updateApbd'])->name('apbd.update');
             Route::delete('apbd/{index}', [\App\Http\Controllers\Admin\VillageProfileController::class, 'destroyApbd'])->name('apbd.destroy');
             
+            // Year management endpoints for APBD
+            Route::post('apbd/tahun/store', [\App\Http\Controllers\Admin\VillageProfileController::class, 'storeTahunApbd'])->name('apbd.tahun.store');
+            Route::put('apbd/tahun/{tahun}', [\App\Http\Controllers\Admin\VillageProfileController::class, 'updateTahunApbd'])->name('apbd.tahun.update');
+            Route::delete('apbd/tahun/{tahun}', [\App\Http\Controllers\Admin\VillageProfileController::class, 'destroyTahunApbd'])->name('apbd.tahun.destroy');
+            
             // Single-item Statistik endpoints for Modal UI
             Route::post('statistik/{type}/store', [\App\Http\Controllers\Admin\VillageProfileController::class, 'storeStatistik'])->name('statistik.store');
             Route::put('statistik/{type}/{index}', [\App\Http\Controllers\Admin\VillageProfileController::class, 'updateStatistik'])->name('statistik.update');

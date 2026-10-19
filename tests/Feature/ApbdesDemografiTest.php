@@ -118,13 +118,29 @@ class ApbdesDemografiTest extends TestCase
             'persentase' => 20,
         ]);
 
+        // Test Halaman Utama (Daftar Riwayat Tahun Anggaran)
+        $resList = $this->actingAs($admin)->get(route('admin.beranda.transparansi'));
+        $resList->assertStatus(200);
+        $resList->assertSee('Riwayat Tahun Anggaran (APBDes)');
+        $resList->assertSee('Tambah Tahun APBD');
+        $resList->assertSee('Kelola Data Anggaran');
+
+        // Test Halaman Detail per Tahun (3 Kartu Tabel: Pendapatan, Belanja, Pembiayaan)
         $res2026 = $this->actingAs($admin)->get(route('admin.beranda.transparansi', ['tahun' => 2026]));
         $res2026->assertStatus(200);
+        $res2026->assertSee('Kembali ke Daftar Tahun');
+        $res2026->assertSee('1. Pendapatan Desa');
+        $res2026->assertSee('2. Belanja Desa');
+        $res2026->assertSee('3. Pembiayaan Desa');
         $res2026->assertSee('Bidang Infrastruktur 2026');
         $res2026->assertDontSee('Bidang Irigasi 2025');
 
         $res2025 = $this->actingAs($admin)->get(route('admin.beranda.transparansi', ['tahun' => 2025]));
         $res2025->assertStatus(200);
+        $res2025->assertSee('Kembali ke Daftar Tahun');
+        $res2025->assertSee('1. Pendapatan Desa');
+        $res2025->assertSee('2. Belanja Desa');
+        $res2025->assertSee('3. Pembiayaan Desa');
         $res2025->assertSee('Bidang Irigasi 2025');
         $res2025->assertDontSee('Bidang Infrastruktur 2026');
     }

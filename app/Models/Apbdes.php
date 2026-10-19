@@ -13,6 +13,8 @@ class Apbdes extends Model
 
     protected $fillable = [
         'tahun',
+        'jenis',
+        'kategori',
         'kode_rekening',
         'nama_bidang',
         'anggaran',

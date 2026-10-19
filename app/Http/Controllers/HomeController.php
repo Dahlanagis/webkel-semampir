@@ -708,7 +708,339 @@ class HomeController extends Controller
             ],
         ];
 
-        return view('transparansi', compact('villageProfile', 'socialAssistance', 'apbdesHistory'));
+        // Kalkulasi data terstruktur APBDes per tahun untuk tampilan tabel transparansi
+        $selectedYear = (int) $request->query('tahun', 2026);
+        $availableYears = [2026, 2025, 2024];
+
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('apbdes')) {
+                $dbYears = \App\Models\Apbdes::distinct()->pluck('tahun')->toArray();
+                if (!empty($dbYears)) {
+                    $availableYears = array_unique(array_merge($availableYears, $dbYears));
+                    rsort($availableYears);
+                }
+            }
+        } catch (\Throwable $e) {}
+
+        if (!in_array($selectedYear, $availableYears)) {
+            $selectedYear = $availableYears[0] ?? 2026;
+        }
+
+        // 1. Data Pendapatan
+        if ($selectedYear === 2026) {
+            $pendapatanSections = [
+                [
+                    'name' => 'PENDAPATAN ASLI DESA',
+                    'items' => [
+                        ['nama' => 'Bumdes (Hasil Usaha Desa)', 'anggaran' => 80000000, 'realisasi' => 80000000, 'selisih' => 0],
+                        ['nama' => 'DANA DESA (DDS)', 'anggaran' => 80000000, 'realisasi' => 80000000, 'selisih' => 0],
+                        ['nama' => 'DANA DESA (Tambahan Alokasi)', 'anggaran' => 80000000, 'realisasi' => 80000000, 'selisih' => 0],
+                    ]
+                ],
+                [
+                    'name' => 'PENDAPATAN TRANSFER',
+                    'items' => [
+                        ['nama' => 'Dana Desa (DDS - APBN Pusat)', 'anggaran' => 920000000, 'realisasi' => 920000000, 'selisih' => 0],
+                        ['nama' => 'Alokasi Dana Desa (ADD - APBD)', 'anggaran' => 360000000, 'realisasi' => 360000000, 'selisih' => 0],
+                        ['nama' => 'Bagi Hasil Pajak & Retribusi Daerah (PBH)', 'anggaran' => 70000000, 'realisasi' => 70000000, 'selisih' => 0],
+                    ]
+                ],
+                [
+                    'name' => 'PENDAPATAN LAIN-LAIN',
+                    'items' => [
+                        ['nama' => 'Penerimaan Bantuan Keuangan & CSR Sah', 'anggaran' => 20000000, 'realisasi' => 20000000, 'selisih' => 0],
+                    ]
+                ],
+            ];
+        } elseif ($selectedYear === 2025) {
+            $pendapatanSections = [
+                [
+                    'name' => 'PENDAPATAN ASLI DESA',
+                    'items' => [
+                        ['nama' => 'Bumdes (Hasil Usaha Desa)', 'anggaran' => 75000000, 'realisasi' => 75000000, 'selisih' => 0],
+                        ['nama' => 'Hasil Pengelolaan Tanah Kas Desa', 'anggaran' => 55000000, 'realisasi' => 55000000, 'selisih' => 0],
+                        ['nama' => 'Retribusi & Pendapatan Asli Lainnya', 'anggaran' => 65000000, 'realisasi' => 65000000, 'selisih' => 0],
+                    ]
+                ],
+                [
+                    'name' => 'PENDAPATAN TRANSFER',
+                    'items' => [
+                        ['nama' => 'Dana Desa (DDS - APBN)', 'anggaran' => 880000000, 'realisasi' => 880000000, 'selisih' => 0],
+                        ['nama' => 'Alokasi Dana Desa (ADD - APBD)', 'anggaran' => 335000000, 'realisasi' => 335000000, 'selisih' => 0],
+                        ['nama' => 'Bagi Hasil Pajak & Retribusi Daerah (PBH)', 'anggaran' => 60000000, 'realisasi' => 60000000, 'selisih' => 0],
+                    ]
+                ],
+            ];
+        } else {
+            $pendapatanSections = [
+                [
+                    'name' => 'PENDAPATAN ASLI DESA',
+                    'items' => [
+                        ['nama' => 'Bumdes (Hasil Usaha Desa)', 'anggaran' => 70000000, 'realisasi' => 70000000, 'selisih' => 0],
+                        ['nama' => 'Hasil Pengelolaan Tanah Kas Desa', 'anggaran' => 50000000, 'realisasi' => 50000000, 'selisih' => 0],
+                    ]
+                ],
+                [
+                    'name' => 'PENDAPATAN TRANSFER',
+                    'items' => [
+                        ['nama' => 'Dana Desa (DDS)', 'anggaran' => 830000000, 'realisasi' => 830000000, 'selisih' => 0],
+                        ['nama' => 'Alokasi Dana Desa (ADD)', 'anggaran' => 315000000, 'realisasi' => 315000000, 'selisih' => 0],
+                    ]
+                ],
+            ];
+        }
+
+        // 2. Data Belanja
+        if ($selectedYear === 2026) {
+            $belanjaSections = [
+                [
+                    'name' => 'PENYELENGGARAAN PEMERINTAHAN DESA',
+                    'items' => [
+                        ['nama' => 'kegiatan tr rw (Operasional RT / RW)', 'anggaran' => 200000, 'realisasi' => 200000, 'selisih' => 0],
+                        ['nama' => 'kegiatan tr rw (Insentif & Rapat Koordinasi)', 'anggaran' => 200000, 'realisasi' => 200000, 'selisih' => 0],
+                        ['nama' => 'Operasional Kantor & Pelayanan Administrasi Warga', 'anggaran' => 424600000, 'realisasi' => 319600000, 'selisih' => -105000000],
+                    ]
+                ],
+                [
+                    'name' => 'PELAKSANAAN PEMBANGUNAN DESA',
+                    'items' => [
+                        ['nama' => 'Pavingisasi Jalan Gang Lingkungan Warga (RW 03 & RW 04)', 'anggaran' => 520000000, 'realisasi' => 450000000, 'selisih' => -70000000],
+                        ['nama' => 'Normalisasi Saluran Drainase Utama Anti-Genangan', 'anggaran' => 105000000, 'realisasi' => 45000000, 'selisih' => -60000000],
+                        ['nama' => 'Penerangan Jalan Umum (PJU) Surya Mandiri', 'anggaran' => 45000000, 'realisasi' => 45000000, 'selisih' => 0],
+                    ]
+                ],
+                [
+                    'name' => 'PEMBINAAN & PEMBERDAYAAN MASYARAKAT',
+                    'items' => [
+                        ['nama' => 'Pembinaan Keamanan Lingkungan (Linmas) & PKK', 'anggaran' => 190000000, 'realisasi' => 138850000, 'selisih' => -51150000],
+                        ['nama' => 'Pelatihan Kewirausahaan UMKM & Pencegahan Stunting', 'anggaran' => 260000000, 'realisasi' => 174000000, 'selisih' => -86000000],
+                    ]
+                ],
+            ];
+        } elseif ($selectedYear === 2025) {
+            $belanjaSections = [
+                [
+                    'name' => 'PENYELENGGARAAN PEMERINTAHAN DESA',
+                    'items' => [
+                        ['nama' => 'Operasional Pelayanan Administrasi & RT/RW', 'anggaran' => 410000000, 'realisasi' => 402500000, 'selisih' => -7500000],
+                    ]
+                ],
+                [
+                    'name' => 'PELAKSANAAN PEMBANGUNAN DESA',
+                    'items' => [
+                        ['nama' => 'Pembangunan Drainase Beton Sisi Timur', 'anggaran' => 480000000, 'realisasi' => 472500000, 'selisih' => -7500000],
+                        ['nama' => 'Rehabilitasi Gedung Posyandu Melati', 'anggaran' => 150000000, 'realisasi' => 145800000, 'selisih' => -4200000],
+                    ]
+                ],
+                [
+                    'name' => 'PEMBINAAN & PEMBERDAYAAN MASYARAKAT',
+                    'items' => [
+                        ['nama' => 'Turnamen Olahraga & Festival Budaya', 'anggaran' => 180000000, 'realisasi' => 174000000, 'selisih' => -6000000],
+                        ['nama' => 'Bantuan Kolam Bioflok & Edukasi Gizi Stunting', 'anggaran' => 240000000, 'realisasi' => 231000000, 'selisih' => -9000000],
+                    ]
+                ],
+            ];
+        } else {
+            $belanjaSections = [
+                [
+                    'name' => 'PENYELENGGARAAN PEMERINTAHAN DESA',
+                    'items' => [
+                        ['nama' => 'Operasional Kantor & Perencanaan Desa', 'anggaran' => 385000000, 'realisasi' => 378000000, 'selisih' => -7000000],
+                    ]
+                ],
+                [
+                    'name' => 'PELAKSANAAN PEMBANGUNAN DESA',
+                    'items' => [
+                        ['nama' => 'Pengaspalan Jalan Lingkungan RW 01', 'anggaran' => 450000000, 'realisasi' => 435000000, 'selisih' => -15000000],
+                        ['nama' => 'Pembangunan Jamban Sehat Keluarga Prasejahtera', 'anggaran' => 140000000, 'realisasi' => 137000000, 'selisih' => -3000000],
+                    ]
+                ],
+            ];
+        }
+
+        // 3. Data Pembiayaan
+        if ($selectedYear === 2026) {
+            $pembiayaanSections = [
+                [
+                    'name' => 'PENERIMAAN PEMBIAYAAN',
+                    'items' => [
+                        ['nama' => 'pembangunan jalan (Dana Cadangan Pembangunan)', 'anggaran' => 1000000, 'realisasi' => 1000000, 'selisih' => 0],
+                        ['nama' => 'pembangunan jalan (Silpa Dana Fisik)', 'anggaran' => 1000000, 'realisasi' => 1000000, 'selisih' => 0],
+                        ['nama' => 'Sisa Lebih Perhitungan Anggaran (SiLPA) Tahun Lalu', 'anggaran' => 43000000, 'realisasi' => 43000000, 'selisih' => 0],
+                    ]
+                ],
+                [
+                    'name' => 'PENGELUARAN PEMBIAYAAN',
+                    'items' => [
+                        ['nama' => 'Penyertaan Modal BUMDes Mandiri', 'anggaran' => 20000000, 'realisasi' => 20000000, 'selisih' => 0],
+                        ['nama' => 'Pembentukan Dana Cadangan Darurat', 'anggaran' => 15000000, 'realisasi' => 15000000, 'selisih' => 0],
+                    ]
+                ],
+            ];
+        } elseif ($selectedYear === 2025) {
+            $pembiayaanSections = [
+                [
+                    'name' => 'PENERIMAAN PEMBIAYAAN',
+                    'items' => [
+                        ['nama' => 'Sisa Lebih Perhitungan Anggaran (SiLPA) Tahun Lalu', 'anggaran' => 38000000, 'realisasi' => 38000000, 'selisih' => 0],
+                    ]
+                ],
+                [
+                    'name' => 'PENGELUARAN PEMBIAYAAN',
+                    'items' => [
+                        ['nama' => 'Penyertaan Modal BUMDes Mandiri', 'anggaran' => 25000000, 'realisasi' => 25000000, 'selisih' => 0],
+                    ]
+                ],
+            ];
+        } else {
+            $pembiayaanSections = [
+                [
+                    'name' => 'PENERIMAAN PEMBIAYAAN',
+                    'items' => [
+                        ['nama' => 'Sisa Lebih Perhitungan Anggaran (SiLPA) Tahun Lalu', 'anggaran' => 32000000, 'realisasi' => 32000000, 'selisih' => 0],
+                    ]
+                ],
+                [
+                    'name' => 'PENGELUARAN PEMBIAYAAN',
+                    'items' => [
+                        ['nama' => 'Penyertaan Modal BUMDes Mandiri', 'anggaran' => 20000000, 'realisasi' => 20000000, 'selisih' => 0],
+                    ]
+                ],
+            ];
+        }
+
+        // Integrasi data dari Database APBDes jika ada
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('apbdes')) {
+                $dbItems = \App\Models\Apbdes::where('tahun', $selectedYear)->get();
+                if ($dbItems->count() > 0) {
+                    // 1. Data Pendapatan dari DB
+                    $dbPendapatan = $dbItems->where('jenis', 'pendapatan');
+                    if ($dbPendapatan->count() > 0) {
+                        $pendapatanSections = [];
+                        foreach ($dbPendapatan->groupBy(fn($i) => trim($i->kategori) ?: 'PENDAPATAN TRANSFER') as $cat => $grp) {
+                            $items = [];
+                            foreach ($grp as $dbi) {
+                                $anggaran = (float) $dbi->anggaran;
+                                $realisasi = (float) $dbi->realisasi;
+                                $items[] = [
+                                    'nama' => $dbi->nama_bidang . (!empty($dbi->kode_rekening) ? ' (' . $dbi->kode_rekening . ')' : ''),
+                                    'anggaran' => $anggaran,
+                                    'realisasi' => $realisasi,
+                                    'selisih' => $realisasi - $anggaran,
+                                ];
+                            }
+                            $pendapatanSections[] = [
+                                'name' => $cat,
+                                'items' => $items,
+                            ];
+                        }
+                    }
+
+                    // 2. Data Belanja dari DB
+                    $dbBelanja = $dbItems->filter(fn($i) => $i->jenis === 'belanja' || empty($i->jenis));
+                    if ($dbBelanja->count() > 0) {
+                        $belanjaSections = [];
+                        foreach ($dbBelanja->groupBy(fn($i) => trim($i->kategori) ?: 'PELAKSANAAN PEMBANGUNAN DESA') as $cat => $grp) {
+                            $items = [];
+                            foreach ($grp as $dbi) {
+                                $anggaran = (float) $dbi->anggaran;
+                                $realisasi = (float) $dbi->realisasi;
+                                $items[] = [
+                                    'nama' => $dbi->nama_bidang . (!empty($dbi->kode_rekening) ? ' (' . $dbi->kode_rekening . ')' : ''),
+                                    'anggaran' => $anggaran,
+                                    'realisasi' => $realisasi,
+                                    'selisih' => $realisasi - $anggaran,
+                                ];
+                            }
+                            $belanjaSections[] = [
+                                'name' => $cat,
+                                'items' => $items,
+                            ];
+                        }
+                    }
+
+                    // 3. Data Pembiayaan dari DB
+                    $dbPembiayaan = $dbItems->where('jenis', 'pembiayaan');
+                    if ($dbPembiayaan->count() > 0) {
+                        $pembiayaanSections = [];
+                        foreach ($dbPembiayaan->groupBy(fn($i) => trim($i->kategori) ?: 'PENERIMAAN PEMBIAYAAN') as $cat => $grp) {
+                            $items = [];
+                            foreach ($grp as $dbi) {
+                                $anggaran = (float) $dbi->anggaran;
+                                $realisasi = (float) $dbi->realisasi;
+                                $items[] = [
+                                    'nama' => $dbi->nama_bidang . (!empty($dbi->kode_rekening) ? ' (' . $dbi->kode_rekening . ')' : ''),
+                                    'anggaran' => $anggaran,
+                                    'realisasi' => $realisasi,
+                                    'selisih' => $realisasi - $anggaran,
+                                ];
+                            }
+                            $pembiayaanSections[] = [
+                                'name' => $cat,
+                                'items' => $items,
+                            ];
+                        }
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+
+        // Kalkulasi Total
+        $totalPendapatanAnggaran = 0;
+        $totalPendapatanRealisasi = 0;
+        foreach ($pendapatanSections as $sec) {
+            foreach ($sec['items'] as $it) {
+                $totalPendapatanAnggaran += $it['anggaran'];
+                $totalPendapatanRealisasi += $it['realisasi'];
+            }
+        }
+        $totalPendapatanSelisih = $totalPendapatanRealisasi - $totalPendapatanAnggaran;
+
+        $totalBelanjaAnggaran = 0;
+        $totalBelanjaRealisasi = 0;
+        foreach ($belanjaSections as $sec) {
+            foreach ($sec['items'] as $it) {
+                $totalBelanjaAnggaran += $it['anggaran'];
+                $totalBelanjaRealisasi += $it['realisasi'];
+            }
+        }
+        $totalBelanjaSelisih = $totalBelanjaRealisasi - $totalBelanjaAnggaran;
+
+        $totalPembiayaanAnggaran = 0;
+        $totalPembiayaanRealisasi = 0;
+        foreach ($pembiayaanSections as $sec) {
+            foreach ($sec['items'] as $it) {
+                if (str_contains(strtoupper($sec['name']), 'PENERIMAAN')) {
+                    $totalPembiayaanAnggaran += $it['anggaran'];
+                    $totalPembiayaanRealisasi += $it['realisasi'];
+                } else {
+                    $totalPembiayaanAnggaran -= $it['anggaran'];
+                    $totalPembiayaanRealisasi -= $it['realisasi'];
+                }
+            }
+        }
+        $totalPembiayaanSelisih = $totalPembiayaanRealisasi - $totalPembiayaanAnggaran;
+
+        return view('transparansi', compact(
+            'villageProfile', 
+            'socialAssistance', 
+            'apbdesHistory',
+            'selectedYear',
+            'availableYears',
+            'pendapatanSections',
+            'belanjaSections',
+            'pembiayaanSections',
+            'totalPendapatanAnggaran',
+            'totalPendapatanRealisasi',
+            'totalPendapatanSelisih',
+            'totalBelanjaAnggaran',
+            'totalBelanjaRealisasi',
+            'totalBelanjaSelisih',
+            'totalPembiayaanAnggaran',
+            'totalPembiayaanRealisasi',
+            'totalPembiayaanSelisih'
+        ));
     }
 
     /**

@@ -29,17 +29,17 @@
         "penduduk": "5.000",
         "kk": "2.640",
         "rt_rw": "32 / 08",
-        "luas": "3,82 km²"
+        "luas": "3,82 km\u00b2"
     },
     "demographics": {
         "total": "5.000",
-        "male": "4.180",
-        "female": "4.245",
-        "productive_count": "5.610",
+        "male": "2.500",
+        "female": "2.500",
+        "productive_count": "3.000",
         "productive_pct": "66.6",
-        "child_count": "1.825",
+        "child_count": "1.000",
         "child_pct": "21.7",
-        "elderly_count": "990",
+        "elderly_count": "1.000",
         "elderly_pct": "11.8",
         "density": "1.308,9",
         "avg_family_size": "1,89",
@@ -122,31 +122,13 @@
         "realized_pct": "67.9",
         "allocations": [
             {
-                "id": 1,
-                "tahun": 2026,
-                "kode_rekening": "5.1.01",
-                "name": "Pembangunan Infrastruktur, Fisik, & Perbaikan Sanitasi Lingkungan",
-                "amount": "652.500.000",
-                "pct": "45",
-                "desc": "Pavingisasi jalan gang, normalisasi selokan RW 02-05, dan lampu penerangan jalan umum (PJU)."
-            },
-            {
-                "id": 2,
-                "tahun": 2026,
-                "kode_rekening": "5.2.02",
-                "name": "Pemberdayaan Masyarakat, Kesejahteraan Sosial, & UMKM",
-                "amount": "435.000.000",
-                "pct": "30",
-                "desc": "Pelatihan digital marketing wirausaha muda, subsidi posyandu balita & lansia, serta bantuan bibit pekarangan."
-            },
-            {
-                "id": 3,
-                "tahun": 2026,
-                "kode_rekening": "5.3.01",
-                "name": "Operasional Penyelenggaraan Pelayanan & Administrasi Kantor",
-                "amount": "362.500.000",
-                "pct": "25",
-                "desc": "Infrastruktur server pelayanan mandiri digital, alat tulis kantor, pemeliharaan gedung, dan honor kebersihan."
+                "id": 31,
+                "tahun": 2027,
+                "kode_rekening": null,
+                "name": "DANA DESA",
+                "amount": "0",
+                "pct": "0",
+                "desc": ""
             }
         ]
     },
@@ -274,5 +256,39 @@
     "sekel_role": "Sekretaris Lurah",
     "kasi_pem_role": "Kasi Pemerintahan & Kesra",
     "kasi_kesra_role": "Kasi Trantib",
-    "kasi_ekbang_role": "Kasi Ekonomi & Pembangunan"
+    "kasi_ekbang_role": "Kasi Ekonomi & Pembangunan",
+    "stats_cards": [
+        {
+            "id": 1,
+            "icon": "fas fa-users",
+            "title": "Jumlah Penduduk",
+            "value": "5.000",
+            "color": "EMERALD",
+            "is_active": true
+        },
+        {
+            "id": 2,
+            "icon": "far fa-id-card",
+            "title": "Kepala Keluarga",
+            "value": "66",
+            "color": "EMERALD",
+            "is_active": true
+        },
+        {
+            "id": 3,
+            "icon": "fas fa-signs-post",
+            "title": "Wilayah RT / RW",
+            "value": "35 / 08",
+            "color": "EMERALD",
+            "is_active": true
+        },
+        {
+            "id": 4,
+            "icon": "fas fa-industry",
+            "title": "Luas Wilayah",
+            "value": "3,82 km\u00b2",
+            "color": "EMERALD",
+            "is_active": true
+        }
+    ]
 }

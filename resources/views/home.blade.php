@@ -219,13 +219,13 @@ class="relative overflow-x-hidden w-full max-w-full">
     </section>
 
     <!-- ========================================================================= -->
-    <!-- 3. BANNER HIGHLIGHT & STATISTIK TRANSPARANSI (Glassmorphism Hijau Gelap)  -->
+    <!-- 3. BANNER HIGHLIGHT LAYANAN & TRANSPARANSI                                -->
     <!-- ========================================================================= -->
-    <section id="stat-transparansi" class="py-16 sm:py-20 bg-slate-50 border-y border-slate-200 text-slate-900 relative w-full max-w-full">
+    <section id="layanan-digital" class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200 text-slate-900 relative w-full max-w-full">
         <!-- Background subtle glow -->
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl h-96 bg-slate-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex flex-col gap-12 lg:gap-20">
+        <div class="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
             
             <!-- Action Buttons Banner Highlight (Modern Abu Tua / Dark Charcoal Theme) -->
             <div class="relative overflow-hidden rounded-3xl p-6 sm:p-8 lg:p-10 text-white shadow-2xl border"
@@ -337,304 +337,70 @@ class="relative overflow-x-hidden w-full max-w-full">
                 </div>
             </div>
 
-            <!-- ================================================================= -->
-            <!-- PUSAT DATA & INFORMASI KELURAHAN (STATISTIK WILAYAH)               -->
-            <!-- ================================================================= -->
-            <div class="w-full space-y-6 sm:space-y-8">
-                
-                <!-- Section Header (Bersih, Rapi & Sejajar) -->
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-slate-200">
-                    <div>
-                        <div class="inline-flex items-center gap-2 mb-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-[11px] font-extrabold uppercase tracking-wider">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                            <span>Pusat Data & Informasi Kelurahan</span>
-                        </div>
-                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                            Pusat Data & Informasi {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}
-                        </h2>
-                        <p class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed max-w-2xl">
-                            Informasi terpadu indikator wilayah, kependudukan, transparansi anggaran kelurahan, dan penyaluran bantuan sosial bagi masyarakat.
-                        </p>
-                    </div>
+        </div>
+    </section>
 
-                    <!-- Tombol Portal Transparansi -->
-                    <div class="flex items-center shrink-0">
-                        <a href="{{ route('transparansi') }}"
-                           class="group relative inline-flex items-center gap-2.5 px-5 py-2.5 sm:py-3 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs sm:text-sm font-bold shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-200 border border-emerald-600/40">
-                            <i class="fas fa-chart-pie text-emerald-200"></i>
-                            <span>Portal Transparansi & APBD</span>
-                            <i class="fas fa-arrow-right text-[10px] text-emerald-200 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                    </div>
-                </div>
+    <!-- ========================================================================= -->
+    <!-- 4. DATA STATISTIK KELURAHAN (SESUAI DESAIN REFERENSI)                     -->
+    <!-- ========================================================================= -->
+    <section id="statistik" class="relative py-20 lg:py-24 overflow-hidden w-full max-w-full border-b border-slate-100"
+             style="background: radial-gradient(ellipse 75% 55% at 50% 12%, #ddf6ed 0%, #edf9f4 35%, #ffffff 80%);">
+        
+        <!-- Subtle Ambient Grid Overlay -->
+        <div class="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#10b981_0.75px,transparent_0.75px)] [background-size:24px_24px]"></div>
 
-                <!-- 1. GRID 4 KARTU RINGKASAN UTAMA (CLEAN STATISTIC CARDS) -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-                    
-                    <!-- Kartu 1: Total Penduduk -->
-                    <div @click="statModalOpen = true; activeStat = 'penduduk'"
-                         class="cursor-pointer group relative rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-emerald-400 p-5 transition-all duration-200 flex flex-col justify-between hover:-translate-y-0.5">
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">
-                                    Total Penduduk
-                                </span>
-                                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm border border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                    <i class="fas fa-users"></i>
-                                </div>
+        <div class="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+            
+            <!-- Section Header Sesuai Referensi -->
+            <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-2">
+                <span class="inline-block text-xs font-bold tracking-widest text-[#00a664] uppercase">
+                    DATA STATISTIK {{ strtoupper($villageProfile['village_name'] ?? 'KELURAHAN SEMAMPIR') }}
+                </span>
+                <h2 class="text-3xl sm:text-4xl lg:text-[42px] font-black text-slate-900 tracking-tight leading-tight">
+                    Statistik Wilayah {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}
+                </h2>
+                <p class="text-sm sm:text-base text-slate-500 font-normal leading-relaxed max-w-2xl mx-auto pt-1">
+                    Realisasi kinerja data kependudukan dan penanganan layanan masyarakat {{ $villageProfile['village_name'] ?? 'Kelurahan Semampir' }}.
+                </p>
+            </div>
+
+            <!-- Kartu Statistik Sesuai Referensi & Pengaturan Admin -->
+            @php
+                $activeCards = collect($villageProfile['stats_cards'] ?? \App\Http\Controllers\Admin\VillageProfileController::getDefaultStatsCards())->filter(fn($c) => $c['is_active'] ?? true);
+                $colCount = $activeCards->count();
+                $gridCols = $colCount >= 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : ($colCount == 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2');
+            @endphp
+            <div class="grid grid-cols-1 {{ $gridCols }} gap-5 sm:gap-6">
+                @foreach($activeCards as $cIndex => $card)
+                    @php
+                        $statKey = str_contains(strtolower($card['title'] ?? ''), 'penduduk') ? 'penduduk' :
+                                   (str_contains(strtolower($card['title'] ?? ''), 'keluarga') || str_contains(strtolower($card['title'] ?? ''), 'kk') ? 'kk' :
+                                   (str_contains(strtolower($card['title'] ?? ''), 'rt') || str_contains(strtolower($card['title'] ?? ''), 'rw') ? 'rtrw' : 'wilayah'));
+                    @endphp
+                    <div @click="activeStat = '{{ $statKey }}'; statModalOpen = true"
+                         class="bg-white rounded-[26px] p-7 sm:p-8 border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-[#e6f7ef] text-[#00a664] group-hover:scale-110 transition-transform flex items-center justify-center text-xl mb-6 shadow-2xs">
+                                <i class="{{ $card['icon'] ?? 'fas fa-chart-line' }}"></i>
                             </div>
-                            <div>
-                                <div class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-baseline gap-1.5">
-                                    <span>{{ $regStat ? number_format($regStat->total_penduduk, 0, ',', '.') : ($stats['penduduk'] ?? '8.425') }}</span>
-                                    <span class="text-xs font-semibold text-slate-400">Jiwa</span>
-                                </div>
-                                <p class="text-[11px] text-slate-500 mt-1">
-                                    Laki-laki {{ $regStat ? number_format($regStat->jumlah_laki_laki, 0, ',', '.') : '4.180' }} • Perempuan {{ $regStat ? number_format($regStat->jumlah_perempuan, 0, ',', '.') : '4.245' }}
-                                </p>
+                            <div class="text-3xl sm:text-[34px] font-black text-slate-900 tracking-tight leading-none mb-2">
+                                {!! str_replace('km²', '<span class="text-2xl sm:text-[28px] font-bold">km²</span>', e($card['value'] ?? '0')) !!}
                             </div>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-emerald-700 group-hover:text-emerald-800">
-                            <span>Lihat Rincian Penduduk</span>
-                            <i class="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
+                        <div class="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">
+                            {{ $card['title'] }}
                         </div>
                     </div>
+                @endforeach
+            </div>
 
-                    <!-- Kartu 2: Kepala Keluarga (KK) -->
-                    <div @click="statModalOpen = true; activeStat = 'kk'"
-                         class="cursor-pointer group relative rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-emerald-400 p-5 transition-all duration-200 flex flex-col justify-between hover:-translate-y-0.5">
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">
-                                    Kepala Keluarga (KK)
-                                </span>
-                                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm border border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                    <i class="fas fa-id-card"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-baseline gap-1.5">
-                                    <span>{{ $regStat ? number_format($regStat->jumlah_kk, 0, ',', '.') : ($stats['kk'] ?? '2.640') }}</span>
-                                    <span class="text-xs font-semibold text-slate-400">KK</span>
-                                </div>
-                                <p class="text-[11px] text-slate-500 mt-1">
-                                    Rata-rata {{ $regStat ? number_format($regStat->rata_rata_jiwa_per_kk, 1, ',', '.') : '1,9' }} jiwa per keluarga
-                                </p>
-                            </div>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-emerald-700 group-hover:text-emerald-800">
-                            <span>Lihat Rincian KK</span>
-                            <i class="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
-                        </div>
-                    </div>
-
-                    <!-- Kartu 3: Anggaran Kelurahan -->
-                    <div @click="statModalOpen = true; activeStat = 'anggaran'"
-                         class="cursor-pointer group relative rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-emerald-400 p-5 transition-all duration-200 flex flex-col justify-between hover:-translate-y-0.5">
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">
-                                    Anggaran Kelurahan
-                                </span>
-                                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm border border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                    <i class="fas fa-wallet"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                                    Rp 1,58 M
-                                </div>
-                                <p class="text-[11px] text-slate-500 mt-1">
-                                    Serapan kegiatan mencapai 73,0% (TA {{ $villageProfile['apbd']['year'] ?? '2026' }})
-                                </p>
-                            </div>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-emerald-700 group-hover:text-emerald-800">
-                            <span>Lihat Rincian Anggaran</span>
-                            <i class="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
-                        </div>
-                    </div>
-
-                    <!-- Kartu 4: Penerima Bantuan Sosial -->
-                    <div @click="statModalOpen = true; activeStat = 'bansos'"
-                         class="cursor-pointer group relative rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-emerald-400 p-5 transition-all duration-200 flex flex-col justify-between hover:-translate-y-0.5">
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">
-                                    Penerima Bansos
-                                </span>
-                                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm border border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                    <i class="fas fa-hand-holding-heart"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-baseline gap-1.5">
-                                    <span>842</span>
-                                    <span class="text-xs font-semibold text-slate-400">Keluarga</span>
-                                </div>
-                                <p class="text-[11px] text-slate-500 mt-1">
-                                    31,9% dari total keluarga terdaftar
-                                </p>
-                            </div>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-emerald-700 group-hover:text-emerald-800">
-                            <span>Lihat Data Bansos</span>
-                            <i class="fas fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- TOMBOL TOGGLE SELENGKAPNYA (DETAIL WILAYAH, ANGGARAN & BANSOS) -->
-                <div class="pt-2 flex flex-col items-center justify-center">
-                    <button type="button" 
-                            @click="showDetailStats = !showDetailStats"
-                            class="group inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white hover:bg-emerald-50/70 border border-slate-200/90 hover:border-emerald-300 text-xs sm:text-sm font-bold text-slate-700 hover:text-emerald-800 shadow-2xs hover:shadow-md transition-all duration-200 cursor-pointer">
-                        <span class="w-6 h-6 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xs group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                            <i class="fas fa-layer-group text-[10px]"></i>
-                        </span>
-                        <span x-text="showDetailStats ? 'Tutup Rincian Informasi' : 'Lihat Selengkapnya (Wilayah, Anggaran & Bansos)'">
-                            Lihat Selengkapnya (Wilayah, Anggaran & Bansos)
-                        </span>
-                        <i class="fas text-[11px] text-slate-400 group-hover:text-emerald-600 transition-transform duration-200"
-                           :class="showDetailStats ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-                    </button>
-                    <p x-show="!showDetailStats" class="text-[11px] text-slate-400 mt-2">
-                        Klik untuk melihat rincian pembagian RT/RW, realisasi anggaran, dan rincian kuota bansos
-                    </p>
-                </div>
-
-                <!-- 2. SEKSI INFORMASI DETAIL (3 SEKSI UTAMA) - DISEMBUNYIKAN DI SELENGKAPNYA -->
-                <div x-show="showDetailStats" x-collapse x-cloak>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 pt-3">
-                        
-                        <!-- Seksi 1: Informasi Wilayah (RT/RW & Sarpras) -->
-                        <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-2xs hover:shadow-md transition-shadow flex flex-col justify-between space-y-5">
-                            <div class="space-y-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/80 flex items-center justify-center text-base">
-                                        <i class="fas fa-map-location-dot"></i>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Informasi Wilayah</h3>
-                                        <p class="text-[11px] text-slate-400">Pembagian RT/RW & fasilitas lingkungan</p>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-2.5 text-xs">
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Jumlah Rukun Tetangga (RT)</span>
-                                        <span class="font-black text-slate-900">{{ $regStat ? $regStat->jumlah_rt : '32' }} RT</span>
-                                    </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Jumlah Rukun Warga (RW)</span>
-                                        <span class="font-black text-slate-900">{{ $regStat ? $regStat->jumlah_rw : '08' }} RW</span>
-                                    </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Luas Wilayah Administrasi</span>
-                                        <span class="font-black text-slate-900">{{ $regStat ? number_format($regStat->luas_wilayah, 2, ',', '.') . ' km²' : '3,82 km²' }}</span>
-                                    </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Fasilitas & Sarana Publik</span>
-                                        <span class="font-bold text-slate-800 text-[11px]">Sekolah, Masjid & Balai RW</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="button" @click="statModalOpen = true; activeStat = 'rtrw'"
-                                    class="w-full py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs rounded-xl border border-emerald-200 transition-colors flex items-center justify-center gap-2 cursor-pointer">
-                                <i class="fas fa-map-marked-alt text-xs"></i>
-                                <span>Lihat Detail Wilayah & RT/RW</span>
-                            </button>
-                        </div>
-
-                        <!-- Seksi 2: Transparansi Anggaran Kelurahan -->
-                        <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-2xs hover:shadow-md transition-shadow flex flex-col justify-between space-y-5">
-                            <div class="space-y-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/80 flex items-center justify-center text-base">
-                                        <i class="fas fa-file-invoice-dollar"></i>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Transparansi Anggaran</h3>
-                                        <p class="text-[11px] text-slate-400">Realisasi penggunaan anggaran kelurahan</p>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-2.5 text-xs">
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Total Pagu Anggaran TA {{ $villageProfile['apbd']['year'] ?? '2026' }}</span>
-                                        <span class="font-black text-slate-900">Rp 1.580.000.000</span>
-                                    </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1.5">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-slate-500 font-medium">Realisasi Anggaran</span>
-                                            <span class="font-black text-emerald-700">Rp 1.120.000.000 (73,0%)</span>
-                                        </div>
-                                        <div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden">
-                                            <div class="bg-emerald-600 h-full rounded-full" style="width: 73%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Fokus Penggunaan</span>
-                                        <span class="font-bold text-slate-800 text-[11px]">Layanan Warga & Pembangunan</span>
-                                    </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Status Laporan</span>
-                                        <span class="font-bold text-emerald-700 text-[11px]">Terverifikasi & Transparan</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <a href="{{ route('transparansi') }}"
-                               class="w-full py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs rounded-xl border border-emerald-200 transition-colors flex items-center justify-center gap-2">
-                                <i class="fas fa-chart-pie text-xs"></i>
-                                <span>Buka Laporan Anggaran Kelurahan</span>
-                            </a>
-                        </div>
-
-                        <!-- Seksi 3: Rincian Penerima Bantuan Sosial (Bansos) -->
-                        <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-2xs hover:shadow-md transition-shadow flex flex-col justify-between space-y-5">
-                            <div class="space-y-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/80 flex items-center justify-center text-base">
-                                        <i class="fas fa-hand-holding-heart"></i>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-sm sm:text-base text-slate-900">Penerima Bantuan Sosial</h3>
-                                        <p class="text-[11px] text-slate-400">Jaring pengaman sosial warga penerima manfaat</p>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-2.5 text-xs">
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Program Keluarga Harapan (PKH)</span>
-                                        <span class="font-black text-slate-900">285 Keluarga</span>
-                                    </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Bantuan Sembako / BPNT</span>
-                                        <span class="font-black text-slate-900">340 Keluarga</span>
-                                    </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Bantuan Langsung Tunai (BLT)</span>
-                                        <span class="font-black text-slate-900">120 Keluarga</span>
-                                    </div>
-                                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">Bantuan Daerah & Khusus</span>
-                                        <span class="font-black text-slate-900">97 Penerima</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="button" @click="statModalOpen = true; activeStat = 'bansos'"
-                                    class="w-full py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs rounded-xl border border-emerald-200 transition-colors flex items-center justify-center gap-2 cursor-pointer">
-                                <i class="fas fa-users-viewfinder text-xs"></i>
-                                <span>Lihat Rincian Bantuan Sosial</span>
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-
+            <!-- Tombol Aksi Lihat Statistik Lengkap Sesuai Referensi -->
+            <div class="mt-12 sm:mt-14 flex justify-center">
+                <a href="{{ route('transparansi') }}" 
+                   class="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#009b5a] hover:bg-[#00844c] text-white text-sm sm:text-base font-semibold shadow-sm hover:shadow-md transition-all duration-200">
+                    <span>Lihat Statistik Lengkap</span>
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </a>
             </div>
 
         </div>
